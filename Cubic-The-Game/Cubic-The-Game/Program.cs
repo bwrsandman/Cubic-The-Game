@@ -10,7 +10,7 @@ namespace Cubic_The_Game
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (CubicGame game = new CubicGame())
             {
                 game.Run();
             }
