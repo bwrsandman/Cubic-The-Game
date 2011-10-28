@@ -29,6 +29,7 @@ namespace Cubic_The_Game
 
         ContentManager content;
         SpriteFont gameFont;
+        GraphicsDevice device;
 
         Vector2 playerPosition = new Vector2(100, 100);
         Vector2 enemyPosition = new Vector2(100, 100);
@@ -60,7 +61,12 @@ namespace Cubic_The_Game
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
+            device = ScreenManager.GraphicsDevice;
+            GameObject.spriteBatch = ScreenManager.SpriteBatch;
+            GameObject.NewGame(new TwoInt(device.Viewport.Width, device.Viewport.Height));
+
             gameFont = content.Load<SpriteFont>("gamefont");
+            GameObject.LoadStaticContent(content);
 
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
@@ -106,6 +112,9 @@ namespace Cubic_The_Game
 
             if (IsActive)
             {
+
+                GameObject.UpdateStaticContent();
+
                 // Apply some random jitter to make the enemy move around.
                 const float randomization = 10;
 
@@ -140,6 +149,11 @@ namespace Cubic_The_Game
             KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
             GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
 
+            //testing out something
+            GamePadState gamePadPlayer1 = input.CurrentGamePadStates[0];
+            GamePadState gamePadPlayer2 = input.CurrentGamePadStates[1];
+            //end 
+
             // The game pauses either if the user presses the pause button, or if
             // they unplug the active gamepad. This requires us to keep track of
             // whether a gamepad was ever plugged in, because we don't want to pause
@@ -169,14 +183,22 @@ namespace Cubic_The_Game
                     movement.Y++;
 
                 Vector2 thumbstick = gamePadState.ThumbSticks.Left;
+                Vector2 thumbstickPlayer1 = gamePadPlayer1.ThumbSticks.Left;
+                Vector2 thumbstickPlayer2 = gamePadPlayer2.ThumbSticks.Left;
 
-                movement.X += thumbstick.X;
-                movement.Y -= thumbstick.Y;
+                movement.X += thumbstickPlayer1.X;
+                movement.Y -= thumbstickPlayer1.Y;
 
                 if (movement.Length() > 1)
                     movement.Normalize();
 
-                playerPosition += movement * 2;
+                GameObject.MovePlayer(0, new Vector2(thumbstickPlayer1.X,-thumbstickPlayer1.Y));
+
+                //playerPosition += movement * 2;
+
+                GameObject.MovePlayer(1, new Vector2(thumbstickPlayer1.X, -thumbstickPlayer1.Y));
+                //playerPosition += movement * 2;
+
             }
         }
 
@@ -190,6 +212,10 @@ namespace Cubic_The_Game
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
                                                Color.CornflowerBlue, 0, 0);
 
+            // This is where the heavy lifting happens
+            GameObject.DrawStaticContent();
+
+            //TODELETE ------------------------------------------------------------------------
             // Our player and enemy are both actually just text strings.
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
@@ -201,6 +227,8 @@ namespace Cubic_The_Game
                                    enemyPosition, Color.DarkRed);
 
             spriteBatch.End();
+            //ENDTODELETE ------------------------------------------------------------------------
+
 
             // If the game is transitioning on or off, fade it out to black.
             if (TransitionPosition > 0 || pauseAlpha > 0)

@@ -1,0 +1,20 @@
+10/28/2011 - SC - Added Menu System from Microsoft samples
+10/28/2011 - SC - Introduced Font, Needs to be installed to compile (but not necessary to run)
+10/28/2011 - SC - Designed a Hierchy for game objects
+				  ===
+				  Hierachy
+				  ===
+					Parent (Children*) {Members*}
+
+				  GameObject (CollisionObject, GreatCube) {}
+				  CollisionObject (MovingObject, Player) {}
+				  MovingObject (Piece, CubeSegment) {} 
+					// Even though Player is moving, it is not moving on its own, so i does not fall under this category
+					// GreatCube doesn't move on its own, just its Members
+				  GreatCube () {CubeSegment}
+				  CubeSegment () {MatchPiece}
+				  Piece (FallPiece, MatchPiece) {}
+				  FallPiece (SpecialPiece?) {}
+				  MatchPiece () {}
+				  SpecialPiece? () {}
+				  Player () {}
