@@ -1,0 +1,74 @@
+
+General Requirements to be applied to our game:
+
+
+
+
+Set up an initial environment (implement the rotating cube!) //or only one side for the prototype if you guys prefer
+
+
+
+
+Decide the main structure of our game implementation (classes, inheritance, data structure, ...etc)  //mostly done! thank you sandy!
+ 
+
+
+
+Mechanics (collision detection in mind):
+
+
+		 - player 3D motion (or 2D motion as a start, if you want)
+
+
+	         - player-piece interaction (drag motion)
+
+
+	         - player-player interaction (collision result, and what happens if both collide with the same piece)
+
+
+                 - player-cube interaction (player cannot pass through the cube)
+
+
+                 - cube-piece interaction (when does the cube detect the piece? how are the pieces going to be placed?)
+
+
+
+
+
+
+Row mechanics (the locking, unlocking, resetting... etc)
+		
+
+
+
+
+
+
+additional thoughts:
+
+
+
+
+	- Testing:
+
+
+		- Xbox to test the 2-player gameplay.
+ 
+		- partial testing can be done with the keyboard
+
+
+
+
+
+	- Implement the pointing system
+
+ 
+	
+
+
+- And as Eric suggested:"Maybe for the 3D pieces that we're dropping,we could just use textures for now (textured quads), 
+				 then do displacement maps or 3D meshes later.
+When we drop a piece onto a part of the cube, 
+				 we just put apply that texture onto that square of the cube"
+
+
