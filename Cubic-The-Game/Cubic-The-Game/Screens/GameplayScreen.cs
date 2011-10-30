@@ -25,14 +25,20 @@ namespace Cubic_The_Game
     /// </summary>
     class GameplayScreen : GameScreen
     {
+        #region constants
+        // Default keybindings for each player, up to 4
+        readonly Keys[] controlsUp =         { Keys.Up,              Keys.W,             Keys.NumPad8,   Keys.I      };
+        readonly Keys[] controlsDown =       { Keys.Down,            Keys.S,             Keys.NumPad5,   Keys.K      };
+        readonly Keys[] controlsLeft =       { Keys.Left,            Keys.A,             Keys.NumPad4,   Keys.J      };
+        readonly Keys[] controlsRight =      { Keys.Right,           Keys.D,             Keys.NumPad6,   Keys.L      };
+        readonly Keys[] controlsActivate =   { Keys.RightControl,    Keys.LeftControl,   Keys.NumPad0,   Keys.Space  };
+        #endregion 
+
         #region Fields
 
         ContentManager content;
         SpriteFont gameFont;
         GraphicsDevice device;
-
-        Vector2 playerPosition = new Vector2(100, 100);
-        Vector2 enemyPosition = new Vector2(100, 100);
 
         Random random = new Random();
 
@@ -64,6 +70,12 @@ namespace Cubic_The_Game
             device = ScreenManager.GraphicsDevice;
             GameObject.spriteBatch = ScreenManager.SpriteBatch;
             GameObject.NewGame(new TwoInt(device.Viewport.Width, device.Viewport.Height));
+            // Adding player indexes and colours
+            // I add 2 players for now
+            GameObject.AddPlayer(0, Color.Red);
+            GameObject.AddPlayer(1, Color.Blue);
+            //GameObject.AddPlayer(2, Color.Green);
+            //GameObject.AddPlayer(3, Color.Yellow);
 
             gameFont = content.Load<SpriteFont>("gamefont");
             GameObject.LoadStaticContent(content);
@@ -71,7 +83,7 @@ namespace Cubic_The_Game
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
             // while, giving you a chance to admire the beautiful loading screen.
-            Thread.Sleep(1000);
+            //Thread.Sleep(1000);
 
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that
@@ -114,22 +126,6 @@ namespace Cubic_The_Game
             {
 
                 GameObject.UpdateStaticContent();
-
-                // Apply some random jitter to make the enemy move around.
-                const float randomization = 10;
-
-                enemyPosition.X += (float)(random.NextDouble() - 0.5) * randomization;
-                enemyPosition.Y += (float)(random.NextDouble() - 0.5) * randomization;
-
-                // Apply a stabilizing force to stop the enemy moving off the screen.
-                Vector2 targetPosition = new Vector2(
-                    ScreenManager.GraphicsDevice.Viewport.Width / 2 - gameFont.MeasureString("Insert Gameplay Here").X / 2, 
-                    200);
-
-                enemyPosition = Vector2.Lerp(enemyPosition, targetPosition, 0.05f);
-
-                // TODO: this game isn't very fun! You could probably improve
-                // it by inserting something more interesting in this space :-)
             }
         }
 
@@ -144,61 +140,54 @@ namespace Cubic_The_Game
                 throw new ArgumentNullException("input");
 
             // Look up inputs for the active player profile.
-            int playerIndex = (int)ControllingPlayer.Value;
-
-            KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
-            GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
-
-            //testing out something
-            GamePadState gamePadPlayer1 = input.CurrentGamePadStates[0];
-            GamePadState gamePadPlayer2 = input.CurrentGamePadStates[1];
-            //end 
+            //int playerIndex = (int)ControllingPlayer.Value;
 
             // The game pauses either if the user presses the pause button, or if
             // they unplug the active gamepad. This requires us to keep track of
             // whether a gamepad was ever plugged in, because we don't want to pause
             // on PC if they are playing with a keyboard and have no gamepad at all!
-            bool gamePadDisconnected = !gamePadState.IsConnected &&
-                                       input.GamePadWasConnected[playerIndex];
-
-            if (input.IsPauseGame(ControllingPlayer) || gamePadDisconnected)
+            foreach (byte i in GameObject.playerList)
             {
-                ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
-            }
-            else
-            {
-                // Otherwise move the player position.
-                Vector2 movement = Vector2.Zero;
+                KeyboardState keyboardState = input.CurrentKeyboardStates[i];
+                GamePadState gamePadState = input.CurrentGamePadStates[i];
 
-                if (keyboardState.IsKeyDown(Keys.Left))
-                    movement.X--;
+                bool gamePadDisconnected = !gamePadState.IsConnected &&
+                                           input.GamePadWasConnected[i];
 
-                if (keyboardState.IsKeyDown(Keys.Right))
-                    movement.X++;
+                if (input.IsPauseGame(ControllingPlayer) || gamePadDisconnected)
+                {
+                    ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
+                    break;
+                }
+                else
+                {
+                    // Otherwise move the player position.
+                    Vector2 movement = Vector2.Zero;
 
-                if (keyboardState.IsKeyDown(Keys.Up))
-                    movement.Y--;
+                    if (keyboardState.IsKeyDown(controlsLeft[i]))
+                        movement.X--;
 
-                if (keyboardState.IsKeyDown(Keys.Down))
-                    movement.Y++;
+                    if (keyboardState.IsKeyDown(controlsRight[i]))
+                        movement.X++;
 
-                Vector2 thumbstick = gamePadState.ThumbSticks.Left;
-                Vector2 thumbstickPlayer1 = gamePadPlayer1.ThumbSticks.Left;
-                Vector2 thumbstickPlayer2 = gamePadPlayer2.ThumbSticks.Left;
+                    if (keyboardState.IsKeyDown(controlsUp[i]))
+                        movement.Y--;
 
-                movement.X += thumbstickPlayer1.X;
-                movement.Y -= thumbstickPlayer1.Y;
+                    if (keyboardState.IsKeyDown(controlsDown[i]))
+                        movement.Y++;
+                    
 
-                if (movement.Length() > 1)
-                    movement.Normalize();
+                    Vector2 thumbstick = gamePadState.ThumbSticks.Left;
 
-                GameObject.MovePlayer(0, new Vector2(thumbstickPlayer1.X,-thumbstickPlayer1.Y));
+                    movement.X += thumbstick.X;
+                    movement.Y -= thumbstick.Y;
 
-                //playerPosition += movement * 2;
+                    if (movement.Length() > 1)
+                        movement.Normalize();
 
-                GameObject.MovePlayer(1, new Vector2(thumbstickPlayer1.X, -thumbstickPlayer1.Y));
-                //playerPosition += movement * 2;
+                    GameObject.MovePlayer(i, movement * GameObject.PLAYERSPEED);
 
+                }
             }
         }
 
@@ -214,21 +203,6 @@ namespace Cubic_The_Game
 
             // This is where the heavy lifting happens
             GameObject.DrawStaticContent();
-
-            //TODELETE ------------------------------------------------------------------------
-            // Our player and enemy are both actually just text strings.
-            SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-
-            spriteBatch.Begin();
-
-            spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
-
-            spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
-                                   enemyPosition, Color.DarkRed);
-
-            spriteBatch.End();
-            //ENDTODELETE ------------------------------------------------------------------------
-
 
             // If the game is transitioning on or off, fade it out to black.
             if (TransitionPosition > 0 || pauseAlpha > 0)

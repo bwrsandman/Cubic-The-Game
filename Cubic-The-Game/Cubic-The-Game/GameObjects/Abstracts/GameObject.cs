@@ -11,6 +11,8 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;   // for Texture2D
 using Microsoft.Xna.Framework;            // for Vectors
+using System.Collections.Generic;         // For List
+using System.Diagnostics;                 // For debug
 #endregion
 
 namespace Cubic_The_Game
@@ -44,12 +46,16 @@ namespace Cubic_The_Game
     {
 
         #region constants
+        public const byte MAXPLAYERS = 4;
+        public const float PLAYERSPEED = 2.0f;
         #endregion
 
         #region statics
         private static Player[] players;
         private static TwoInt screenSize;
         public static SpriteBatch spriteBatch{protected get; set;}
+        public static List<byte> playerList { private set; get; }
+        
         #endregion
 
         #region members
@@ -83,9 +89,19 @@ namespace Cubic_The_Game
         public static void NewGame(TwoInt sSize)
         {
             screenSize = sSize;
-            players = new Player[4];
-            players[0] = new Player(sSize / 2 - new TwoInt(100, 0), Color.Red);
-            players[1] = new Player(sSize / 2 + new TwoInt(100, 0), Color.Blue);
+            players = new Player[MAXPLAYERS];
+            playerList = new List<byte>(4); 
+        }
+        /// <summary>
+        /// Here we're indicating the colour of the player and the input(gamepad/keyboard) index
+        /// 0 <= index < MAXPLAYERS
+        /// </summary>
+        public static void AddPlayer(byte index, Color colour)
+        {
+            Debug.Assert(!playerList.Contains(index), "Cannot add two players with the same index (index=" + index + ")");
+            Debug.Assert(index < MAXPLAYERS, "Cannot add a player with an index greater or equal to the maximum allowed players (index=" + index + ">=" + MAXPLAYERS + ")");
+            playerList.Add(index);
+            players[index] = new Player(screenSize / 2 + new TwoInt(-100 + index % 2 * 200, 100 * (byte)(index / 2)), colour);
         }
 
         #endregion
@@ -102,9 +118,9 @@ namespace Cubic_The_Game
         public static void UpdateStaticContent()
         {
             spriteBatch.Begin();
-            //TODO: For i = 0 - MAX NUM OF PLAYERS -> if not null -> Draw()
-            players[0].Update();
-            players[1].Update();
+            for (byte i = 0; i < MAXPLAYERS;++i )
+                if (players[i] != null) players[i].Update();
+
 
             spriteBatch.End();
         }
@@ -115,9 +131,8 @@ namespace Cubic_The_Game
         public static void DrawStaticContent()
         {
             spriteBatch.Begin();
-            //TODO: For i = 0 - MAX NUM OF PLAYERS -> if not null -> Draw()
-            players[0].Draw();
-            players[1].Draw();
+            for (byte i = 0; i < MAXPLAYERS; ++i)
+                if (players[i] != null) players[i].Draw();
 
             spriteBatch.End();
         }
