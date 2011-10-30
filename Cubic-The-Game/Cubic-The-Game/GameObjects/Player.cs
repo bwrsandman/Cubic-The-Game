@@ -46,6 +46,11 @@ namespace Cubic_The_Game
             position += movement;
             movement = Vector2.Zero;
         }
+        public void SetPos(float x, float y)
+        {
+            position.X = x;
+            position.Y = y;
+        }
         #endregion
 
         #region draw

@@ -99,6 +99,11 @@ namespace Cubic_The_Game
             }
 
         }
+
+        public static void SetPlayerPos(int index, int x, int y)
+        {
+            players[index].SetPos((float)x, (float)y);
+        }
         public static void UpdateStaticContent()
         {
             spriteBatch.Begin();

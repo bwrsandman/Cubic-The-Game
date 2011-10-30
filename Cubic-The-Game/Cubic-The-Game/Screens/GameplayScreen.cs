@@ -130,6 +130,7 @@ namespace Cubic_The_Game
 
                 // TODO: this game isn't very fun! You could probably improve
                 // it by inserting something more interesting in this space :-)
+
             }
         }
 
@@ -153,6 +154,8 @@ namespace Cubic_The_Game
             GamePadState gamePadPlayer1 = input.CurrentGamePadStates[0];
             GamePadState gamePadPlayer2 = input.CurrentGamePadStates[1];
             //end 
+            MouseState mouse = Mouse.GetState();
+            GameObject.SetPlayerPos(1, mouse.X, mouse.Y);
 
             // The game pauses either if the user presses the pause button, or if
             // they unplug the active gamepad. This requires us to keep track of
