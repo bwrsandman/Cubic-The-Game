@@ -23,6 +23,7 @@ namespace Cubic_The_Game
         #endregion
 
         #region members
+        double rotation;
         #endregion
 
         #region constructors
