@@ -24,6 +24,14 @@ namespace Cubic_The_Game
     /// </summary>
     abstract class MenuScreen : GameScreen
     {
+
+        #region constants
+        private const int TITLE_Y = 180;
+        private const int TITLE_ENTRY_GAP = 75;
+        #endregion
+
+        private int ENTRY_Y { get { return TITLE_Y + TITLE_ENTRY_GAP; } }
+
         #region Fields
 
         List<MenuEntry> menuEntries = new List<MenuEntry>();
@@ -153,7 +161,7 @@ namespace Cubic_The_Game
             float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
 
             // start at Y = 175; each X value is generated per entry
-            Vector2 position = new Vector2(0f, 175f);
+            Vector2 position = new Vector2(0f, ENTRY_Y);
 
             // update each menu entry's location in turn
             for (int i = 0; i < menuEntries.Count; i++)
@@ -225,7 +233,7 @@ namespace Cubic_The_Game
             float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
 
             // Draw the menu title centered on the screen
-            Vector2 titlePosition = new Vector2(graphics.Viewport.Width / 2, 80);
+            Vector2 titlePosition = new Vector2(graphics.Viewport.Width / 2, TITLE_Y);
             Vector2 titleOrigin = font.MeasureString(menuTitle) / 2;
             Color titleColor = new Color(192, 192, 192) * TransitionAlpha;
             float titleScale = 1.25f;

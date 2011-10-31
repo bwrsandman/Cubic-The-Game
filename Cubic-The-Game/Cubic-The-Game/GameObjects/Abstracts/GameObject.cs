@@ -103,6 +103,30 @@ namespace Cubic_The_Game
             playerList.Add(index);
             players[index] = new Player(screenSize / 2 + new TwoInt(-100 + index % 2 * 200, 100 * (byte)(index / 2)), colour);
         }
+        public static void AddPlayer(byte index)
+        {
+            Debug.Assert(index < MAXPLAYERS, "Cannot add a player with an index greater or equal to the maximum allowed players (index=" + index + ">=" + MAXPLAYERS + ")");
+            Color playerColour;
+            switch (index)
+            {
+                case 0:
+                    playerColour = Color.Red;
+                    break;
+                case 1:
+                    playerColour = Color.Blue;
+                    break;
+                case 2:
+                    playerColour = Color.Green;
+                    break;
+                case 3:
+                    playerColour = Color.Yellow;
+                    break;
+                default:
+                    playerColour = Color.White;
+                    break;
+            }
+            AddPlayer(index, playerColour);
+        }
 
         #endregion
 

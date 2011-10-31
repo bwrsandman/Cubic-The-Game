@@ -39,7 +39,7 @@ namespace Cubic_The_Game
         ContentManager content;
         SpriteFont gameFont;
         GraphicsDevice device;
-
+        int playerNum;
         Random random = new Random();
 
         float pauseAlpha;
@@ -52,8 +52,24 @@ namespace Cubic_The_Game
         /// <summary>
         /// Constructor.
         /// </summary>
-        public GameplayScreen()
+        public GameplayScreen(int[] gameOptions)
         {
+            // Number of players, 1, 2, 4
+            switch (gameOptions[0])
+            {
+                case 0:
+                    playerNum = 1;
+                    break;
+                case 1:
+                    playerNum = 2;
+                    break;
+                case 2:
+                    playerNum = 4;
+                    break;
+                default:
+                    playerNum = 1;
+                    break;
+            }
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
         }
@@ -70,12 +86,12 @@ namespace Cubic_The_Game
             device = ScreenManager.GraphicsDevice;
             GameObject.spriteBatch = ScreenManager.SpriteBatch;
             GameObject.NewGame(new TwoInt(device.Viewport.Width, device.Viewport.Height));
-            // Adding player indexes and colours
-            // I add 2 players for now
-            GameObject.AddPlayer(0, Color.Red);
-            GameObject.AddPlayer(1, Color.Blue);
-            //GameObject.AddPlayer(2, Color.Green);
-            //GameObject.AddPlayer(3, Color.Yellow);
+
+            // Adding player by number, at this point we assume player configurations 1 or 1,2 or 1,2,3,4
+            // TODO: configurations of players 2 or 3 or 4 or 2,3 or 3,4 or 2,3,4
+            for (byte i = 0; i < playerNum; ++i)
+                GameObject.AddPlayer(i);
+            
 
             gameFont = content.Load<SpriteFont>("gamefont");
             GameObject.LoadStaticContent(content);
