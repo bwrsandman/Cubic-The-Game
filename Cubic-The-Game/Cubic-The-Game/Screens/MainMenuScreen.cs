@@ -8,6 +8,7 @@
 #endregion
 
 #region Using Statements
+using System;
 using Microsoft.Xna.Framework;
 #endregion
 
@@ -27,6 +28,7 @@ namespace Cubic_The_Game
         public MainMenuScreen()
             : base("Main Menu")
         {
+            TransitionOnTime = TimeSpan.FromSeconds(1.0f);
             // Create our menu entries.
             MenuEntry playGameMenuEntry = new MenuEntry("Play Game");
             MenuEntry optionsMenuEntry = new MenuEntry("Options");

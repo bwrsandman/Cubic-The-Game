@@ -56,6 +56,7 @@ namespace Cubic_The_Game
             // Activate the first screens.
             screenManager.AddScreen(new BackgroundScreen(), null);
             screenManager.AddScreen(new MainMenuScreen(), null);
+            screenManager.AddScreen(new SplashScreen(), null);
         }
 
 
