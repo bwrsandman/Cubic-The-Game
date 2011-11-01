@@ -53,6 +53,7 @@ namespace Cubic_The_Game
         #region statics
         private static Player[] players;
         private static TwoInt screenSize;
+        public static GraphicsDevice device;
         public static SpriteBatch spriteBatch{protected get; set;}
         public static List<byte> playerList { private set; get; }
         
