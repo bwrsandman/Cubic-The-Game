@@ -52,7 +52,7 @@ namespace Cubic_The_Game
 
         #region statics
         private static Player[] players;
-        private static TwoInt screenSize;
+        private static TwoInt screenSize{get{return new TwoInt(device.Viewport.Width, device.Viewport.Height);}}
         public static GraphicsDevice device;
         public static SpriteBatch spriteBatch{protected get; set;}
         public static List<byte> playerList { private set; get; }
@@ -87,9 +87,8 @@ namespace Cubic_The_Game
             Player.texture = content.Load<Texture2D>("playerCursor");
         }
 
-        public static void NewGame(TwoInt sSize)
+        public static void NewGame()
         {
-            screenSize = sSize;
             players = new Player[MAXPLAYERS];
             playerList = new List<byte>(4); 
         }
