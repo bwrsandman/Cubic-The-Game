@@ -82,6 +82,11 @@ namespace Cubic_The_Game
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
+            GameObject.camera = new Camera(ScreenManager.Game, new Vector3(0, 0, 10), Vector3.Zero, Vector3.Up); 
+            ScreenManager.Game.Components.Add(GameObject.camera);
+
+            TestCube.device = ScreenManager.GraphicsDevice;
+
             GameObject.device = ScreenManager.GraphicsDevice;
             GameObject.spriteBatch = ScreenManager.SpriteBatch;
             GameObject.NewGame();
@@ -94,6 +99,7 @@ namespace Cubic_The_Game
 
             gameFont = content.Load<SpriteFont>("gamefont");
             GameObject.LoadStaticContent(content);
+
 
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a

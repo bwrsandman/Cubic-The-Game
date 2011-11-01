@@ -56,8 +56,14 @@ namespace Cubic_The_Game
         public static GraphicsDevice device;
         public static SpriteBatch spriteBatch{protected get; set;}
         public static List<byte> playerList { private set; get; }
-        
+
+        private static TestCube cube;
+        public static Camera camera;
         #endregion
+
+        //test object
+        public static Texture2D temp;
+        //end of test object
 
         #region members
         protected Vector2 position, size; // soon to be Vector3
@@ -85,12 +91,19 @@ namespace Cubic_The_Game
         public static void LoadStaticContent(ContentManager content)
         {
             Player.texture = content.Load<Texture2D>("playerCursor");
+
+            //test object
+            temp = content.Load<Texture2D>("playerCursor");
+            //end of test object
         }
 
         public static void NewGame()
         {
             players = new Player[MAXPLAYERS];
-            playerList = new List<byte>(4); 
+            playerList = new List<byte>(4);
+
+            cube = new TestCube();
+            
         }
         /// <summary>
         /// Here we're indicating the colour of the player and the input(gamepad/keyboard) index
@@ -141,8 +154,15 @@ namespace Cubic_The_Game
         }
         public static void UpdateStaticContent()
         {
-            for (byte i = 0; i < MAXPLAYERS;++i )
-                if (players[i] != null) players[i].Update();
+            for (byte i = 0; i < MAXPLAYERS; ++i)
+            {
+                if (players[i] != null)
+                {
+                    players[i].Update();
+                    if (cube.intersects(players[i].center))
+                         cube.color = Color.Pink;
+                }
+            }
         }
         protected virtual void Update() { }
         #endregion
@@ -150,13 +170,28 @@ namespace Cubic_The_Game
         #region draw
         public static void DrawStaticContent()
         {
+            cube.Draw(GameObject.camera);
+
             spriteBatch.Begin();
             for (byte i = 0; i < MAXPLAYERS; ++i)
                 if (players[i] != null) players[i].Draw();
 
+
+            //test object
+            spriteBatch.Draw(temp, GetScreenSpace(new Vector3(0,0,2)), Color.Black); 
+            //end of test object
+
             spriteBatch.End();
+
+            
         }
         protected virtual void Draw() { }
         #endregion
+
+        public static Vector2 GetScreenSpace(Vector3 cntr)
+        {
+            Vector3 projection = device.Viewport.Project(cntr, camera.projection, camera.view, Matrix.Identity);
+            return (new Vector2(projection.X, projection.Y));
+        }
     }
 }
