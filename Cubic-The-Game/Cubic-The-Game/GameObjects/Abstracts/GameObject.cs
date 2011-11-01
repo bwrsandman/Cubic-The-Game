@@ -141,12 +141,8 @@ namespace Cubic_The_Game
         }
         public static void UpdateStaticContent()
         {
-            spriteBatch.Begin();
             for (byte i = 0; i < MAXPLAYERS;++i )
                 if (players[i] != null) players[i].Update();
-
-
-            spriteBatch.End();
         }
         protected virtual void Update() { }
         #endregion
