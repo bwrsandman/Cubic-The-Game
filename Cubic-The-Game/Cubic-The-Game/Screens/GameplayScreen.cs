@@ -38,7 +38,6 @@ namespace Cubic_The_Game
 
         ContentManager content;
         SpriteFont gameFont;
-        GraphicsDevice device;
         int playerNum;
         Random random = new Random();
 
@@ -83,9 +82,9 @@ namespace Cubic_The_Game
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-            device = ScreenManager.GraphicsDevice;
+            GameObject.device = ScreenManager.GraphicsDevice;
             GameObject.spriteBatch = ScreenManager.SpriteBatch;
-            GameObject.NewGame(new TwoInt(device.Viewport.Width, device.Viewport.Height));
+            GameObject.NewGame();
 
             // Adding player by number, at this point we assume player configurations 1 or 1,2 or 1,2,3,4
             // TODO: configurations of players 2 or 3 or 4 or 2,3 or 3,4 or 2,3,4
