@@ -24,7 +24,7 @@ namespace Cubic_The_Game
         #endregion
 
         #region members
-        private Color color;
+        public Color color{get; private set;}
         private Vector2 movement = Vector2.Zero;
         protected override TwoInt size{ get { return new TwoInt(texture.Width, texture.Height); } } 
         #endregion

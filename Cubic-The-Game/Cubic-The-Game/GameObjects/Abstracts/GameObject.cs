@@ -33,6 +33,7 @@ namespace Cubic_The_Game
         public static TwoInt operator *(float lhs, TwoInt rhs) { return rhs * lhs; }
         public static TwoInt operator /(TwoInt lhs, float rhs) { return new TwoInt((int)(lhs.X / rhs), (int)(lhs.Y / rhs)); }
         public static implicit operator Vector2(TwoInt rhs) { return new Vector2(rhs.X, rhs.Y); }
+        public static implicit operator Vector3(TwoInt rhs) { return new Vector3(rhs.X, rhs.Y, 0.0f); }
 
     }
     #endregion
@@ -57,13 +58,15 @@ namespace Cubic_The_Game
         public static SpriteBatch spriteBatch{protected get; set;}
         public static List<byte> playerList { private set; get; }
 
-        private static TestCube cube;
+        private static FallPiece testPiece;
+        //private static TestCube cube;
         public static Camera camera;
         #endregion
 
         //test object
-        public static Texture2D temp;
+        //public static Texture2D temp;
         //end of test object
+
 
         #region members
         protected Vector2 position;
@@ -94,7 +97,7 @@ namespace Cubic_The_Game
             Player.texture = content.Load<Texture2D>("playerCursor");
 
             //test object
-            temp = content.Load<Texture2D>("playerCursor");
+            //temp = content.Load<Texture2D>("playerCursor");
             //end of test object
         }
 
@@ -103,7 +106,7 @@ namespace Cubic_The_Game
             players = new Player[MAXPLAYERS];
             playerList = new List<byte>(4);
 
-            cube = new TestCube();
+            testPiece = new FallPiece(new Vector3(0.0f,0.0f,-5.0f));
             
         }
         /// <summary>
@@ -155,14 +158,16 @@ namespace Cubic_The_Game
         }
         public static void UpdateStaticContent()
         {
+            testPiece.Update();
             for (byte i = 0; i < MAXPLAYERS; ++i)
             {
                 if (players[i] != null)
                 {
                     players[i].Update();
-                    if (cube.intersects(players[i].center))
-                         cube.color = Color.Pink;
+                    //if (cube.intersects(players[i].center))
+                    //     cube.color = Color.Pink;
                 }
+            testPiece.intersects(players);
             }
         }
         protected virtual void Update() { }
@@ -171,7 +176,9 @@ namespace Cubic_The_Game
         #region draw
         public static void DrawStaticContent()
         {
-            cube.Draw(GameObject.camera);
+            //cube.Draw(GameObject.camera);
+
+            testPiece.Draw(GameObject.camera);
 
             spriteBatch.Begin();
             for (byte i = 0; i < MAXPLAYERS; ++i)
@@ -179,7 +186,7 @@ namespace Cubic_The_Game
 
 
             //test object
-            spriteBatch.Draw(temp, (GetScreenSpace(cube.center, cube.worldTranslation)), null, Color.Black, 0.0f, Vector2.Zero,0.1f,SpriteEffects.None,0.0f); 
+            //spriteBatch.Draw(temp, (GetScreenSpace(cube.center, cube.worldTranslation)), null, Color.Black, 0.0f, Vector2.Zero,0.1f,SpriteEffects.None,0.0f); 
             //end of test object
 
             spriteBatch.End();
