@@ -178,7 +178,7 @@ namespace Cubic_The_Game
 
 
             //test object
-            spriteBatch.Draw(temp, GetScreenSpace(new Vector3(0,0,2)), Color.Black); 
+            spriteBatch.Draw(temp, GetScreenSpace(cube.center), Color.Black); 
             //end of test object
 
             spriteBatch.End();

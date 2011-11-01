@@ -19,7 +19,7 @@ namespace Cubic_The_Game
         public Vector3 normal;
         public Vector3 center;
 
-        float offset = 50;
+        float offset = 5f;
 
         VertexPositionColor[] cubeFront;
         VertexBuffer cubeBuffer;
@@ -28,11 +28,12 @@ namespace Cubic_The_Game
 
         public TestCube()
         {
+            Vector3 offcenter = new Vector3(5,2,-10);
             cubeFront = new VertexPositionColor[4];
-            cubeFront[0] = new VertexPositionColor(new Vector3(-2, 2, 0), color);
-            cubeFront[1] = new VertexPositionColor(new Vector3(2, 2, 0), color);
-            cubeFront[2] = new VertexPositionColor(new Vector3(-2, -2, 0), color);
-            cubeFront[3] = new VertexPositionColor(new Vector3(2, -2, 0), color);
+            cubeFront[0] = new VertexPositionColor(new Vector3(-2, 2, 0) + offcenter, color);
+            cubeFront[1] = new VertexPositionColor(new Vector3(2, 2, 0) + offcenter, color);
+            cubeFront[2] = new VertexPositionColor(new Vector3(-2, -2, 0) + offcenter, color);
+            cubeFront[3] = new VertexPositionColor(new Vector3(2, -2, 0) + offcenter, color);
 
             Vector3 v1 = cubeFront[1].Position - cubeFront[0].Position;
             Vector3 v2 = cubeFront[2].Position - cubeFront[0].Position;
