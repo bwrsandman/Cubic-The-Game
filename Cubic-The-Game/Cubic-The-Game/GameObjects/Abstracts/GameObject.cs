@@ -66,7 +66,8 @@ namespace Cubic_The_Game
         //end of test object
 
         #region members
-        protected Vector2 position, size; // soon to be Vector3
+        protected Vector2 position;
+        protected virtual TwoInt size{get; set;}
         #endregion
 
         #region accessors
@@ -178,7 +179,7 @@ namespace Cubic_The_Game
 
 
             //test object
-            spriteBatch.Draw(temp, GetScreenSpace(cube.center), Color.Black); 
+            spriteBatch.Draw(temp, (GetScreenSpace(cube.center, cube.worldTranslation)), null, Color.Black, 0.0f, Vector2.Zero,0.1f,SpriteEffects.None,0.0f); 
             //end of test object
 
             spriteBatch.End();
@@ -188,9 +189,9 @@ namespace Cubic_The_Game
         protected virtual void Draw() { }
         #endregion
 
-        public static Vector2 GetScreenSpace(Vector3 cntr)
+        public static Vector2 GetScreenSpace(Vector3 cntr, Matrix world)
         {
-            Vector3 projection = device.Viewport.Project(cntr, camera.projection, camera.view, Matrix.Identity);
+            Vector3 projection = device.Viewport.Project(cntr, camera.projection, camera.view, world);
             return (new Vector2(projection.X, projection.Y));
         }
     }

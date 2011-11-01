@@ -12,7 +12,7 @@ namespace Cubic_The_Game
 
         public static GraphicsDevice device;
         
-        private Matrix worldTranslation = Matrix.CreateTranslation(0,0,2);
+        public Matrix worldTranslation = Matrix.CreateTranslation(0,0,2);
         public Color color = Color.White;
 
 
@@ -35,10 +35,10 @@ namespace Cubic_The_Game
             cubeFront[2] = new VertexPositionColor(new Vector3(-2, -2, 0) + offcenter, color);
             cubeFront[3] = new VertexPositionColor(new Vector3(2, -2, 0) + offcenter, color);
 
-            Vector3 v1 = cubeFront[1].Position - cubeFront[0].Position;
-            Vector3 v2 = cubeFront[2].Position - cubeFront[0].Position;
-            center = (v1 / 2) + (v2 / 2);
-            center = new Vector3(worldTranslation.Translation.X, worldTranslation.Translation.Y, worldTranslation.Translation.Z);
+            //Vector3 v1 = cubeFront[1].Position - cubeFront[0].Position;
+            //Vector3 v2 = cubeFront[2].Position - cubeFront[0].Position;
+            center = offcenter;
+            //center = new Vector3(worldTranslation.Translation.X, worldTranslation.Translation.Y, worldTranslation.Translation.Z);
 
             getNormal();
 
@@ -62,7 +62,7 @@ namespace Cubic_The_Game
 
         public bool intersects(Vector2 cntr)
         {
-            Vector2 cubeScreenCenter = GameObject.GetScreenSpace(center);
+            Vector2 cubeScreenCenter = GameObject.GetScreenSpace(center, worldTranslation);
             Vector2 cntrDifference = cubeScreenCenter - cntr;
             
             return (cntrDifference.Length() <= offset);     
