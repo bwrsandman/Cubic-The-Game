@@ -17,7 +17,9 @@ namespace Cubic_The_Game
     class FallPiece : Piece
     {
         #region constants
-        private const float offset = 50f;
+        private const float OFFSET = 50f;
+        private const float SIDERADIUS = 0.5f;
+        private const float DEPTH = -5f;
         #endregion
 
         #region statics
@@ -31,10 +33,10 @@ namespace Cubic_The_Game
         private Vector3 movement = Vector3.Zero;
         #endregion
 
-        public FallPiece(Vector3 origin)
+        public FallPiece(Vector2 origin)
         {
             interactingPlayer = -1;
-            center3 = origin;
+            center3 = new Vector3(origin,DEPTH);
 
             cubeFront = new VertexPositionColor[4];
 
@@ -58,7 +60,7 @@ namespace Cubic_The_Game
         #region update and draw
         public bool intersects(Vector2 cntr)
         {
-            return ((center2 - cntr).Length() <= offset);
+            return ((center2 - cntr).Length() <= OFFSET);
         }
 
         public bool intersects(Player[] players)
@@ -91,10 +93,10 @@ namespace Cubic_The_Game
             center3 += movement;
             movement = Vector3.Zero;
             color = isIntersected? interactedColor : inactiveColor ;
-            cubeFront[0] = new VertexPositionColor(new Vector3(-2, 2, 0) + center3, color);
-            cubeFront[1] = new VertexPositionColor(new Vector3(2, 2, 0) + center3, color);
-            cubeFront[2] = new VertexPositionColor(new Vector3(-2, -2, 0) + center3, color);
-            cubeFront[3] = new VertexPositionColor(new Vector3(2, -2, 0) + center3, color);
+            cubeFront[0] = new VertexPositionColor(new Vector3(-SIDERADIUS, SIDERADIUS, 0) + center3, color);
+            cubeFront[1] = new VertexPositionColor(new Vector3(SIDERADIUS, SIDERADIUS, 0) + center3, color);
+            cubeFront[2] = new VertexPositionColor(new Vector3(-SIDERADIUS, -SIDERADIUS, 0) + center3, color);
+            cubeFront[3] = new VertexPositionColor(new Vector3(SIDERADIUS, -SIDERADIUS, 0) + center3, color);
         }
 
         public void Draw(Camera camera)

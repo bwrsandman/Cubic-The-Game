@@ -106,7 +106,7 @@ namespace Cubic_The_Game
             players = new Player[MAXPLAYERS];
             playerList = new List<byte>(4);
 
-            testPiece = new FallPiece(new Vector3(0.0f,0.0f,-5.0f));
+            testPiece = new FallPiece(new Vector2(0.0f,0.0f));
             
         }
         /// <summary>
