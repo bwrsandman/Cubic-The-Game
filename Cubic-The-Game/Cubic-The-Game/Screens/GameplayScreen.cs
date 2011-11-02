@@ -170,7 +170,9 @@ namespace Cubic_The_Game
             foreach (byte i in GameObject.playerList)
             {
                 KeyboardState keyboardState = input.CurrentKeyboardStates[i];
+                KeyboardState prevKeyboardState = input.LastKeyboardStates[i];
                 GamePadState gamePadState = input.CurrentGamePadStates[i];
+                GamePadState prevGamePadState = input.LastGamePadStates[i];
 
                 bool gamePadDisconnected = !gamePadState.IsConnected &&
                                            input.GamePadWasConnected[i];
@@ -196,7 +198,6 @@ namespace Cubic_The_Game
 
                     if (keyboardState.IsKeyDown(controlsDown[i]))
                         movement.Y++;
-                    
 
                     Vector2 thumbstick = gamePadState.ThumbSticks.Left;
 
@@ -207,6 +208,11 @@ namespace Cubic_The_Game
                         movement.Normalize();
 
                     GameObject.MovePlayer(i, movement * GameObject.PLAYERSPEED);
+
+
+                    if ((keyboardState.IsKeyDown(controlsActivate[i]) && !prevKeyboardState.IsKeyDown(controlsActivate[i]))
+                        || (gamePadState.IsButtonDown(Buttons.A) && !prevGamePadState.IsButtonDown(Buttons.A)))
+                        GameObject.PlayerGrabDrop(i);
 
                 }
             }

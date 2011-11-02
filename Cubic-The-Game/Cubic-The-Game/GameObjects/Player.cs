@@ -26,13 +26,25 @@ namespace Cubic_The_Game
         #region members
         public Color color{get; private set;}
         private Vector2 movement = Vector2.Zero;
-        protected override TwoInt size{ get { return new TwoInt(texture.Width, texture.Height); } } 
+        protected override TwoInt size{ get { return new TwoInt(texture.Width, texture.Height); } }
+        private FallPiece grabPiece;
+        private bool grabbing;
+        private int index;
+        #endregion
+
+        #region accessors
+        public void Attach(FallPiece piece)
+        {
+            grabPiece = piece;
+        }
+
         #endregion
 
         #region constructors
-        public Player(Vector2 position, Color color)
+        public Player(int index, Vector2 position, Color color)
             : base(position)
         {
+            this.index = index;
             this.color = color;
         }
         #endregion
@@ -42,9 +54,16 @@ namespace Cubic_The_Game
         {
             movement += thismuch;
         }
+        public void GrabDrop()
+        {
+            if (grabPiece != null)
+                grabbing = !grabbing && grabPiece.intersects(center);
+        }
         protected override void Update()
         {
             position += movement;
+            if(grabPiece!=null && grabbing)
+                grabPiece.Move(movement);
             movement = Vector2.Zero;
         }
         #endregion

@@ -118,7 +118,7 @@ namespace Cubic_The_Game
             Debug.Assert(!playerList.Contains(index), "Cannot add two players with the same index (index=" + index + ")");
             Debug.Assert(index < MAXPLAYERS, "Cannot add a player with an index greater or equal to the maximum allowed players (index=" + index + ">=" + MAXPLAYERS + ")");
             playerList.Add(index);
-            players[index] = new Player(screenSize / 2 + new TwoInt(-100 + index % 2 * 200, 100 * (byte)(index / 2)), colour);
+            players[index] = new Player(index, screenSize / 2 + new TwoInt(-100 + index % 2 * 200, 100 * (byte)(index / 2)), colour);
         }
         public static void AddPlayer(byte index)
         {
@@ -156,6 +156,15 @@ namespace Cubic_The_Game
             }
 
         }
+
+        public static void PlayerGrabDrop(int index)
+        {
+            if (players[index] != null)
+            {
+                players[index].GrabDrop();
+            }
+        }
+
         public static void UpdateStaticContent()
         {
             testPiece.Update();

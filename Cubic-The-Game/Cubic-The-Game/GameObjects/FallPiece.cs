@@ -25,13 +25,15 @@ namespace Cubic_The_Game
         #endregion
 
         #region members
-        private int interactingPlayer = -1;
+        public int interactingPlayer{get; private set;}
         private Color color;
         private Color interactedColor;
+        private Vector3 movement = Vector3.Zero;
         #endregion
 
         public FallPiece(Vector3 origin)
         {
+            interactingPlayer = -1;
             center3 = origin;
 
             cubeFront = new VertexPositionColor[4];
@@ -43,7 +45,10 @@ namespace Cubic_The_Game
         #region members
         public Matrix worldTranslation = Matrix.CreateTranslation(0, 0, 2);
         public Vector3 center3;
-        public Vector2 center2 { get { return GameObject.GetScreenSpace(center3, worldTranslation); } }
+        public Vector2 center2 
+        {
+            get { return GameObject.GetScreenSpace(center3, worldTranslation); } 
+        }
         VertexPositionColor[] cubeFront;
         VertexBuffer cubeBuffer;
         BasicEffect cubeEffect;
@@ -67,6 +72,7 @@ namespace Cubic_The_Game
                     {
                         isIntersected = true;
                         interactingPlayer = i;
+                        players[i].Attach(this);
                         interactedColor = new Color(players[i].color.R/4+128, players[i].color.G/4+128, players[i].color.B/4+128);
                         break;
                     }
@@ -74,8 +80,16 @@ namespace Cubic_The_Game
             return isIntersected;
         }
 
+        public void Move(Vector2 thismuch)
+        {
+            // TODO: convert thismuch from screenspace back into worldSpace
+            movement += new Vector3(thismuch.X, thismuch.Y,0);
+        }
+
         public void Update()
         {
+            center3 += movement;
+            movement = Vector3.Zero;
             color = isIntersected? interactedColor : inactiveColor ;
             cubeFront[0] = new VertexPositionColor(new Vector3(-2, 2, 0) + center3, color);
             cubeFront[1] = new VertexPositionColor(new Vector3(2, 2, 0) + center3, color);
