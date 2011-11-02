@@ -55,6 +55,7 @@ namespace Cubic_The_Game
         VertexBuffer cubeBuffer;
         BasicEffect cubeEffect;
         private bool isIntersected;
+        private bool grabbed;
         #endregion
 
         #region update and draw
@@ -62,7 +63,23 @@ namespace Cubic_The_Game
         {
             return ((center2 - cntr).Length() <= OFFSET);
         }
-
+        public bool Grab(Player grabbingPlayer, bool grabDrop)
+        {
+            if (grabDrop) // if Grabbing
+            {
+                if (!grabbed && intersects(grabbingPlayer.center))
+                {
+                    return grabbed = true;
+                }
+            }
+            else //if dropping
+                if (grabbed && interactingPlayer == grabbingPlayer.index)
+                {
+                    grabbed = false;
+                    interactingPlayer = -1;
+                }
+            return false;
+        }
         public bool intersects(Player[] players)
         {
             if (isIntersected && interactingPlayer >= 0 && intersects(players[interactingPlayer].center));

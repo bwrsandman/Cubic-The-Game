@@ -29,7 +29,7 @@ namespace Cubic_The_Game
         protected override TwoInt size{ get { return new TwoInt(texture.Width, texture.Height); } }
         private FallPiece grabPiece;
         private bool grabbing;
-        private int index;
+        public int index { get; private set; }
         #endregion
 
         #region accessors
@@ -57,7 +57,9 @@ namespace Cubic_The_Game
         public void GrabDrop()
         {
             if (grabPiece != null)
-                grabbing = !grabbing && grabPiece.intersects(center);
+            {
+                grabbing = grabPiece.Grab(this, !grabbing);//grabPiece.intersects(center);
+            }
         }
         protected override void Update()
         {
