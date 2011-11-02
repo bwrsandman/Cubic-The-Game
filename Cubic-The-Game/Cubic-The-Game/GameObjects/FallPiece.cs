@@ -83,7 +83,7 @@ namespace Cubic_The_Game
         public void Move(Vector2 thismuch)
         {
             // TODO: convert thismuch from screenspace back into worldSpace
-            movement += new Vector3(thismuch.X, thismuch.Y,0);
+            movement += new Vector3(thismuch.X, -thismuch.Y, 0)/45.0f;
         }
 
         public void Update()
