@@ -1,4 +1,4 @@
-﻿#region description
+#region description
 //-----------------------------------------------------------------------------
 // FallPiece.cs
 //
@@ -20,6 +20,8 @@ namespace Cubic_The_Game
         private const float OFFSET = 50f;
         private const float SIDERADIUS = 0.5f;
         private const float DEPTH = -5f;
+        private const float FALLSPEED = -0.05f;
+        private const float OFFSCREENOFFSET = 5f;
         #endregion
 
         #region statics
@@ -63,27 +65,24 @@ namespace Cubic_The_Game
         {
             return ((center2 - cntr).Length() <= OFFSET);
         }
-        public bool Grab(Player grabbingPlayer, bool grabDrop)
+        public bool Grab(Player grabbingPlayer)
         {
-            if (grabDrop) // if Grabbing
-            {
-                if (!grabbed && intersects(grabbingPlayer.center))
-                {
-                    return grabbed = true;
-                }
-            }
-            else //if dropping
-                if (grabbed && interactingPlayer == grabbingPlayer.index)
-                {
-                    grabbed = false;
-                    interactingPlayer = -1;
-                }
+            return grabbed = !grabbed && intersects(grabbingPlayer.center);
+        }
+
+        public bool Drop(Player grabbingPlayer)
+        {
+            //if (grabbed && intersects(grabbingPlayer.center))
+            //{
+                grabbed = false;
+                interactingPlayer = -1;
+            //}
             return false;
         }
         public bool intersects(Player[] players)
         {
-            if (!(isIntersected && interactingPlayer >= 0 && intersects(players[interactingPlayer].center)))
-            {
+            if (isIntersected && interactingPlayer >= 0 && intersects(players[interactingPlayer].center));
+            else {
                 isIntersected = false;
                 interactingPlayer = -1;
                 for (byte i = 0; i<players.Length; ++i) if (players[i]!=null)
@@ -105,9 +104,17 @@ namespace Cubic_The_Game
             movement += new Vector3(thismuch.X, -thismuch.Y, 0)/45.0f;
         }
 
-        public void Update()
+        public bool OutOfBounds()
         {
-            center3 += movement;
+            return (center2.Y > screenSize.Y + OFFSCREENOFFSET);
+        }
+
+        protected override void Update()
+        {
+            if (grabbed)
+                center3 += movement;
+            else
+                center3 += new Vector3(0.0f, FALLSPEED, 0.0f);
             movement = Vector3.Zero;
             color = isIntersected? interactedColor : inactiveColor ;
             cubeFront[0] = new VertexPositionColor(new Vector3(-SIDERADIUS, SIDERADIUS, 0) + center3, color);
@@ -130,6 +137,7 @@ namespace Cubic_The_Game
             {
                 pass.Apply();
                 GameObject.device.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleStrip, cubeFront, 0, 2);
+
             }
 
 

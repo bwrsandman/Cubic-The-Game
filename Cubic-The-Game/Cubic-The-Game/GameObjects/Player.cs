@@ -1,4 +1,4 @@
-﻿#region description
+#region description
 //-----------------------------------------------------------------------------
 // Player.cs
 //
@@ -35,7 +35,8 @@ namespace Cubic_The_Game
         #region accessors
         public void Attach(FallPiece piece)
         {
-            grabPiece = piece;
+            if (grabPiece == null || !grabbing)
+                grabPiece = piece;
         }
 
         #endregion
@@ -58,20 +59,25 @@ namespace Cubic_The_Game
         {
             if (grabPiece != null)
             {
-                grabbing = grabPiece.Grab(this, !grabbing);//grabPiece.intersects(center);
+                if (!grabbing) // Grab
+                    grabbing = grabPiece.Grab(this);
+                else
+                {         // Drop
+                    grabbing = grabPiece.Drop(this);
+                    grabPiece = null;
+                }
             }
         }
         protected override void Update()
         {
+            Vector2 newCenter = center + movement;
+            if (newCenter.X > ((Vector2)GameObject.screenSize).X || newCenter.X < 0) movement.X = 0;
+            if (newCenter.Y > ((Vector2)GameObject.screenSize).Y || newCenter.Y < 0) movement.Y = 0;
             position += movement;
-            if(grabPiece!=null && grabbing)
+            if (grabPiece != null && grabbing)
                 grabPiece.Move(movement);
             movement = Vector2.Zero;
-        }
-        public void SetPos(float x, float y)
-        {
-            position.X = x;
-            position.Y = y;
+
         }
         #endregion
 
