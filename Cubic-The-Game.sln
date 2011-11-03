@@ -7,6 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cubic-The-GameContent", "Cu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cubic-The-Game - Windows", "Cubic-The-Game\Cubic-The-Game\Cubic-The-Game - Windows.csproj", "{44CAADA6-2FD7-44F7-B92C-DBABF2E1EE4F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E21689A6-7FE3-425A-9A8F-2CEB712B43BD}"
+	ProjectSection(SolutionItems) = preProject
+		CHANGELOG = CHANGELOG
+		README = README
+		TODO = TODO
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms

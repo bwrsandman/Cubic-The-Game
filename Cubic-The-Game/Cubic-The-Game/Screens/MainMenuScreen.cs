@@ -8,6 +8,7 @@
 #endregion
 
 #region Using Statements
+using System;
 using Microsoft.Xna.Framework;
 #endregion
 
@@ -27,19 +28,23 @@ namespace Cubic_The_Game
         public MainMenuScreen()
             : base("Main Menu")
         {
+            TransitionOnTime = TimeSpan.FromSeconds(1.0f);
             // Create our menu entries.
             MenuEntry playGameMenuEntry = new MenuEntry("Play Game");
             MenuEntry optionsMenuEntry = new MenuEntry("Options");
+            //MenuEntry displayOptionsMenuEntry = new MenuEntry("Print Options");
             MenuEntry exitMenuEntry = new MenuEntry("Exit");
 
             // Hook up menu event handlers.
             playGameMenuEntry.Selected += PlayGameMenuEntrySelected;
             optionsMenuEntry.Selected += OptionsMenuEntrySelected;
+            //displayOptionsMenuEntry.Selected += DislayOptionsMenuEntrySelected;
             exitMenuEntry.Selected += OnCancel;
 
             // Add entries to the menu.
             MenuEntries.Add(playGameMenuEntry);
             MenuEntries.Add(optionsMenuEntry);
+            //MenuEntries.Add(displayOptionsMenuEntry);
             MenuEntries.Add(exitMenuEntry);
         }
 
@@ -55,7 +60,7 @@ namespace Cubic_The_Game
         void PlayGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
             LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
-                               new GameplayScreen());
+                               new GameplayScreen(OptionsMenuScreen.getOptions));
         }
 
 
@@ -66,6 +71,11 @@ namespace Cubic_The_Game
         {
             ScreenManager.AddScreen(new OptionsMenuScreen(), e.PlayerIndex);
         }
+
+        //void DislayOptionsMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        //{
+        //    Console.WriteLine(OptionsMenuScreen.getOptions[0]);
+        //}
 
 
         /// <summary>

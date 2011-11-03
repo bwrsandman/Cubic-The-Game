@@ -47,6 +47,8 @@ namespace Cubic_The_Game
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 853;
             graphics.PreferredBackBufferHeight = 480;
+         // graphics.PreferredBackBufferWidth = 1280;
+         // graphics.PreferredBackBufferHeight = 800;
 
             // Create the screen manager component.
             screenManager = new ScreenManager(this);
@@ -56,6 +58,7 @@ namespace Cubic_The_Game
             // Activate the first screens.
             screenManager.AddScreen(new BackgroundScreen(), null);
             screenManager.AddScreen(new MainMenuScreen(), null);
+            screenManager.AddScreen(new SplashScreen(), null);
         }
 
 
