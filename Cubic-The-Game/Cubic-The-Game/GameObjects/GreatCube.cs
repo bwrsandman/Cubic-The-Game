@@ -38,11 +38,11 @@ namespace Cubic_The_Game
         #endregion
 
         #region update and draw
-        public new void Draw()
+        protected override void Draw()
         {
             for (int i = 0; i < cubeSegments.Length; i++)
             {
-                cubeSegments[i].Draw(GameObject.camera);
+                cubeSegments[i].Draw();
             }
         }
         public void Update(float seconds)

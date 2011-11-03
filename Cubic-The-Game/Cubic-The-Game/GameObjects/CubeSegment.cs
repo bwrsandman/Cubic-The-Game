@@ -68,7 +68,7 @@ namespace Cubic_The_Game
             squares[index].SetColor(150, 36, 230);
         }
 
-        public void Draw(Camera camera)
+        public new void Draw()
         {
 
             segmentEffect.World = matWorld;
