@@ -20,6 +20,8 @@ namespace Cubic_The_Game
         private const float OFFSET = 50f;
         private const float SIDERADIUS = 0.5f;
         private const float DEPTH = -5f;
+        private const float FALLSPEED = -0.05f;
+        private const float OFFSCREENOFFSET = 5f;
         #endregion
 
         #region statics
@@ -105,9 +107,17 @@ namespace Cubic_The_Game
             movement += new Vector3(thismuch.X, -thismuch.Y, 0)/45.0f;
         }
 
-        public void Update()
+        public bool OutOfBounds()
         {
-            center3 += movement;
+            return (center2.Y > screenSize.Y + OFFSCREENOFFSET);
+        }
+
+        protected override void Update()
+        {
+            if (grabbed)
+                center3 += movement;
+            else
+                center3 += new Vector3(0.0f, FALLSPEED, 0.0f);
             movement = Vector3.Zero;
             color = isIntersected? interactedColor : inactiveColor ;
             cubeFront[0] = new VertexPositionColor(new Vector3(-SIDERADIUS, SIDERADIUS, 0) + center3, color);

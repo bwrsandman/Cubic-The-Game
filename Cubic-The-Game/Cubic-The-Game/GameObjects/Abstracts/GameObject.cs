@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;   // for Texture2D
 using Microsoft.Xna.Framework;            // for Vectors
 using System.Collections.Generic;         // For List
+using System;                             // For Random
 using System.Diagnostics;                 // For debug
 #endregion
 
@@ -49,6 +50,7 @@ namespace Cubic_The_Game
         #region constants
         public const byte MAXPLAYERS = 4;
         public const float PLAYERSPEED = 2.0f;
+        public const int FALLSPAWNINTERVAL = 100;
         #endregion
 
         #region statics
@@ -57,8 +59,10 @@ namespace Cubic_The_Game
         public static GraphicsDevice device;
         public static SpriteBatch spriteBatch{protected get; set;}
         public static List<byte> playerList { private set; get; }
+        private static int fallSpawnTimer;
+        private static Random rnd = new Random();
 
-        private static FallPiece testPiece;
+        private static List<FallPiece> fallPieceList;
         //private static TestCube cube;
         public static Camera camera;
         #endregion
@@ -86,6 +90,9 @@ namespace Cubic_The_Game
         {
             this.position = position;
         }
+        public GameObject()
+        {
+        }
         #endregion
 
         #region load
@@ -105,8 +112,8 @@ namespace Cubic_The_Game
         {
             players = new Player[MAXPLAYERS];
             playerList = new List<byte>(4);
-
-            testPiece = new FallPiece(new Vector2(0.0f,0.0f));
+            fallPieceList = new List<FallPiece>();
+            fallSpawnTimer = FALLSPAWNINTERVAL;
             
         }
         /// <summary>
@@ -167,16 +174,32 @@ namespace Cubic_The_Game
 
         public static void UpdateStaticContent()
         {
-            testPiece.Update();
+            if (--fallSpawnTimer <= 0)
+            {
+                fallSpawnTimer = FALLSPAWNINTERVAL;
+                fallPieceList.Add(new FallPiece(new Vector2((float)(rnd.NextDouble()*18f -9), 5.0f)));
+            }
+            
+            List<FallPiece> expiredPieces = new List<FallPiece>();
+            foreach (FallPiece piece in fallPieceList)
+            {
+                piece.Update();
+                for (byte i = 0; i < MAXPLAYERS; ++i)
+                    piece.intersects(players);
+                if (piece.OutOfBounds()) expiredPieces.Add(piece);
+
+            }
+            foreach (FallPiece piece in expiredPieces)
+            {
+                fallPieceList.Remove(piece);
+            }
+
             for (byte i = 0; i < MAXPLAYERS; ++i)
             {
                 if (players[i] != null)
                 {
                     players[i].Update();
-                    //if (cube.intersects(players[i].center))
-                    //     cube.color = Color.Pink;
                 }
-            testPiece.intersects(players);
             }
         }
         protected virtual void Update() { }
@@ -186,8 +209,8 @@ namespace Cubic_The_Game
         public static void DrawStaticContent()
         {
             //cube.Draw(GameObject.camera);
-
-            testPiece.Draw(GameObject.camera);
+            foreach (FallPiece piece in fallPieceList)
+                piece.Draw(GameObject.camera);
 
             spriteBatch.Begin();
             for (byte i = 0; i < MAXPLAYERS; ++i)
