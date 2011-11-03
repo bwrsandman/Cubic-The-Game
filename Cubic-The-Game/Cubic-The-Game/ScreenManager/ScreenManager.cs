@@ -36,6 +36,7 @@ namespace Cubic_The_Game
 
         SpriteBatch spriteBatch;
         SpriteFont font;
+        SpriteFont titlefont;
         Texture2D blankTexture;
 
         bool isInitialized;
@@ -64,6 +65,11 @@ namespace Cubic_The_Game
         public SpriteFont Font
         {
             get { return font; }
+        }
+
+        public SpriteFont TitleFont
+        {
+            get { return titlefont; }
         }
 
 
@@ -117,6 +123,7 @@ namespace Cubic_The_Game
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = content.Load<SpriteFont>("menuFont");
+            titlefont = content.Load<SpriteFont>("titleFont");
             blankTexture = content.Load<Texture2D>("blank");
 
             // Tell each of the screens to load their content.
