@@ -35,7 +35,8 @@ namespace Cubic_The_Game
         #region accessors
         public void Attach(FallPiece piece)
         {
-            grabPiece = piece;
+            if (grabPiece == null || !grabbing)
+                grabPiece = piece;
         }
 
         #endregion
@@ -58,7 +59,13 @@ namespace Cubic_The_Game
         {
             if (grabPiece != null)
             {
-                grabbing = grabPiece.Grab(this, !grabbing);//grabPiece.intersects(center);
+                if (!grabbing) // Grab
+                    grabbing = grabPiece.Grab(this);
+                else
+                {         // Drop
+                    grabbing = grabPiece.Drop(this);
+                    grabPiece = null;
+                }
             }
         }
         protected override void Update()

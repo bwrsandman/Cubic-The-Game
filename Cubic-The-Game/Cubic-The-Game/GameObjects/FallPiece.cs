@@ -65,21 +65,18 @@ namespace Cubic_The_Game
         {
             return ((center2 - cntr).Length() <= OFFSET);
         }
-        public bool Grab(Player grabbingPlayer, bool grabDrop)
+        public bool Grab(Player grabbingPlayer)
         {
-            if (grabDrop) // if Grabbing
-            {
-                if (!grabbed && intersects(grabbingPlayer.center))
-                {
-                    return grabbed = true;
-                }
-            }
-            else //if dropping
-                if (grabbed && interactingPlayer == grabbingPlayer.index)
-                {
-                    grabbed = false;
-                    interactingPlayer = -1;
-                }
+            return grabbed = !grabbed && intersects(grabbingPlayer.center);
+        }
+
+        public bool Drop(Player grabbingPlayer)
+        {
+            //if (grabbed && intersects(grabbingPlayer.center))
+            //{
+                grabbed = false;
+                interactingPlayer = -1;
+            //}
             return false;
         }
         public bool intersects(Player[] players)
