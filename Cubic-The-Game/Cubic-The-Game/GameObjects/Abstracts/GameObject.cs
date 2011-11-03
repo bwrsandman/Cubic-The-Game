@@ -53,7 +53,7 @@ namespace Cubic_The_Game
 
         #region statics
         private static Player[] players;
-        private static TwoInt screenSize{get{return new TwoInt(device.Viewport.Width, device.Viewport.Height);}}
+        protected static TwoInt screenSize{get{return new TwoInt(device.Viewport.Width, device.Viewport.Height);}}
         public static GraphicsDevice device;
         public static SpriteBatch spriteBatch{protected get; set;}
         public static List<byte> playerList { private set; get; }

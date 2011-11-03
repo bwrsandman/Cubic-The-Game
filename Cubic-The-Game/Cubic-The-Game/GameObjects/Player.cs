@@ -63,10 +63,14 @@ namespace Cubic_The_Game
         }
         protected override void Update()
         {
+            Vector2 newCenter = center + movement;
+            if (newCenter.X > ((Vector2)GameObject.screenSize).X || newCenter.X < 0) movement.X = 0;
+            if (newCenter.Y > ((Vector2)GameObject.screenSize).Y || newCenter.Y < 0) movement.Y = 0;
             position += movement;
-            if(grabPiece!=null && grabbing)
+            if (grabPiece != null && grabbing)
                 grabPiece.Move(movement);
             movement = Vector2.Zero;
+
         }
         #endregion
 
