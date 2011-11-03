@@ -94,7 +94,6 @@ namespace Cubic_The_Game
             GameObject.device = ScreenManager.GraphicsDevice;
             GameObject.spriteBatch = ScreenManager.SpriteBatch;
             GameObject.NewGame();
-            GameObject.theCube = new GreatCube(6, 6, 1.0f, 0, -3, -1);
             // Adding player by number, at this point we assume player configurations 1 or 1,2 or 1,2,3,4
             // TODO: configurations of players 2 or 3 or 4 or 2,3 or 3,4 or 2,3,4
             for (byte i = 0; i < playerNum; ++i)
@@ -147,11 +146,10 @@ namespace Cubic_The_Game
 
             if (IsActive)
             {
-                GameObject.UpdateStaticContent();
+                GameObject.UpdateStaticContent(gameTime);
                 //float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 //if(elapsed > 0.08f)
                 //    elapsed = 0.08f;
-                GameObject.theCube.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
             }
         }
 
@@ -236,7 +234,6 @@ namespace Cubic_The_Game
                                                Color.CornflowerBlue, 0, 0);
 
             // This is where the heavy lifting happens
-            GameObject.theCube.Draw();
             GameObject.DrawStaticContent();
 
             // If the game is transitioning on or off, fade it out to black.

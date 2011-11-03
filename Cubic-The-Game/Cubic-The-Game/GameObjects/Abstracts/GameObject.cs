@@ -64,7 +64,7 @@ namespace Cubic_The_Game
 
         private static List<FallPiece> fallPieceList;
         //private static TestCube cube;
-        public static GreatCube theCube;
+        private static GreatCube theCube;
         public static Camera camera;
         #endregion
 
@@ -115,6 +115,7 @@ namespace Cubic_The_Game
             playerList = new List<byte>(4);
             fallPieceList = new List<FallPiece>();
             fallSpawnTimer = FALLSPAWNINTERVAL;
+            theCube = new GreatCube(6, 6, 1.0f, new Vector3(0f, -3f, -5));
             
         }
         /// <summary>
@@ -173,8 +174,9 @@ namespace Cubic_The_Game
             }
         }
 
-        public static void UpdateStaticContent()
+        public static void UpdateStaticContent(GameTime gameTime)
         {
+            // Fall pieces
             if (--fallSpawnTimer <= 0)
             {
                 fallSpawnTimer = FALLSPAWNINTERVAL;
@@ -195,6 +197,7 @@ namespace Cubic_The_Game
                 fallPieceList.Remove(piece);
             }
 
+            //PLAYERS
             for (byte i = 0; i < MAXPLAYERS; ++i)
             {
                 if (players[i] != null)
@@ -202,6 +205,9 @@ namespace Cubic_The_Game
                     players[i].Update();
                 }
             }
+
+            //CUBE
+            theCube.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
         }
         protected virtual void Update() { }
         #endregion

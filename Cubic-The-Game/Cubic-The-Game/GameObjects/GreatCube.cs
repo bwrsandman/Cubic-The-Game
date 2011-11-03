@@ -34,19 +34,10 @@ namespace Cubic_The_Game
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="z"></param>
+        protected Vector3 position3;
+        #endregion
 
-        public GreatCube(int levels, int squaresAcross, float squareWidth, float x, float y, float z)
-            :base(new Vector2(x, y))
-        {
-            cubeSegments = new CubeSegment[levels];
-            float putY = y;
-            for (int i = 0; i < levels; i++)
-            {
-                cubeSegments[i] = new CubeSegment(squareWidth, squaresAcross, x, putY, z);
-                putY += squareWidth;
-            }
-        }
-
+        #region update and draw
         public new void Draw()
         {
             for (int i = 0; i < cubeSegments.Length; i++)
@@ -65,9 +56,15 @@ namespace Cubic_The_Game
         #endregion
 
         #region constructors
-        public GreatCube()
-            : base(new Vector2())
+        public GreatCube(int levels, int squaresAcross, float squareWidth, Vector3 position)
+            : base()
         {
+            cubeSegments = new CubeSegment[levels];
+            position3 = position;
+            for (int i = 0; i < levels; i++)
+            {
+                cubeSegments[i] = new CubeSegment(squareWidth, squaresAcross, new Vector3(position.X, position.Y + i * squareWidth, position.Z));
+            }
         }
         #endregion
 

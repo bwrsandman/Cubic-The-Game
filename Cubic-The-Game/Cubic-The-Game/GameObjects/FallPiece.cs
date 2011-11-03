@@ -81,7 +81,7 @@ namespace Cubic_The_Game
         }
         public bool intersects(Player[] players)
         {
-            if (isIntersected && interactingPlayer >= 0 && intersects(players[interactingPlayer].center));
+            if (isIntersected && interactingPlayer >= 0 && intersects(players[interactingPlayer].center)); // yeah this is blank... for now
             else {
                 isIntersected = false;
                 interactingPlayer = -1;

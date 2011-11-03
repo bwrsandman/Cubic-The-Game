@@ -31,7 +31,7 @@ namespace Cubic_The_Game
         private MatchPiece[] squares;
         private VertexPositionColor[] vertices; //vertices that make up the slab
         private Vector3[] normals;
-        private Vector3 pos;   //TODO: replace with GameObject.Position, once that is a Vector3
+        private Vector3 position3;   //TODO: replace with GameObject.Position, once that is a Vector3
         private int numSquaresAcross;
         private int numSquaresTotal;
         private VertexBuffer vertexBuff;
@@ -54,7 +54,7 @@ namespace Cubic_The_Game
                 rotation = (float) Math.PI * 2;//((float)Math.PI * 2) + rotation;
 
             Matrix rotMatrix = Matrix.CreateRotationY(rotation);
-            matWorld =  rotMatrix * Matrix.CreateTranslation(pos);
+            matWorld = rotMatrix * Matrix.CreateTranslation(position3);
 
         
             //rotate the normals
@@ -106,12 +106,12 @@ namespace Cubic_The_Game
         /// numAcross: how many squares on one face.
         /// x, y, z: center position of the cube segment
         /// </summary>
-        public CubeSegment(float squareWidth, int numAcross, float x, float y, float z)
+        public CubeSegment(float squareWidth, int numAcross, Vector3 position)
         {
-            pos = new Vector3(x, y, z);
+            position3 = position;
 
             Matrix rotMatrix = Matrix.CreateRotationY(rotation);
-            matWorld =  Matrix.CreateTranslation(pos) * rotMatrix;
+            matWorld = Matrix.CreateTranslation(position3) * rotMatrix;
             //setup normals for each side, from front to left-side
             normals = new Vector3[4];
             normals[0] = new Vector3(0, 0, -1);
