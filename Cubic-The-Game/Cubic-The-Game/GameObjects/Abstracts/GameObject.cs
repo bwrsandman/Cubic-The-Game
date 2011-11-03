@@ -115,7 +115,7 @@ namespace Cubic_The_Game
             playerList = new List<byte>(4);
             fallPieceList = new List<FallPiece>();
             fallSpawnTimer = FALLSPAWNINTERVAL;
-            theCube = new GreatCube(6, 6, 1.0f, new Vector3(0f, -3f, -5));
+            theCube = new GreatCube(6, 6, 1.0f, new Vector3(0f, -3f, -10f));
             
         }
         /// <summary>
