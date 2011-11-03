@@ -20,8 +20,11 @@ namespace Cubic_The_Game
         private const float OFFSET = 50f;
         private const float SIDERADIUS = 0.5f;
         private const float DEPTH = -5f;
+<<<<<<< HEAD
+=======
         private const float FALLSPEED = -0.05f;
         private const float OFFSCREENOFFSET = 5f;
+>>>>>>> 9730a6be16770b8c3075839b0e5334f29f84f5e9
         #endregion
 
         #region statics
@@ -65,6 +68,23 @@ namespace Cubic_The_Game
         {
             return ((center2 - cntr).Length() <= OFFSET);
         }
+<<<<<<< HEAD
+        public bool Grab(Player grabbingPlayer, bool grabDrop)
+        {
+            if (grabDrop) // if Grabbing
+            {
+                if (!grabbed && intersects(grabbingPlayer.center))
+                {
+                    return grabbed = true;
+                }
+            }
+            else //if dropping
+                if (grabbed && interactingPlayer == grabbingPlayer.index)
+                {
+                    grabbed = false;
+                    interactingPlayer = -1;
+                }
+=======
         public bool Grab(Player grabbingPlayer)
         {
             return grabbed = !grabbed && intersects(grabbingPlayer.center);
@@ -77,12 +97,18 @@ namespace Cubic_The_Game
                 grabbed = false;
                 interactingPlayer = -1;
             //}
+>>>>>>> 9730a6be16770b8c3075839b0e5334f29f84f5e9
             return false;
         }
         public bool intersects(Player[] players)
         {
+<<<<<<< HEAD
+            if (!(isIntersected && interactingPlayer >= 0 && intersects(players[interactingPlayer].center)))
+            {
+=======
             if (isIntersected && interactingPlayer >= 0 && intersects(players[interactingPlayer].center));
             else {
+>>>>>>> 9730a6be16770b8c3075839b0e5334f29f84f5e9
                 isIntersected = false;
                 interactingPlayer = -1;
                 for (byte i = 0; i<players.Length; ++i) if (players[i]!=null)
@@ -104,6 +130,11 @@ namespace Cubic_The_Game
             movement += new Vector3(thismuch.X, -thismuch.Y, 0)/45.0f;
         }
 
+<<<<<<< HEAD
+        public void Update()
+        {
+            center3 += movement;
+=======
         public bool OutOfBounds()
         {
             return (center2.Y > screenSize.Y + OFFSCREENOFFSET);
@@ -115,6 +146,7 @@ namespace Cubic_The_Game
                 center3 += movement;
             else
                 center3 += new Vector3(0.0f, FALLSPEED, 0.0f);
+>>>>>>> 9730a6be16770b8c3075839b0e5334f29f84f5e9
             movement = Vector3.Zero;
             color = isIntersected? interactedColor : inactiveColor ;
             cubeFront[0] = new VertexPositionColor(new Vector3(-SIDERADIUS, SIDERADIUS, 0) + center3, color);
@@ -137,7 +169,10 @@ namespace Cubic_The_Game
             {
                 pass.Apply();
                 GameObject.device.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleStrip, cubeFront, 0, 2);
+<<<<<<< HEAD
+=======
 
+>>>>>>> 9730a6be16770b8c3075839b0e5334f29f84f5e9
             }
 
 

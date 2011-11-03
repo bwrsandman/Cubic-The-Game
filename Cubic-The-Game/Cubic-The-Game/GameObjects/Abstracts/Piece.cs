@@ -8,12 +8,12 @@
 
 
 #region using
-
+using Microsoft.Xna.Framework;            // for Vectors
 #endregion
 
 namespace Cubic_The_Game
 {
-    abstract class Piece
+    abstract class Piece : GameObject
     {
 
         #region constants

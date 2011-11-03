@@ -35,8 +35,12 @@ namespace Cubic_The_Game
         #region accessors
         public void Attach(FallPiece piece)
         {
+<<<<<<< HEAD
+            grabPiece = piece;
+=======
             if (grabPiece == null || !grabbing)
                 grabPiece = piece;
+>>>>>>> 9730a6be16770b8c3075839b0e5334f29f84f5e9
         }
 
         #endregion
@@ -59,6 +63,9 @@ namespace Cubic_The_Game
         {
             if (grabPiece != null)
             {
+<<<<<<< HEAD
+                grabbing = grabPiece.Grab(this, !grabbing);//grabPiece.intersects(center);
+=======
                 if (!grabbing) // Grab
                     grabbing = grabPiece.Grab(this);
                 else
@@ -66,6 +73,7 @@ namespace Cubic_The_Game
                     grabbing = grabPiece.Drop(this);
                     grabPiece = null;
                 }
+>>>>>>> 9730a6be16770b8c3075839b0e5334f29f84f5e9
             }
         }
         protected override void Update()
@@ -74,10 +82,15 @@ namespace Cubic_The_Game
             if (newCenter.X > ((Vector2)GameObject.screenSize).X || newCenter.X < 0) movement.X = 0;
             if (newCenter.Y > ((Vector2)GameObject.screenSize).Y || newCenter.Y < 0) movement.Y = 0;
             position += movement;
+<<<<<<< HEAD
+            if(grabPiece!=null && grabbing)
+=======
             if (grabPiece != null && grabbing)
+>>>>>>> 9730a6be16770b8c3075839b0e5334f29f84f5e9
                 grabPiece.Move(movement);
             movement = Vector2.Zero;
 
+        }
         public void SetPos(float x, float y)
         {
             position.X = x;
