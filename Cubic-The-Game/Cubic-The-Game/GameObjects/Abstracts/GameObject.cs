@@ -116,6 +116,7 @@ namespace Cubic_The_Game
             fallPieceList = new List<FallPiece>();
             fallSpawnTimer = FALLSPAWNINTERVAL;
             theCube = new GreatCube(6, 6, 1.0f, new Vector3(0f, -3f, -10f));
+            FallPiece.loadBuffers();
             
         }
         /// <summary>

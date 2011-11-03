@@ -35,6 +35,12 @@ namespace Cubic_The_Game
         private Vector3 movement = Vector3.Zero;
         #endregion
 
+        public static void loadBuffers()
+        {
+            cubeBuffer = new VertexBuffer(GameObject.device, typeof(VertexPositionColor), 4, BufferUsage.None);
+            cubeEffect = new BasicEffect(GameObject.device);
+        }
+
         public FallPiece(Vector2 origin)
         {
             interactingPlayer = -1;
@@ -42,8 +48,7 @@ namespace Cubic_The_Game
 
             cubeFront = new VertexPositionColor[4];
 
-            cubeBuffer = new VertexBuffer(GameObject.device, typeof(VertexPositionColor), cubeFront.Length, BufferUsage.None);
-            cubeEffect = new BasicEffect(GameObject.device);
+            
         }
 
         #region members
@@ -54,8 +59,8 @@ namespace Cubic_The_Game
             get { return GameObject.GetScreenSpace(center3, worldTranslation); } 
         }
         VertexPositionColor[] cubeFront;
-        VertexBuffer cubeBuffer;
-        BasicEffect cubeEffect;
+        static VertexBuffer cubeBuffer;
+        static BasicEffect cubeEffect;
         private bool isIntersected;
         private bool grabbed;
         #endregion
