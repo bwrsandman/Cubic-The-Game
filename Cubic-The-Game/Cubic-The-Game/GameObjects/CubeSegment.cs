@@ -29,7 +29,6 @@ namespace Cubic_The_Game
         #region members
         private float rotation = 0; //represents how much the slab is rotated
         private MatchPiece[] squares;
-        private VertexPositionColor[] vertices; //vertices that make up the slab
         private Vector3[] normals;
         private Vector3 position3;   //TODO: replace with GameObject.Position, once that is a Vector3
         private int numSquaresAcross;
@@ -110,6 +109,7 @@ namespace Cubic_The_Game
 
             Matrix rotMatrix = Matrix.CreateRotationY(rotation);
             matWorld = Matrix.CreateTranslation(position3) * rotMatrix;
+      
             //setup normals for each side, from front to left-side
             normals = new Vector3[4];
             normals[0] = new Vector3(0, 0, -1);
@@ -131,7 +131,7 @@ namespace Cubic_The_Game
             //int numVerts = (numSquaresTotal * 2) + 2 + 10;
             int numVertsForSquares = (numSquaresTotal * 2) + 2;
             //we use numVertsForSquares + 10, because we need vertices for top and bottom
-            vertices = new VertexPositionColor[numVertsForSquares + 10];// + 5];
+            VertexPositionColor[] vertices = new VertexPositionColor[numVertsForSquares + 10];// + 5];
             squares = new MatchPiece[numSquaresTotal];
             float putX = -(squareWidth * (float)numAcross * 0.5f);
             float putY = 0;
@@ -148,11 +148,11 @@ namespace Cubic_The_Game
 
             float incX=squareWidth, incZ=0;
             int squaresCrossed = 0;
-            int i = 3;
-            for (; i < numVertsForSquares-1; i+=2)
+         
+            
+            for (int i = 3; i < numVertsForSquares-1; i+=2)
             {
                 vertices[i] = new VertexPositionColor(new Vector3(putX, putY, putZ), color);
-                
                 //is it time to change direction?
                 squaresCrossed++;
                 if (squaresCrossed == numSquaresAcross)
@@ -216,7 +216,14 @@ namespace Cubic_The_Game
 
             ////add all this to the vertex buffer.
             vertexBuff = new VertexBuffer(device, typeof(VertexPositionColor), vertices.Length, BufferUsage.WriteOnly);
-            vertexBuff.SetData<VertexPositionColor>(vertices);        
+            vertexBuff.SetData<VertexPositionColor>(vertices);   
+     
+            //Now set the squares (match-pieces) so we have an easily referencable object to work with.
+            squares[0] = new MatchPiece(1, 0, 2, 3, vertices); //set the first one first as it is a special case
+            for (int i = 1; i < squares.Length; i++)
+            {
+                squares[i] = new MatchPiece((i * 2) + 1, (i * 2), (i + 1) * 2, ((i + 1) * 2) + 1, vertices);  
+            }
         }
 
 
