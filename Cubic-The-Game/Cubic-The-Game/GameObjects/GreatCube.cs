@@ -66,7 +66,7 @@ namespace Cubic_The_Game
             position3 = position;
             for (int i = 0; i < levels; i++)
             {
-                cubeSegments[i] = new CubeSegment(squareWidth, squaresAcross, new Vector3(position.X, position.Y + i * squareWidth, position.Z));
+                cubeSegments[i] = new CubeSegment(squareWidth, squaresAcross, new Vector3(position.X, position.Y + i * squareWidth, position.Z), i%2 == 0);
             }
         }
         #endregion

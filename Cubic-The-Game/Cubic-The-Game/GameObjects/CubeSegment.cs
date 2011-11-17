@@ -27,6 +27,7 @@ namespace Cubic_The_Game
         #endregion
 
         #region members
+        private bool isForward;         // Does the segment rotate CW or CCW
         private float rotation = 0; //represents how much the slab is rotated
         private MatchPiece[] squares;
         private Vector3[] normals;
@@ -46,7 +47,7 @@ namespace Cubic_The_Game
             ////stops updating for a while, and then the time-elapsed ends up being huge
             //if (amount > 0.5f)
             //    amount = 0.5f;
-            rotation += amount;
+            rotation += (isForward)? amount : -amount;
             if (rotation > (float)Math.PI * 2)
                 rotation = 0;//((float)Math.PI * 2) - rotation;
             else if (rotation < 0)
@@ -103,8 +104,9 @@ namespace Cubic_The_Game
         /// numAcross: how many squares on one face.
         /// x, y, z: center position of the cube segment
         /// </summary>
-        public CubeSegment(float squareWidth, int numAcross, Vector3 position)
+        public CubeSegment(float squareWidth, int numAcross, Vector3 position, bool isForward)
         {
+            this.isForward = isForward;
             position3 = position;
 
             Matrix rotMatrix = Matrix.CreateRotationY(rotation);
