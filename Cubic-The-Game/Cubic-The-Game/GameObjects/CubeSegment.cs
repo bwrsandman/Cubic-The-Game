@@ -29,6 +29,15 @@ namespace Cubic_The_Game
         #region members
         private bool isForward;         // Does the segment rotate CW or CCW
         private float rotation = 0; //represents how much the slab is rotated
+        private float rotationPrime { 
+            get {
+                // This non linearality gives the cube a little personality
+                // TODO, add randomness
+                // theta (+/-) Sin (-2Theta)^16
+                return (float)(rotation + ((isForward) ? 1 : -1) * (Math.Pow(Math.Sin(rotation * -2), 16.0)));
+            } 
+        }
+        
         private MatchPiece[] squares;
         private Vector3[] normals;
         private Vector3 position3;   //TODO: replace with GameObject.Position, once that is a Vector3
@@ -47,13 +56,14 @@ namespace Cubic_The_Game
             ////stops updating for a while, and then the time-elapsed ends up being huge
             //if (amount > 0.5f)
             //    amount = 0.5f;
-            rotation += (isForward)? amount : -amount;
+            rotation += (isForward) ? amount : -amount;
+            //rotation += amount;
             if (rotation > (float)Math.PI * 2)
                 rotation = 0;//((float)Math.PI * 2) - rotation;
             else if (rotation < 0)
                 rotation = (float) Math.PI * 2;//((float)Math.PI * 2) + rotation;
 
-            Matrix rotMatrix = Matrix.CreateRotationY(rotation);
+            Matrix rotMatrix = Matrix.CreateRotationY(rotationPrime);
             matWorld = rotMatrix * Matrix.CreateTranslation(position3);
 
         
