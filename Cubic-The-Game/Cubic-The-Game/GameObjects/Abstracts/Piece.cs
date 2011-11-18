@@ -9,6 +9,7 @@
 
 #region using
 using Microsoft.Xna.Framework;            // for Vectors
+using Microsoft.Xna.Framework.Graphics;   // for Texture2D
 #endregion
 
 namespace Cubic_The_Game
@@ -23,8 +24,9 @@ namespace Cubic_The_Game
         #endregion
 
         #region members
+        protected Texture2D texture;
         #endregion
 
-
+  
     }
 }

@@ -55,7 +55,8 @@ namespace Cubic_The_Game
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-            backgroundTexture = content.Load<Texture2D>("background");
+            // backgroundTexture = content.Load<Texture2D>("background");
+            backgroundTexture = content.Load<Texture2D>("EgyptBG");
         }
 
 

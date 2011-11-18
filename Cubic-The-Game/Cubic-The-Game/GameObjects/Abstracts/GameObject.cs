@@ -51,6 +51,8 @@ namespace Cubic_The_Game
         public const byte MAXPLAYERS = 4;
         public const float PLAYERSPEED = 2.0f;
         public const int FALLSPAWNINTERVAL = 100;
+
+        public const int NUMBEROFSHAPES = 8;
         #endregion
 
         #region statics
@@ -63,14 +65,17 @@ namespace Cubic_The_Game
         private static Random rnd = new Random();
 
         private static List<FallPiece> fallPieceList;
-        //private static TestCube cube;
         private static GreatCube theCube;
         public static Camera camera;
+
+        
+        public static Texture2D cubeTex;
+        public static Texture2D backgroundTex;
+        public static Texture2D[] shapes;
+        //public static Texture2D[] maps;
+
         #endregion
 
-        //test object
-        //public static Texture2D temp;
-        //end of test object
 
 
         #region members
@@ -103,10 +108,14 @@ namespace Cubic_The_Game
         public static void LoadStaticContent(ContentManager content)
         {
             Player.texture = content.Load<Texture2D>("playerCursor");
+            backgroundTex = content.Load<Texture2D>("EgyptBG");
+            cubeTex = content.Load<Texture2D>("cubeTex");
 
-            //test object
-            //temp = content.Load<Texture2D>("playerCursor");
-            //end of test object
+            shapes = new Texture2D[NUMBEROFSHAPES];
+            for (int i = 0; i < shapes.Length; ++i)
+            {
+                shapes[i] = content.Load<Texture2D>("shapes/" + (i+1));
+            }
         }
 
         public static void NewGame()
@@ -216,6 +225,11 @@ namespace Cubic_The_Game
         #region draw
         public static void DrawStaticContent()
         {
+            spriteBatch.Begin();
+            spriteBatch.Draw(backgroundTex, new Rectangle(device.Viewport.X,
+                device.Viewport.Y, device.Viewport.Width, device.Viewport.Height), Color.White);
+            spriteBatch.End();
+
             //cube.Draw(GameObject.camera);
             foreach (FallPiece piece in fallPieceList)
                 piece.Draw(GameObject.camera);
@@ -227,13 +241,7 @@ namespace Cubic_The_Game
                 if (players[i] != null) players[i].Draw();
 
 
-            //test object
-            //spriteBatch.Draw(temp, (GetScreenSpace(cube.center, cube.worldTranslation)), null, Color.Black, 0.0f, Vector2.Zero,0.1f,SpriteEffects.None,0.0f); 
-            //end of test object
-
-            spriteBatch.End();
-
-            
+            spriteBatch.End();   
         }
         protected virtual void Draw() { }
         #endregion
@@ -242,6 +250,11 @@ namespace Cubic_The_Game
         {
             Vector3 projection = device.Viewport.Project(cntr, camera.projection, camera.view, world);
             return (new Vector2(projection.X, projection.Y));
+        }
+
+        public Texture2D generateTexture()
+        {
+            return shapes[rnd.Next(0, shapes.Length)];
         }
     }
 }
