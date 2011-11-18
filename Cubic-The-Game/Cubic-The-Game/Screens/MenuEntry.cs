@@ -144,7 +144,8 @@ namespace Cubic_The_Game
 #endif
 
             // Draw the selected entry in yellow, otherwise white.
-            Color color = isSelected ? Color.Yellow : Color.White;
+            //Color color = isSelected ? Color.Yellow : Color.White;
+            Color color = isSelected ? new Color(0, 34, 85) : new Color(161, 60, 42);
 
             // Pulsate the size of the selected menu entry.
             double time = gameTime.TotalGameTime.TotalSeconds;

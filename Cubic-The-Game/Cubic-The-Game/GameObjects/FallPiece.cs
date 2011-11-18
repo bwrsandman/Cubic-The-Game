@@ -37,7 +37,7 @@ namespace Cubic_The_Game
 
         public static void loadBuffers()
         {
-            cubeBuffer = new VertexBuffer(GameObject.device, typeof(VertexPositionColor), 4, BufferUsage.None);
+            cubeBuffer = new VertexBuffer(GameObject.device, typeof(VertexPositionColorTexture), 4, BufferUsage.None);
             cubeEffect = new BasicEffect(GameObject.device);
         }
 
@@ -46,9 +46,8 @@ namespace Cubic_The_Game
             interactingPlayer = -1;
             center3 = new Vector3(origin,DEPTH);
 
-            cubeFront = new VertexPositionColor[4];
-
-            
+            cubeFront = new VertexPositionColorTexture[4];
+            texture = generateTexture();          
         }
 
         #region members
@@ -58,7 +57,7 @@ namespace Cubic_The_Game
         {
             get { return GameObject.GetScreenSpace(center3, worldTranslation); } 
         }
-        VertexPositionColor[] cubeFront;
+        VertexPositionColorTexture[] cubeFront;
         static VertexBuffer cubeBuffer;
         static BasicEffect cubeEffect;
         private bool isIntersected;
@@ -122,10 +121,10 @@ namespace Cubic_The_Game
                 center3 += new Vector3(0.0f, FALLSPEED, 0.0f);
             movement = Vector3.Zero;
             color = isIntersected? interactedColor : inactiveColor ;
-            cubeFront[0] = new VertexPositionColor(new Vector3(-SIDERADIUS, SIDERADIUS, 0) + center3, color);
-            cubeFront[1] = new VertexPositionColor(new Vector3(SIDERADIUS, SIDERADIUS, 0) + center3, color);
-            cubeFront[2] = new VertexPositionColor(new Vector3(-SIDERADIUS, -SIDERADIUS, 0) + center3, color);
-            cubeFront[3] = new VertexPositionColor(new Vector3(SIDERADIUS, -SIDERADIUS, 0) + center3, color);
+            cubeFront[0] = new VertexPositionColorTexture(new Vector3(-SIDERADIUS, SIDERADIUS, 0) + center3, color, new Vector2(0,0));
+            cubeFront[1] = new VertexPositionColorTexture(new Vector3(SIDERADIUS, SIDERADIUS, 0) + center3, color, new Vector2(1, 0));
+            cubeFront[2] = new VertexPositionColorTexture(new Vector3(-SIDERADIUS, -SIDERADIUS, 0) + center3, color, new Vector2(0, 1));
+            cubeFront[3] = new VertexPositionColorTexture(new Vector3(SIDERADIUS, -SIDERADIUS, 0) + center3, color, new Vector2(1,1));
         }
 
         public void Draw(Camera camera)
@@ -136,12 +135,15 @@ namespace Cubic_The_Game
             cubeEffect.View = camera.view;
             cubeEffect.Projection = camera.projection;
             cubeEffect.DiffuseColor = color.ToVector3();
+            //cubeEffect.DiffuseColor = Color.Red.ToVector3();
+            cubeEffect.TextureEnabled = true;
+            cubeEffect.Texture = texture;
 
 
             foreach (EffectPass pass in cubeEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                GameObject.device.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleStrip, cubeFront, 0, 2);
+                GameObject.device.DrawUserPrimitives<VertexPositionColorTexture>(PrimitiveType.TriangleStrip, cubeFront, 0, 2);
 
             }
 
