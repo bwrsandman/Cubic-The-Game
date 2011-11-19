@@ -19,6 +19,7 @@ namespace Cubic_The_Game
     {
 
         #region constants
+        float ROT_SPEED = 5;
         #endregion
 
         #region statics
@@ -48,10 +49,9 @@ namespace Cubic_The_Game
         public void Update(float seconds)
         {
             //for now, rotate all segments at once
-            float speed = 15;
             for (int i = 0; i < cubeSegments.Length; i++)
             {
-                cubeSegments[i].Rotate((float)(speed * (Math.PI / 180) * seconds));
+                cubeSegments[i].Rotate((float)(ROT_SPEED * (Math.PI / 180) * seconds));
                 //speed += 1;
                 //speed *= -1;
             }
