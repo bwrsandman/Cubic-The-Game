@@ -62,11 +62,12 @@ namespace Cubic_The_Game
         public GreatCube(int levels, int squaresAcross, float squareWidth, Vector3 position)
             : base()
         {
+            CubeSegment.LoadStaticContent(squaresAcross, squareWidth);
             cubeSegments = new CubeSegment[levels];
             position3 = position;
             for (int i = 0; i < levels; i++)
             {
-                cubeSegments[i] = new CubeSegment(squareWidth, squaresAcross, new Vector3(position.X, position.Y + i * squareWidth, position.Z), i%2 == 0);
+                cubeSegments[i] = new CubeSegment(new Vector3(position.X, position.Y + i * squareWidth, position.Z), i%2 == 0);
             }
         }
         #endregion

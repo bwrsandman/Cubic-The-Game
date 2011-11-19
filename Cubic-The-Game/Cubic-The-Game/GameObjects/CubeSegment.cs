@@ -29,6 +29,7 @@ namespace Cubic_The_Game
         /// Each segment can share one:
         ///     - Rotation
         ///     - Number of Match Pieces
+        ///     - Match Pieces Size
         ///     - colour
         ///     - vertex buffer
         ///     - effects
@@ -36,12 +37,12 @@ namespace Cubic_The_Game
         /// </summary>
         private static float rotation;     //represents how much the slab is rotated
         private static int numSquaresAcross;
-        private static int numSquaresTotal { get { return numSquaresAcross * NUMSIDES; } }
+        private static float squareWidth;
         private static Color color = new Color(157, 19, 168);
         private static VertexBuffer vertexBuff;
-        private static BasicEffect segmentEffect;
+        private static BasicEffect segmentEffect = new BasicEffect(device);
         private static RasterizerState wireFrameRasterizer = new RasterizerState { CullMode = CullMode.None, FillMode = FillMode.WireFrame };
-        private static RasterizerState solidRasterizer = new RasterizerState { CullMode = CullMode.CullClockwiseFace, FillMode = FillMode.Solid };
+        private static RasterizerState solidRasterizer = new RasterizerState { CullMode = CullMode.CullCounterClockwiseFace, FillMode = FillMode.Solid };
         #endregion
 
         #region members
@@ -51,6 +52,7 @@ namespace Cubic_The_Game
         ///  MatchPieces
         ///  Position
         ///  world Matrix
+        ///  Top and bottom squares; 2*2=4 triangles
         /// </summary>
         private bool isForward;         // Does the segment rotate CW or CCW
         private MatchPiece[] squares;
@@ -72,19 +74,33 @@ namespace Cubic_The_Game
                 return ((isForward) ? 1 : -1)*(float)(rotation + (Math.Pow(Math.Sin(rotation * -2), 16.0)));
             }
         }
+        private static int numSquaresTotal { get { return numSquaresAcross * NUMSIDES; } }
         #endregion
 
         #region constructors
         /// <summary>
+        /// When Segment is created, we:
+        ///     - determine directions, position
+        ///     - Set top and bottom Faces with normals facing opposite directions
+        ///     - Create MatchPieces
         /// numAcross: how many squares on one face.
         /// x, y, z: center position of the cube segment
         /// </summary>
-        public CubeSegment(float squareWidth, int numAcross, Vector3 position, bool isForward)
+        
+        public static void LoadStaticContent(int sa, float sw)
         {
+            numSquaresAcross = sa;
+            squareWidth = sw;
+        }
+        public CubeSegment(Vector3 position3, bool isForward)
+        {
+            
             this.isForward = isForward;
-            position3 = position;
-
+            this.position3 = position3;
             matWorld = Matrix.CreateTranslation(position3);
+            squares = new MatchPiece[numSquaresTotal];
+            for (int i = 0; i < numSquaresTotal; ++i)
+                squares[i] = new MatchPiece(i % numSquaresAcross - (numSquaresAcross / 2.0f), squareWidth, i / numSquaresAcross, (numSquaresAcross / 2.0f));
       
             //setup normals for each side, from front to left-side
             normals = new Vector3[4];
@@ -92,10 +108,8 @@ namespace Cubic_The_Game
             normals[1] = new Vector3(1, 0, 0);
             normals[2] = new Vector3(0, 0, 1);
             normals[3] = new Vector3(-1, 0, 0);
-            segmentEffect = new BasicEffect(device); //initialize the basic effect
            
             ///--- Now initialize the vertex/index buffers ----
-            numSquaresAcross = numAcross;
 
             //numVerts: total number of vertices
             //+ 2 to close up the polygons. +10 to make up the polygons for the top and bottom. only 8 would be needed, but 
@@ -107,10 +121,9 @@ namespace Cubic_The_Game
             int numVertsForSquares = (numSquaresTotal * 2) + 2;
             //we use numVertsForSquares + 10, because we need vertices for top and bottom
             VertexPositionColor[] vertices = new VertexPositionColor[numVertsForSquares + 10];// + 5];
-            squares = new MatchPiece[numSquaresTotal];
-            float putX = -(squareWidth * (float)numAcross * 0.5f);
+            float putX = -(squareWidth * (float)numSquaresAcross * 0.5f);
             float putY = 0;
-            float putZ = squareWidth * (float)numAcross * 0.5f;
+            float putZ = squareWidth * (float)numSquaresAcross * 0.5f;
             
             //set up all vertices for squares, from front to left side
             int side = 0;
@@ -178,27 +191,27 @@ namespace Cubic_The_Game
     //        vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth, putY, putZ), color);
 
             //degenerate at triangle at top right
-            vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth, putY, putZ - segWidth), color);
+            vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth,  putY,               putZ - segWidth),   color);
             //another degenerate triangle at the bottom right
-            vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth, putY - squareWidth, putZ - segWidth), color);
+            vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth,  putY - squareWidth, putZ - segWidth),   color);
             
             //another degenerate, and the start of an actual triangle.
             //Bottom vertices
-            vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth, putY - squareWidth, putZ - segWidth), color);
-            vertices[++idx] = new VertexPositionColor(new Vector3(putX, putY - squareWidth, putZ - segWidth), color);
-            vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth, putY - squareWidth, putZ), color);
-            vertices[++idx ] = new VertexPositionColor(new Vector3(putX, putY-segWidth, putZ), color);
+            vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth,  putY - squareWidth, putZ - segWidth),   color);
+            vertices[++idx] = new VertexPositionColor(new Vector3(putX,             putY - squareWidth, putZ - segWidth),   color);
+            vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth,  putY - squareWidth, putZ),              color);
+            vertices[++idx] = new VertexPositionColor(new Vector3(putX,             putY - segWidth,    putZ),              color);
 
             ////add all this to the vertex buffer.
             vertexBuff = new VertexBuffer(device, typeof(VertexPositionColor), vertices.Length, BufferUsage.WriteOnly);
             vertexBuff.SetData<VertexPositionColor>(vertices);   
      
             //Now set the squares (match-pieces) so we have an easily referencable object to work with.
-            squares[0] = new MatchPiece(1, 0, 2, 3, vertices); //set the first one first as it is a special case
-            for (int i = 1; i < squares.Length; i++)
-            {
-                squares[i] = new MatchPiece((i * 2) + 1, (i * 2), (i + 1) * 2, ((i + 1) * 2) + 1, vertices);  
-            }
+            //squares[0] = new MatchPiece(1, 0, 2, 3, vertices); //set the first one first as it is a special case
+            //for (int i = 1; i < squares.Length; i++)
+            //{
+            //    squares[i] = new MatchPiece((i * 2) + 1, (i * 2), (i + 1) * 2, ((i + 1) * 2) + 1, vertices);  
+            //}
         }
 
 
@@ -221,6 +234,11 @@ namespace Cubic_The_Game
             {
                 normals[i] = Vector3.TransformNormal(normals[i], rotMatrix);
             }
+
+            // Update the segments
+            foreach (MatchPiece piece in squares)
+                if (piece != null)
+                    piece.Update();
         }
         public void HighlightSquare(int index)
         {
@@ -237,13 +255,13 @@ namespace Cubic_The_Game
             device.SetVertexBuffer(vertexBuff);
             //    device.Indices = indexBuff;
             RasterizerState backupState = device.RasterizerState;
-            device.RasterizerState = solidRasterizer;
-            //   device.RasterizerState.FillMode = FillMode.WireFrame;
-            foreach (EffectPass pass in segmentEffect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-                device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, numSquaresTotal * 2 + 9);//+2
-            }
+            //device.RasterizerState = solidRasterizer;
+            ////   device.RasterizerState.FillMode = FillMode.WireFrame;
+            //foreach (EffectPass pass in segmentEffect.CurrentTechnique.Passes)
+            //{
+            //    pass.Apply();
+            //    device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, numSquaresTotal * 2 + 9);//+2
+            //}
 
             segmentEffect.DiffuseColor = color.ToVector3();
             device.RasterizerState = wireFrameRasterizer;
@@ -256,7 +274,8 @@ namespace Cubic_The_Game
 
             device.RasterizerState = backupState;
             foreach (MatchPiece piece in squares)
-                piece.Draw(camera, matWorld);
+                if (piece != null)
+                    piece.Draw(camera, matWorld);
         }
         protected void UpdateNormals()
         {

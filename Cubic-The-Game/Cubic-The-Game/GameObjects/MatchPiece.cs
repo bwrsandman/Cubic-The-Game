@@ -29,39 +29,19 @@ namespace Cubic_The_Game
         #endregion
 
         #region members
+        VertexPositionColorTexture[] cubeFront;
+        float pieceSize;
+        float posOffset;
+        float rotOffset;
+        Vector3 faceOffset;
+
+
                 //reference to the vertex array that this square is a part of (actually contains multiple squares)
         private VertexPositionColorTexture[] vertices;
         private short[] vertexIndices;
         private float width;//, height;
-        /// <summary>
-        /// Get topleft X coordinate of square
-        /// </summary>
-        /// <returns></returns>
-        /// 
-        
-        ///<summary>
-        ///Enter an array of vertex indices just for this square, and a 
-        ///reference to the greater vertex array that this square is a part of
-        /// </summary>
 
-        //public Square(short[] pVertexIndices, VertexPositionColor[] pVertices)
-        //{
-        //    vertexIndices = pVertexIndices;
-        //    vertices = pVertices;
-        //}
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="idxTopLeft"></param>
-        /// Index to the topleft vertex
-        /// <param name="idxBLeft"></param>
-        /// Index to the bottom-left vertex
-        /// <param name="idxBRight"></param>
-        /// index to the bottom-right vertex
-        /// <param name="IdxTopRight"></param>
-        /// index to the top-right vertex
-        /// <param name="pVertices"></param>
-        /// Array of vertices that this square is a part of
+
         public MatchPiece(int idxTopLeft, int idxBLeft, int idxBRight, int idxTopRight, VertexPositionColor[] pVertices)
         {
             vertexIndices = new short[4];
@@ -75,6 +55,23 @@ namespace Cubic_The_Game
                 vertices[i] = new VertexPositionColorTexture(pVertices[i].Position, pVertices[i].Color, new Vector2((i%2),(int)(i/2)));
             }
             width = Math.Abs(vertices[idxTopRight].Position.X - vertices[idxTopLeft].Position.X); 
+        }
+
+        /// <summary>
+        /// When a Match Piece is created:
+        ///     - Randomly select an identity (texture)
+        ///     - Set its facing direction (front, side, back)
+        ///     - Set it's offset from the middle
+        ///     - Create a backsurface and front texture key
+        /// </summary>
+        public MatchPiece(float posOffset, float size, int facingDirection, float midLen)
+        {
+            cubeFront = new VertexPositionColorTexture[4];
+            this.pieceSize = size;
+            this.posOffset = posOffset;
+            faceOffset = new Vector3(0, -size, midLen);
+            rotOffset = (float)(facingDirection * Math.PI / 2.0);
+            
         }
 
         public void SetVertexIndices(int idxTopLeft, int idxBLeft, int idxBRight, int idxTopRight)
@@ -127,24 +124,33 @@ namespace Cubic_The_Game
         public void Draw(Camera camera, Matrix worldTranslation)
         {
             GameObject.device.SetVertexBuffer(cubeBuffer);
-
-            cubeEffect.World = worldTranslation;
+            
+            Matrix rotMatrix = Matrix.CreateRotationY(rotOffset);
+            cubeEffect.World = rotMatrix * worldTranslation;
             cubeEffect.View = camera.view;
             cubeEffect.Projection = camera.projection;
             cubeEffect.DiffuseColor = color.ToVector3();
-            //cubeEffect.DiffuseColor = Color.Red.ToVector3();
-            cubeEffect.TextureEnabled = true;
-            cubeEffect.Texture = texture;
+            //cubeEffect.TextureEnabled = true;
+            //cubeEffect.Texture = texture;
 
 
             foreach (EffectPass pass in cubeEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                GameObject.device.DrawUserPrimitives<VertexPositionColorTexture>(PrimitiveType.TriangleStrip, vertices, 0, 2);
+                GameObject.device.DrawUserPrimitives<VertexPositionColorTexture>(PrimitiveType.TriangleStrip, cubeFront, 0, 2);
 
             }
 
 
+        }
+
+
+        public void Update()
+        {
+            cubeFront[0] = new VertexPositionColorTexture(new Vector3(posOffset, pieceSize, 0)+faceOffset , color, new Vector2(0, 0));
+            cubeFront[1] = new VertexPositionColorTexture(new Vector3(posOffset + pieceSize, pieceSize, 0) + faceOffset, color, new Vector2(1, 0));
+            cubeFront[2] = new VertexPositionColorTexture(new Vector3(posOffset, 0, 0) + faceOffset, color, new Vector2(0, 1));
+            cubeFront[3] = new VertexPositionColorTexture(new Vector3(posOffset + pieceSize, 0, 0) + faceOffset, color, new Vector2(1, 1));
         }
         #endregion
     }
