@@ -50,6 +50,7 @@ namespace Cubic_The_Game
        
         BasicEffect segmentEffect;
         private RasterizerState wireFrameRasterizer = new RasterizerState { CullMode = CullMode.None, FillMode = FillMode.WireFrame };
+        private RasterizerState solidRasterizer = new RasterizerState { CullMode = CullMode.CullClockwiseFace, FillMode = FillMode.Solid };
         public void Rotate(float amount)
         {
             //hack to stop it from rotating too much. for some reason gamescreen
@@ -83,19 +84,32 @@ namespace Cubic_The_Game
             segmentEffect.World = matWorld;
             segmentEffect.View = camera.view;
             segmentEffect.Projection = camera.projection;
-            segmentEffect.DiffuseColor = color.ToVector3();
+
+            segmentEffect.DiffuseColor = Color.White.ToVector3();
 
             device.SetVertexBuffer(vertexBuff);
         //    device.Indices = indexBuff;
             RasterizerState backupState = device.RasterizerState;
-            device.RasterizerState = wireFrameRasterizer; 
-       //   device.RasterizerState.FillMode = FillMode.WireFrame;
-            foreach(EffectPass pass in segmentEffect.CurrentTechnique.Passes)
+            device.RasterizerState = solidRasterizer;
+            //   device.RasterizerState.FillMode = FillMode.WireFrame;
+            foreach (EffectPass pass in segmentEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, numSquaresTotal*2 +9);//+2
+                device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, numSquaresTotal * 2 + 9);//+2
             }
+
+            segmentEffect.DiffuseColor = color.ToVector3();
+            device.RasterizerState = wireFrameRasterizer;
+            //   device.RasterizerState.FillMode = FillMode.WireFrame;
+            foreach (EffectPass pass in segmentEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, numSquaresTotal * 2 + 9);//+2
+            }
+
             device.RasterizerState = backupState;
+            foreach (MatchPiece piece in squares)
+                piece.Draw(camera, matWorld);
         }
         protected void UpdateNormals()
         {

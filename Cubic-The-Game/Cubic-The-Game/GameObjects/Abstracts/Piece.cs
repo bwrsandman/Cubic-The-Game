@@ -21,6 +21,8 @@ namespace Cubic_The_Game
         #endregion
 
         #region statics
+        protected static VertexBuffer cubeBuffer;
+        protected static BasicEffect cubeEffect;
         #endregion
 
         #region members

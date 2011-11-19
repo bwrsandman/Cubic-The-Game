@@ -58,8 +58,6 @@ namespace Cubic_The_Game
             get { return GameObject.GetScreenSpace(center3, worldTranslation); } 
         }
         VertexPositionColorTexture[] cubeFront;
-        static VertexBuffer cubeBuffer;
-        static BasicEffect cubeEffect;
         private bool isIntersected;
         private bool grabbed;
         #endregion
