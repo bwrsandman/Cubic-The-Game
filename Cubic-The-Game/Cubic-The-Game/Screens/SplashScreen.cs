@@ -121,7 +121,8 @@ namespace Cubic_The_Game
                 Vector2 textSize = font.MeasureString(message);
                 Vector2 textPosition = (viewportSize - textSize) / 2;
 
-                Color color = Color.OrangeRed * TransitionAlpha;
+                //Color color = Color.OrangeRed * TransitionAlpha;
+                Color color = new Color(99, 90, 67) * TransitionAlpha;
 
                 // Draw the text.
                 spriteBatch.Begin();
