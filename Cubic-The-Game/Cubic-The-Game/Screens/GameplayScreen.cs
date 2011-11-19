@@ -47,8 +47,6 @@ namespace Cubic_The_Game
      //   GreatCube theCube;
         #endregion
 
-       
-
         #region Initialization
 
 

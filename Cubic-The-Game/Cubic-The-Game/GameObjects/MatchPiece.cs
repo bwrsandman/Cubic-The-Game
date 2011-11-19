@@ -129,8 +129,27 @@ namespace Cubic_The_Game
             cubeEffect.World = rotMatrix * worldTranslation;
             cubeEffect.View = camera.view;
             cubeEffect.Projection = camera.projection;
+            
+            
+            
+            
+            // Render background of Square
             cubeEffect.DiffuseColor = color.ToVector3();
-            //cubeEffect.TextureEnabled = true;
+            cubeEffect.TextureEnabled = false;
+            //cubeEffect.Texture = texture;
+
+            cubeEffect.DiffuseColor = Color.White.ToVector3();
+            foreach (EffectPass pass in cubeEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                GameObject.device.DrawUserPrimitives<VertexPositionColorTexture>(PrimitiveType.TriangleStrip, cubeFront, 0, 2);
+
+            }
+
+
+            // Render foreground of Square with shape
+            cubeEffect.DiffuseColor = color.ToVector3();
+            cubeEffect.TextureEnabled = true;
             //cubeEffect.Texture = texture;
 
 
