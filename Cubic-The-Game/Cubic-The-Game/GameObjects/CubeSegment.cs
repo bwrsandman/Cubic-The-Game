@@ -21,106 +21,57 @@ namespace Cubic_The_Game
     class CubeSegment : MovingObject
     {
         #region constants
+        private const byte NUMSIDES = 4;
         #endregion
 
         #region statics
+        /// <summary>
+        /// Each segment can share one:
+        ///     - Rotation
+        ///     - Number of Match Pieces
+        ///     - colour
+        ///     - vertex buffer
+        ///     - effects
+        ///     - Raster
+        /// </summary>
+        private static float rotation;     //represents how much the slab is rotated
+        private static int numSquaresAcross;
+        private static int numSquaresTotal { get { return numSquaresAcross * NUMSIDES; } }
+        private static Color color = new Color(157, 19, 168);
+        private static VertexBuffer vertexBuff;
+        private static BasicEffect segmentEffect;
+        private static RasterizerState wireFrameRasterizer = new RasterizerState { CullMode = CullMode.None, FillMode = FillMode.WireFrame };
+        private static RasterizerState solidRasterizer = new RasterizerState { CullMode = CullMode.CullClockwiseFace, FillMode = FillMode.Solid };
         #endregion
 
         #region members
+        /// <summary>
+        ///  Each separate segment has a distinct:
+        ///  direction (isForward)
+        ///  MatchPieces
+        ///  Position
+        ///  world Matrix
+        /// </summary>
         private bool isForward;         // Does the segment rotate CW or CCW
-        private float rotation = 0; //represents how much the slab is rotated
-        private float rotationPrime { 
-            get {
-                // This non linearality gives the cube a little personality
-                // TODO, add randomness
-                // theta (+/-) Sin (-2Theta)^16
-                return (float)(rotation + ((isForward) ? 1 : -1) * (Math.Pow(Math.Sin(rotation * -2), 16.0)));
-            } 
-        }
-        
         private MatchPiece[] squares;
         private Vector3[] normals;
         private Vector3 position3;   //TODO: replace with GameObject.Position, once that is a Vector3
-        private int numSquaresAcross;
-        private int numSquaresTotal;
-        private VertexBuffer vertexBuff;
-  //      private IndexBuffer indexBuff;
         private Matrix matWorld;
-        private Color color = new Color(157, 19, 168);
-       
-        BasicEffect segmentEffect;
-        private RasterizerState wireFrameRasterizer = new RasterizerState { CullMode = CullMode.None, FillMode = FillMode.WireFrame };
-        private RasterizerState solidRasterizer = new RasterizerState { CullMode = CullMode.CullClockwiseFace, FillMode = FillMode.Solid };
-        public void Rotate(float amount)
-        {
-            //hack to stop it from rotating too much. for some reason gamescreen
-            ////stops updating for a while, and then the time-elapsed ends up being huge
-            //if (amount > 0.5f)
-            //    amount = 0.5f;
-            rotation += (isForward) ? amount : -amount;
-            //rotation += amount;
-            if (rotation > (float)Math.PI * 2)
-                rotation = 0;//((float)Math.PI * 2) - rotation;
-            else if (rotation < 0)
-                rotation = (float) Math.PI * 2;//((float)Math.PI * 2) + rotation;
-
-            Matrix rotMatrix = Matrix.CreateRotationY(rotationPrime);
-            matWorld = rotMatrix * Matrix.CreateTranslation(position3);
-
+        //      private IndexBuffer indexBuff;
         
-            //rotate the normals
-            for (int i = 0; i < 4; i++)
-            {
-                normals[i] = Vector3.TransformNormal(normals[i], rotMatrix);
-            }
-        }
-        public void HighlightSquare(int index)
+        #endregion
+
+        #region accessors
+        private float rotationPrime
         {
-            squares[index].SetColor(150, 36, 230);
-        }
-
-        public new void Draw()
-        {
-            segmentEffect.World = matWorld;
-            segmentEffect.View = camera.view;
-            segmentEffect.Projection = camera.projection;
-
-            segmentEffect.DiffuseColor = Color.White.ToVector3();
-
-            device.SetVertexBuffer(vertexBuff);
-        //    device.Indices = indexBuff;
-            RasterizerState backupState = device.RasterizerState;
-            device.RasterizerState = solidRasterizer;
-            //   device.RasterizerState.FillMode = FillMode.WireFrame;
-            foreach (EffectPass pass in segmentEffect.CurrentTechnique.Passes)
+            get
             {
-                pass.Apply();
-                device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, numSquaresTotal * 2 + 9);//+2
-            }
-
-            segmentEffect.DiffuseColor = color.ToVector3();
-            device.RasterizerState = wireFrameRasterizer;
-            //   device.RasterizerState.FillMode = FillMode.WireFrame;
-            foreach (EffectPass pass in segmentEffect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-                device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, numSquaresTotal * 2 + 9);//+2
-            }
-
-            device.RasterizerState = backupState;
-            foreach (MatchPiece piece in squares)
-                piece.Draw(camera, matWorld);
-        }
-        protected void UpdateNormals()
-        {
-            Matrix rotMatrix = Matrix.CreateRotationY(rotation);
-            //set the normals to the rotation
-            for (int i = 0; i < 4; i++)
-            {
-                normals[i] = Vector3.TransformNormal(normals[i], rotMatrix);
+                // This non linearality gives the cube a little personality
+                // TODO, add randomness
+                // theta + Sin (-2Theta)^16
+                return ((isForward) ? 1 : -1)*(float)(rotation + (Math.Pow(Math.Sin(rotation * -2), 16.0)));
             }
         }
-        
         #endregion
 
         #region constructors
@@ -133,8 +84,7 @@ namespace Cubic_The_Game
             this.isForward = isForward;
             position3 = position;
 
-            Matrix rotMatrix = Matrix.CreateRotationY(rotation);
-            matWorld = Matrix.CreateTranslation(position3) * rotMatrix;
+            matWorld = Matrix.CreateTranslation(position3);
       
             //setup normals for each side, from front to left-side
             normals = new Vector3[4];
@@ -146,7 +96,6 @@ namespace Cubic_The_Game
            
             ///--- Now initialize the vertex/index buffers ----
             numSquaresAcross = numAcross;
-            numSquaresTotal = numAcross * 4;// total number of squares: create a 4-sided cube segment 
 
             //numVerts: total number of vertices
             //+ 2 to close up the polygons. +10 to make up the polygons for the top and bottom. only 8 would be needed, but 
@@ -254,6 +203,71 @@ namespace Cubic_The_Game
 
 
         #endregion
+
+        #region update and draw
+        public void Rotate(float amount)
+        {
+            // rotation only increases, rotation prime takes care of the rest
+            rotation += amount;
+            if (rotation > (float)Math.PI * 2)
+                rotation -= (float)Math.PI * 2;
+
+            Matrix rotMatrix = Matrix.CreateRotationY(rotationPrime);
+            matWorld = rotMatrix * Matrix.CreateTranslation(position3);
+
+
+            //rotate the normals
+            for (int i = 0; i < 4; i++)
+            {
+                normals[i] = Vector3.TransformNormal(normals[i], rotMatrix);
+            }
+        }
+        public void HighlightSquare(int index)
+        {
+            squares[index].SetColor(150, 36, 230);
+        }
+        public new void Draw()
+        {
+            segmentEffect.World = matWorld;
+            segmentEffect.View = camera.view;
+            segmentEffect.Projection = camera.projection;
+
+            segmentEffect.DiffuseColor = Color.White.ToVector3();
+
+            device.SetVertexBuffer(vertexBuff);
+            //    device.Indices = indexBuff;
+            RasterizerState backupState = device.RasterizerState;
+            device.RasterizerState = solidRasterizer;
+            //   device.RasterizerState.FillMode = FillMode.WireFrame;
+            foreach (EffectPass pass in segmentEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, numSquaresTotal * 2 + 9);//+2
+            }
+
+            segmentEffect.DiffuseColor = color.ToVector3();
+            device.RasterizerState = wireFrameRasterizer;
+            //   device.RasterizerState.FillMode = FillMode.WireFrame;
+            foreach (EffectPass pass in segmentEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, numSquaresTotal * 2 + 9);//+2
+            }
+
+            device.RasterizerState = backupState;
+            foreach (MatchPiece piece in squares)
+                piece.Draw(camera, matWorld);
+        }
+        protected void UpdateNormals()
+        {
+            Matrix rotMatrix = Matrix.CreateRotationY(rotation);
+            //set the normals to the rotation
+            for (int i = 0; i < 4; i++)
+            {
+                normals[i] = Vector3.TransformNormal(normals[i], rotMatrix);
+            }
+        }
+        #endregion 
 
     }
 }
