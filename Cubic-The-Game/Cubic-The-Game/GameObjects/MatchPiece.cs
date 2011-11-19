@@ -22,40 +22,25 @@ namespace Cubic_The_Game
     {
 
         #region constants
-        Color color = Color.Black;
+        readonly Color inactiveColor = Color.Black;
+        readonly Color backColor = Color.Gray;
         #endregion
 
         #region statics
         #endregion
 
         #region members
-        VertexPositionColorTexture[] cubeFront;
-        float pieceSize;
-        float posOffset;
-        float rotOffset;
-        Vector3 faceOffset;
+        private VertexPositionColorTexture[] cubeFront;
+        private float pieceSize;
+        private float posOffset;
+        private float rotOffset;
+        private Vector3 faceOffset;
 
+        public override Matrix GetWorldTranslation { get { return worldTranslation; } }
+        private Matrix worldTranslation = Matrix.CreateTranslation(0, 0, 2);
+        public override Vector3 GetCenter3 { get { return new Vector3(position3.X + pieceSize / 2, position3.Y - pieceSize / 2, position3.Z); } }
+        private Vector3 position3;
 
-                //reference to the vertex array that this square is a part of (actually contains multiple squares)
-        private VertexPositionColorTexture[] vertices;
-        private short[] vertexIndices;
-        private float width;//, height;
-
-
-        public MatchPiece(int idxTopLeft, int idxBLeft, int idxBRight, int idxTopRight, VertexPositionColor[] pVertices)
-        {
-            vertexIndices = new short[4];
-            vertexIndices[0] = (short) idxTopLeft;
-            vertexIndices[1] = (short) idxBLeft;
-            vertexIndices[2] = (short) idxBRight;
-            vertexIndices[3] = (short) idxTopRight;
-            vertices = new VertexPositionColorTexture[pVertices.Count()];
-            for (int i = 0; i > pVertices.Count(); ++i)
-            {
-                vertices[i] = new VertexPositionColorTexture(pVertices[i].Position, pVertices[i].Color, new Vector2((i%2),(int)(i/2)));
-            }
-            width = Math.Abs(vertices[idxTopRight].Position.X - vertices[idxTopLeft].Position.X); 
-        }
 
         /// <summary>
         /// When a Match Piece is created:
@@ -69,53 +54,10 @@ namespace Cubic_The_Game
             cubeFront = new VertexPositionColorTexture[4];
             this.pieceSize = size;
             this.posOffset = posOffset;
+            position3 = new Vector3(posOffset, 0, 0);
             faceOffset = new Vector3(0, -size, midLen);
             rotOffset = (float)(facingDirection * Math.PI / 2.0);
             
-        }
-
-        public void SetVertexIndices(int idxTopLeft, int idxBLeft, int idxBRight, int idxTopRight)
-        {
-            vertexIndices[0] = (short)idxTopLeft;
-            vertexIndices[1] = (short)idxBLeft;
-            vertexIndices[2] = (short)idxBRight;
-            vertexIndices[3] = (short)idxTopRight;
-        }
-        /// <summary>
-        /// Get top left X position
-        /// </summary>
-        /// <returns></returns>
-        public float GetX()
-        {
-            return vertices[(int)vertexIndices[0]].Position.X;
-        }
-        /// <summary>
-        /// Get topleft Y coordinate of square
-        /// </summary>
-        /// <returns></returns>
-        public float GetY()
-        {
-            return vertices[(int)vertexIndices[0]].Position.Y;
-        }
-
-        public float GetWidth()
-        {
-            return width;
-            //return Math.abs(vertices[(int)vertexIndices[3]].Position.X - vertices[(int)vertexIndices[1]].Position.X);
-        }
-        //public float GetHeight()
-        //{
-        //    return height;
-        //   // return Math.abs(vertices[(int)vertexIndices[3]].Position.Y - vertices[(int)vertexIndices[2]].Position.Y);
-        //}
-        public void SetColor(byte r, byte g, byte b)
-        {
-            for (int i = 0; i < vertexIndices.Length; i++)
-            {
-                vertices[(int)vertexIndices[i]].Color.R = r;
-                vertices[(int)vertexIndices[i]].Color.G = g;
-                vertices[(int)vertexIndices[i]].Color.B = b;
-            }
         }
 
         #endregion
@@ -126,7 +68,8 @@ namespace Cubic_The_Game
             GameObject.device.SetVertexBuffer(cubeBuffer);
             
             Matrix rotMatrix = Matrix.CreateRotationY(rotOffset);
-            cubeEffect.World = rotMatrix * worldTranslation;
+            this.worldTranslation = rotMatrix * worldTranslation;
+            cubeEffect.World = this.worldTranslation;
             cubeEffect.View = camera.view;
             cubeEffect.Projection = camera.projection;
             
@@ -138,7 +81,7 @@ namespace Cubic_The_Game
             cubeEffect.TextureEnabled = false;
             //cubeEffect.Texture = texture;
 
-            cubeEffect.DiffuseColor = Color.White.ToVector3();
+            cubeEffect.DiffuseColor = backColor.ToVector3();
             foreach (EffectPass pass in cubeEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
@@ -160,12 +103,12 @@ namespace Cubic_The_Game
 
             }
 
-
         }
 
 
-        public void Update()
+        public new void Update()
         {
+            color = isIntersected ? interactedColor : inactiveColor;
             cubeFront[0] = new VertexPositionColorTexture(new Vector3(posOffset, pieceSize, 0)+faceOffset , color, new Vector2(0, 0));
             cubeFront[1] = new VertexPositionColorTexture(new Vector3(posOffset + pieceSize, pieceSize, 0) + faceOffset, color, new Vector2(1, 0));
             cubeFront[2] = new VertexPositionColorTexture(new Vector3(posOffset, 0, 0) + faceOffset, color, new Vector2(0, 1));

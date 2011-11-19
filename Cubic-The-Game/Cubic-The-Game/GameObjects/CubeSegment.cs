@@ -108,131 +108,27 @@ namespace Cubic_The_Game
             normals[1] = new Vector3(1, 0, 0);
             normals[2] = new Vector3(0, 0, 1);
             normals[3] = new Vector3(-1, 0, 0);
-           
-            ///--- Now initialize the vertex/index buffers ----
 
-            //numVerts: total number of vertices
-            //+ 2 to close up the polygons. +10 to make up the polygons for the top and bottom. only 8 would be needed, but 
-            //we need to use 2 of them to generate "degenerate triangles". When using triangle strips, every point added uses 
-            //the last 3 points to make a new triangle. We generate a degenerate triangle (one that is rejected by the pipeline)
-            //by putting one in the same spot as the previous point. This allows us to move to the top/bottom of the cube segment
-            //without generating extra geometry. 
-            //int numVerts = (numSquaresTotal * 2) + 2 + 10;
-            //int numVertsForSquares = (numSquaresTotal * 2) + 2;
-            ////we use numVertsForSquares + 10, because we need vertices for top and bottom
-            //VertexPositionColor[] vertices = new VertexPositionColor[numVertsForSquares + 10];// + 5];
-    //        float putX = -(squareWidth * (float)numSquaresAcross * 0.5f);
-    //        float putY = 0;
-    //        float putZ = squareWidth * (float)numSquaresAcross * 0.5f;
-            
-    //        //set up all vertices for squares, from front to left side
-    //        int side = 0;
-
-    //        //Setup the first 3
-    //        vertices[0] = new VertexPositionColor(new Vector3(putX, putY - squareWidth, putZ), color);
-    //        vertices[1] = new VertexPositionColor(new Vector3(putX, putY, putZ), color);
-    //        vertices[2] = new VertexPositionColor(new Vector3(putX + squareWidth, putY - squareWidth, putZ), color);
-    //        putX += squareWidth;
-
-    //        float incX=squareWidth, incZ=0;
-    //        int squaresCrossed = 0;
-         
-            
-    //        for (int i = 3; i < numVertsForSquares-1; i+=2)
-    //        {
-    //            vertices[i] = new VertexPositionColor(new Vector3(putX, putY, putZ), color);
-    //            //is it time to change direction?
-    //            squaresCrossed++;
-    //            if (squaresCrossed == numSquaresAcross)
-    //            {
-    //                side++;
-    //                squaresCrossed = 0;
-    //            }
-    //            switch (side)
-    //            {
-    //                case 0:
-    //                    incX = squareWidth;
-    //                    incZ = 0;
-    //                    break;
-    //                case 1:
-    //                    incX = 0;
-    //                    incZ = -squareWidth;
-    //                    break;
-    //                case 2:
-    //                    incX = -squareWidth;
-    //                    incZ = 0;
-    //                    break;
-    //                case 3:
-    //                    incX = 0;
-    //                    incZ = squareWidth;
-    //                    break;
-    //                case 4:
-    //                    continue;
-    //            }
-    //            putX += incX;
-    //            putZ += incZ;
-                
-    //            vertices[i + 1] = new VertexPositionColor(new Vector3(putX, putY - squareWidth, putZ), color);
-    //            //vertices[i + ].Position.X = putX;
-    //            //vertices[i + totalSquares].Position.Y = putY + squareWidth;
-    //            //vertices[i + totalSquares].Position.Z = putZ;
-    //        }
-    //        //add one last vertex
-    //        int idx = numVertsForSquares - 1;
-    //        float segWidth = squareWidth * numSquaresAcross;
-    //        vertices[idx] = new VertexPositionColor(new Vector3(putX, putY, putZ), color);
-
-    //        //add vertices for top and bottom
-    //        vertices[++idx] = new VertexPositionColor(new Vector3(putX, putY, putZ), color);//degenerate triangle
-    //        //vertices for top
-    //        vertices[++idx] = new VertexPositionColor(new Vector3(putX, putY, putZ - segWidth), color);
-    //        vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth, putY, putZ), color);
-    //        vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth, putY, putZ - segWidth), color);
-    ////        vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth, putY, putZ), color);
-
-    //        //degenerate at triangle at top right
-    //        vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth,  putY,               putZ - segWidth),   color);
-    //        //another degenerate triangle at the bottom right
-    //        vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth,  putY - squareWidth, putZ - segWidth),   color);
-            
-    //        //another degenerate, and the start of an actual triangle.
-    //        //Bottom vertices
-    //        vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth,  putY - squareWidth, putZ - segWidth),   color);
-    //        vertices[++idx] = new VertexPositionColor(new Vector3(putX,             putY - squareWidth, putZ - segWidth),   color);
-    //        vertices[++idx] = new VertexPositionColor(new Vector3(putX + segWidth,  putY - squareWidth, putZ),              color);
-    //        vertices[++idx] = new VertexPositionColor(new Vector3(putX,             putY - segWidth,    putZ),              color);
-
-            VertexPositionColor[] top = new VertexPositionColor[4];
-            VertexPositionColor[] bottom = new VertexPositionColor[4];
             float segWidth = numSquaresAcross* squareWidth/2;
-            //top
+            
+            //top Cap
+            VertexPositionColor[] top = new VertexPositionColor[4];
             top[0] = new VertexPositionColor(new Vector3(segWidth, 0, -segWidth), color);
             top[1] = new VertexPositionColor(new Vector3(segWidth, 0, segWidth), color);
             top[2] = new VertexPositionColor(new Vector3(-segWidth, 0, -segWidth), color);
             top[3] = new VertexPositionColor(new Vector3(-segWidth, 0, segWidth), color);
-            //top[4] = new VertexPositionColor(new Vector3(segWidth, 0, segWidth), color);//JUNK
+            topBuff = new VertexBuffer(device, typeof(VertexPositionColor), top.Length, BufferUsage.WriteOnly);
+            topBuff.SetData<VertexPositionColor>(top);
 
-            //bottom
+            //bottom Cap
+            VertexPositionColor[] bottom = new VertexPositionColor[4];
             bottom[0] = new VertexPositionColor(new Vector3(segWidth, -squareWidth, segWidth), color);
             bottom[1] = new VertexPositionColor(new Vector3(segWidth, -squareWidth, -segWidth), color);
             bottom[2] = new VertexPositionColor(new Vector3(-segWidth, -squareWidth, segWidth), color);
             bottom[3] = new VertexPositionColor(new Vector3(-segWidth, -squareWidth, -segWidth), color);
-            //bottom[4] = new VertexPositionColor(new Vector3(-segWidth, -squareWidth, -segWidth), color);//JUNK
-
-            ////add all this to the vertex buffer.
-            topBuff = new VertexBuffer(device, typeof(VertexPositionColor), top.Length, BufferUsage.WriteOnly);
-            topBuff.SetData<VertexPositionColor>(top);
-            
-            ////add all this to the vertex buffer.
             bottomBuff = new VertexBuffer(device, typeof(VertexPositionColor), bottom.Length, BufferUsage.WriteOnly);
             bottomBuff.SetData<VertexPositionColor>(bottom);   
-     
-            //Now set the squares (match-pieces) so we have an easily referencable object to work with.
-            //squares[0] = new MatchPiece(1, 0, 2, 3, vertices); //set the first one first as it is a special case
-            //for (int i = 1; i < squares.Length; i++)
-            //{
-            //    squares[i] = new MatchPiece((i * 2) + 1, (i * 2), (i + 1) * 2, ((i + 1) * 2) + 1, vertices);  
-            //}
+
         }
 
 
@@ -261,9 +157,11 @@ namespace Cubic_The_Game
                 if (piece != null)
                     piece.Update();
         }
-        public void HighlightSquare(int index)
+
+        public void intersects(Player[] players)
         {
-            squares[index].SetColor(150, 36, 230);
+            foreach (MatchPiece piece in squares)
+                piece.intersects(players);
         }
         public new void Draw()
         {
@@ -276,8 +174,6 @@ namespace Cubic_The_Game
             DrawCap(true);
             //draw bottom
             DrawCap(false);
-
-
 
             device.RasterizerState = backupState;
         }

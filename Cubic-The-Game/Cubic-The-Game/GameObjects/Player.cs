@@ -33,10 +33,10 @@ namespace Cubic_The_Game
         #endregion
 
         #region accessors
-        public void Attach(FallPiece piece)
+        public void Attach(Piece piece)
         {
             if (grabPiece == null || !grabbing)
-                grabPiece = piece;
+                if (piece is FallPiece) grabPiece = (FallPiece)piece;
         }
 
         #endregion

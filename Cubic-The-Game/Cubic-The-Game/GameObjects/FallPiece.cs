@@ -17,7 +17,6 @@ namespace Cubic_The_Game
     class FallPiece : Piece
     {
         #region constants
-        private const float OFFSET = 50f;
         private const float SIDERADIUS = 0.5f;
         private const float DEPTH = -5f;
         private const float FALLSPEED = -0.05f;
@@ -29,9 +28,6 @@ namespace Cubic_The_Game
         #endregion
 
         #region members
-        public int interactingPlayer{get; private set;}
-        private Color color;
-        private Color interactedColor;
         private Vector3 movement = Vector3.Zero;
         #endregion
 
@@ -51,22 +47,16 @@ namespace Cubic_The_Game
         }
 
         #region members
-        public Matrix worldTranslation = Matrix.CreateTranslation(0, 0, 2);
-        public Vector3 center3;
-        public Vector2 center2 
-        {
-            get { return GameObject.GetScreenSpace(center3, worldTranslation); } 
-        }
+        public override Matrix GetWorldTranslation{get{return worldTranslation;}}
+        public override Vector3 GetCenter3 { get { return center3; } }
+        private Matrix worldTranslation = Matrix.CreateTranslation(0, 0, 2);
+        private Vector3 center3;
+
         VertexPositionColorTexture[] cubeFront;
-        private bool isIntersected;
         private bool grabbed;
         #endregion
 
         #region update and draw
-        public bool intersects(Vector2 cntr)
-        {
-            return ((center2 - cntr).Length() <= OFFSET);
-        }
         public bool Grab(Player grabbingPlayer)
         {
             return grabbed = !grabbed && intersects(grabbingPlayer.center);
@@ -81,24 +71,7 @@ namespace Cubic_The_Game
             //}
             return false;
         }
-        public bool intersects(Player[] players)
-        {
-            if (isIntersected && interactingPlayer >= 0 && intersects(players[interactingPlayer].center)); // yeah this is blank... for now
-            else {
-                isIntersected = false;
-                interactingPlayer = -1;
-                for (byte i = 0; i<players.Length; ++i) if (players[i]!=null)
-                    if (intersects(players[i].center))
-                    {
-                        isIntersected = true;
-                        interactingPlayer = i;
-                        players[i].Attach(this);
-                        interactedColor = new Color(players[i].color.R/4+128, players[i].color.G/4+128, players[i].color.B/4+128);
-                        break;
-                    }
-            }
-            return isIntersected;
-        }
+
 
         public void Move(Vector2 thismuch)
         {

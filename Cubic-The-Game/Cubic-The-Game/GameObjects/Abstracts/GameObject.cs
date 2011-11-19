@@ -218,6 +218,7 @@ namespace Cubic_The_Game
 
             //CUBE
             theCube.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            theCube.intersects(players);
         }
         protected virtual void Update() { }
         #endregion

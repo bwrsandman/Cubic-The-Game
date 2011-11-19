@@ -61,6 +61,12 @@ namespace Cubic_The_Game
                 //speed *= -1;
             }
         }
+
+        public void intersects(Player[] players)
+        {
+            foreach (CubeSegment segment in cubeSegments)
+                segment.intersects(players);
+        }
         #endregion
 
         #region constructors
