@@ -71,7 +71,19 @@ namespace Cubic_The_Game
                 // This non linearality gives the cube a little personality
                 // TODO, add randomness
                 // theta + Sin (-2Theta)^16
-                return ((isForward) ? 1 : -1)*(float)(rotation + (Math.Pow(Math.Sin(rotation * -2), 16.0)));
+                float old = ((isForward) ? 1 : -1)*(float)(rotation + (Math.Pow(Math.Sin(rotation * -2), 64.0)));
+                float step = (float)(((int)(rotation*2 / Math.PI)) * Math.PI);
+                float trans = 0f;
+                if (rotation - step > 0.70 * Math.PI/2){
+                    float t = (float)(rotation - step - 0.70 * Math.PI / 2);
+                    if (rotation - step < 0.8 * Math.PI/2) trans = (float)(Math.PI/8 * Math.Sin(0.25*t/Math.PI));
+                    else if (rotation - step < 0.95 * Math.PI/2)trans = (float)((t-0.1)*10*Math.PI);
+                    else trans = (float)(Math.PI/8 * Math.Sin(0.25*(t-0.20)/Math.PI));
+                }
+                    
+                float fresh = ((isForward) ? 1 : -1) * (step + trans);
+                //return 0.5f * fresh + 0.5f * old;
+                return fresh;
             }
         }
         private static int numSquaresTotal { get { return numSquaresAcross * NUMSIDES; } }
@@ -139,7 +151,7 @@ namespace Cubic_The_Game
         {
             // rotation only increases, rotation prime takes care of the rest
             rotation += amount;
-            if (rotation > (float)Math.PI * 2)
+            if (rotation >= (float)Math.PI * 2)
                 rotation -= (float)Math.PI * 2;
 
             Matrix rotMatrix = Matrix.CreateRotationY(rotationPrime);
