@@ -40,6 +40,7 @@ namespace Cubic_The_Game
         private Matrix worldTranslation = Matrix.CreateTranslation(0, 0, 2);
         public override Vector3 GetCenter3 { get { return new Vector3(position3.X + pieceSize / 2, position3.Y - pieceSize / 2, position3.Z); } }
         private Vector3 position3;
+        private float midLen;
 
 
         /// <summary>
@@ -55,24 +56,24 @@ namespace Cubic_The_Game
             this.pieceSize = size;
             this.posOffset = posOffset;
             position3 = new Vector3(posOffset, 0, 0);
-            faceOffset = new Vector3(0, -size, midLen);
+            faceOffset = new Vector3(0, -size, 0);
             rotOffset = (float)(facingDirection * Math.PI / 2.0);
-            
+            this.midLen = midLen;
         }
 
         #endregion
 
         #region update and draw
-        public void Draw(Camera camera, Matrix worldTranslation)
+        public void Draw(BasicEffect effect)
         {
             GameObject.device.SetVertexBuffer(cubeBuffer);
-            
+
             Matrix rotMatrix = Matrix.CreateRotationY(rotOffset);
-            this.worldTranslation = rotMatrix * worldTranslation;
-            cubeEffect.World = this.worldTranslation;
-            cubeEffect.View = camera.view;
-            cubeEffect.Projection = camera.projection;
-            
+            Matrix transMatrix = Matrix.CreateTranslation(new Vector3(0f,0f,midLen));
+            cubeEffect.World = transMatrix * rotMatrix * effect.World;
+            cubeEffect.View = effect.View;
+            cubeEffect.Projection = effect.Projection;
+            this.worldTranslation = cubeEffect.World;
             
             
             

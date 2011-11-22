@@ -218,9 +218,14 @@ namespace Cubic_The_Game
 
         public void DrawPieces()
         {
+            segmentEffect.World = matWorld;
+            segmentEffect.View = camera.view;
+            segmentEffect.Projection = camera.projection;
+            RasterizerState backupState = device.RasterizerState;
             foreach (MatchPiece piece in squares)
                 if (piece != null)
-                    piece.Draw(camera, matWorld);
+                    piece.Draw(segmentEffect);
+            device.RasterizerState = backupState;
         }
 
         protected void UpdateNormals()
