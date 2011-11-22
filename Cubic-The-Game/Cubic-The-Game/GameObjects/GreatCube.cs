@@ -57,6 +57,7 @@ namespace Cubic_The_Game
             for (int i = 0; i < cubeSegments.Length; i++)
             {
                 cubeSegments[i].Rotate((float)(ROT_SPEED * (Math.PI / 180) * seconds));
+                cubeSegments[i].Update(seconds);
                 //speed += 1;
                 //speed *= -1;
             }
@@ -64,8 +65,9 @@ namespace Cubic_The_Game
 
         public void intersects(Player[] players)
         {
-            foreach (CubeSegment segment in cubeSegments)
-                segment.intersects(players);
+            //foreach (CubeSegment segment in cubeSegments)
+            for(int i=0; i < cubeSegments.Length; i++)
+                cubeSegments[i].intersects(players);
         }
         #endregion
 
@@ -78,7 +80,7 @@ namespace Cubic_The_Game
             position3 = position;
             for (int i = 0; i < levels; i++)
             {
-                cubeSegments[i] = new CubeSegment(new Vector3(position.X, position.Y + i * squareWidth, position.Z), i%2 == 0);
+                cubeSegments[i] = new CubeSegment(new Vector3(position.X, position.Y - (i * squareWidth), position.Z), i%2 == 0);
             }
         }
         #endregion

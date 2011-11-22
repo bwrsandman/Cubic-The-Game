@@ -77,6 +77,8 @@
     <Compile Include="GameObjects\Abstracts\Piece.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="GameObjects\TestCube.cs" />
+    <Compile Include="GlobalFuncs.cs" />
+    <Compile Include="Line.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="CubicGame.cs" />

@@ -19,6 +19,7 @@ namespace Cubic_The_Game
 
         #region constants
         private const float OFFSET = 50f;
+        private const float OFFSET_SQUARED = 2500;
         #endregion
 
         #region statics
@@ -49,7 +50,8 @@ namespace Cubic_The_Game
             {
                 isIntersected = false;
                 interactingPlayer = -1;
-                for (byte i = 0; i < players.Length; ++i) if (players[i] != null)
+                for (byte i = 0; i < players.Length; ++i) 
+                    if (players[i] != null)
                         if (intersects(players[i].center))
                         {
                             isIntersected = true;
@@ -63,7 +65,7 @@ namespace Cubic_The_Game
         }
         public bool intersects(Vector2 cntr)
         {
-            return ((center2 - cntr).Length() <= OFFSET);
+            return ((center2 - cntr).LengthSquared() <= OFFSET_SQUARED);
         }
         #endregion
 

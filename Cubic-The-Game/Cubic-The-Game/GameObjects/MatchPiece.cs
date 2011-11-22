@@ -42,6 +42,8 @@ namespace Cubic_The_Game
         private Vector3 position3;
 
 
+        //private Color[] playerColors;
+        private bool[] playersSelecting; //players that are hovering over this
         /// <summary>
         /// When a Match Piece is created:
         ///     - Randomly select an identity (texture)
@@ -57,24 +59,30 @@ namespace Cubic_The_Game
             position3 = new Vector3(posOffset, 0, 0);
             faceOffset = new Vector3(0, -size, midLen);
             rotOffset = (float)(facingDirection * Math.PI / 2.0);
-            
+
+            //initialize the world transform, for drawing and collision detection
+         //   worldTranslation = Matrix.CreateRotationY(rotOffset) * Matrix.CreateTranslation(position3);
+            playersSelecting = new bool[MAXPLAYERS];
+            cubeFront[0] = new VertexPositionColorTexture(new Vector3(posOffset, pieceSize, 0) + faceOffset, color, new Vector2(0, 0));
+            cubeFront[1] = new VertexPositionColorTexture(new Vector3(posOffset + pieceSize, pieceSize, 0) + faceOffset, color, new Vector2(1, 0));
+            cubeFront[2] = new VertexPositionColorTexture(new Vector3(posOffset, 0, 0) + faceOffset, color, new Vector2(0, 1));
+            cubeFront[3] = new VertexPositionColorTexture(new Vector3(posOffset + pieceSize, 0, 0) + faceOffset, color, new Vector2(1, 1));
+
         }
 
         #endregion
 
         #region update and draw
-        public void Draw(Camera camera, Matrix worldTranslation)
+        public void Draw(Camera camera, Matrix matWorld)
         {
             GameObject.device.SetVertexBuffer(cubeBuffer);
             
             Matrix rotMatrix = Matrix.CreateRotationY(rotOffset);
-            this.worldTranslation = rotMatrix * worldTranslation;
-            cubeEffect.World = this.worldTranslation;
+            this.worldTranslation = rotMatrix * matWorld;
+
+            cubeEffect.World = worldTranslation;
             cubeEffect.View = camera.view;
             cubeEffect.Projection = camera.projection;
-            
-            
-            
             
             // Render background of Square
             cubeEffect.DiffuseColor = color.ToVector3();
@@ -105,14 +113,35 @@ namespace Cubic_The_Game
 
         }
 
+        public bool intersects(Player player, Matrix matWorld)
+        {
+            Vector2[] polygon = new Vector2[cubeFront.Length];
+            for (int i = 0; i < cubeFront.Length; i++)
+               polygon[i] = GameObject.GetScreenSpace(cubeFront[i].Position, worldTranslation);
 
+            if (GlobalFuncs.PointInPolygonCollision2D(player.center, polygon))
+            {
+                playersSelecting[player.index] = true;
+                interactedColor = new Color(player.color.R / 4 + 128, player.color.G / 4 + 128, player.color.B / 4 + 128);
+            }
+            else
+                playersSelecting[player.index] = false;
+
+            return playersSelecting[player.index];
+        }
         public new void Update()
         {
-            color = isIntersected ? interactedColor : inactiveColor;
-            cubeFront[0] = new VertexPositionColorTexture(new Vector3(posOffset, pieceSize, 0)+faceOffset , color, new Vector2(0, 0));
-            cubeFront[1] = new VertexPositionColorTexture(new Vector3(posOffset + pieceSize, pieceSize, 0) + faceOffset, color, new Vector2(1, 0));
-            cubeFront[2] = new VertexPositionColorTexture(new Vector3(posOffset, 0, 0) + faceOffset, color, new Vector2(0, 1));
-            cubeFront[3] = new VertexPositionColorTexture(new Vector3(posOffset + pieceSize, 0, 0) + faceOffset, color, new Vector2(1, 1));
+            //color = isIntersected ? interactedColor : inactiveColor;
+            bool someoneSelecting = false;
+            for (int i = 0; i < playersSelecting.Length; i++)
+            {
+                if (playersSelecting[i])
+                    someoneSelecting = true;
+            }
+            color = someoneSelecting ? interactedColor : inactiveColor;
+
+            for(int i=0; i < cubeFront.Length; i++)
+                cubeFront[i].Color = color;
         }
         #endregion
     }

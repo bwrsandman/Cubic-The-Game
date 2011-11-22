@@ -98,16 +98,32 @@ namespace Cubic_The_Game
             this.isForward = isForward;
             this.position3 = position3;
             matWorld = Matrix.CreateTranslation(position3);
+
+
+
+
             squares = new MatchPiece[numSquaresTotal];
             for (int i = 0; i < numSquaresTotal; ++i)
                 squares[i] = new MatchPiece(i % numSquaresAcross - (numSquaresAcross / 2.0f), squareWidth, i / numSquaresAcross, (numSquaresAcross / 2.0f));
       
             //setup normals for each side, from front to left-side
             normals = new Vector3[4];
-            normals[0] = new Vector3(0, 0, -1);
+            normals[0] = new Vector3(0, 0, 1);
             normals[1] = new Vector3(1, 0, 0);
-            normals[2] = new Vector3(0, 0, 1);
+            normals[2] = new Vector3(0, 0, -1);
             normals[3] = new Vector3(-1, 0, 0);
+
+
+            //DEBUG - test
+            //Matrix rotMatrix = Matrix.CreateRotationY((float)MathHelper.PiOver4);
+            //matWorld = rotMatrix * Matrix.CreateTranslation(position3);
+            ////rotate the normals
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    normals[i] = Vector3.TransformNormal(normals[i], rotMatrix);
+            //}
+            ////end debug
+
 
             float segWidth = numSquaresAcross* squareWidth/2;
             
@@ -128,7 +144,7 @@ namespace Cubic_The_Game
             bottom[3] = new VertexPositionColor(new Vector3(-segWidth, -squareWidth, -segWidth), color);
             bottomBuff = new VertexBuffer(device, typeof(VertexPositionColor), bottom.Length, BufferUsage.WriteOnly);
             bottomBuff.SetData<VertexPositionColor>(bottom);   
-
+            
         }
 
 
@@ -145,23 +161,64 @@ namespace Cubic_The_Game
             Matrix rotMatrix = Matrix.CreateRotationY(rotationPrime);
             matWorld = rotMatrix * Matrix.CreateTranslation(position3);
 
-
             //rotate the normals
             for (int i = 0; i < 4; i++)
             {
                 normals[i] = Vector3.TransformNormal(normals[i], rotMatrix);
             }
+        }
 
+        public void Update(float seconds)
+        {
             // Update the segments
             foreach (MatchPiece piece in squares)
                 if (piece != null)
                     piece.Update();
         }
 
+
         public void intersects(Player[] players)
         {
-            foreach (MatchPiece piece in squares)
-                piece.intersects(players);
+       //     Vector3 worldPos = device.Viewport.Unproject(new Vector3((float)players[0].center.X, (float)players[0].center.Y, 0),
+       //                                                         camera.projection, camera.view, Matrix.Identity);
+
+            Vector3 worldPos = device.Viewport.Unproject(new Vector3(0, 0, 0), camera.projection, camera.view, Matrix.Identity);
+            Ray ray = new Ray(worldPos, -camera.view.Forward);
+            Vector3 norm = ray.Direction;
+
+            int j = 0;
+            for (int i = 0; i < normals.Length; i++)
+            {
+                //if the dot product between them is > 0, then the angle must be < 90 degrees, so 
+                //this face is valid.
+                if ((normals[i].X * norm.X) + (normals[i].Y * norm.Y) + (normals[i].Z * norm.Z) > 0)
+                {
+                    //test each square on this row
+                    for (; j < (i + 1) * numSquaresAcross; j++)
+                    {
+                        foreach (Player p in players)
+                        {
+                            if (p != null)
+                                squares[j].intersects(p, matWorld);
+                        }
+                    }
+                }
+                else
+                {
+                    //(i+1) * numSquaresAcross: since the squares are set up in order, if i = 0, and there's 6
+                    //squares across, we'll be skipping to index 6, the first square on the next side, which has a different normal
+                    if (i < normals.Length - 1)
+                        j = (i + 1) * numSquaresAcross;
+                }
+
+            }
+
+
+            //foreach (MatchPiece piece in squares)
+            //{
+            //    //  foreach (Player p in players)
+            //    piece.intersects(players);
+            //}
         }
         public new void Draw()
         {
@@ -207,19 +264,21 @@ namespace Cubic_The_Game
         public void DrawPieces()
         {
             foreach (MatchPiece piece in squares)
-                if (piece != null)
-                    piece.Draw(camera, matWorld);
+                if (piece != null) 
+                    piece.Draw(camera, matWorld);        
         }
 
-        protected void UpdateNormals()
-        {
-            Matrix rotMatrix = Matrix.CreateRotationY(rotation);
-            //set the normals to the rotation
-            for (int i = 0; i < 4; i++)
-            {
-                normals[i] = Vector3.TransformNormal(normals[i], rotMatrix);
-            }
-        }
+
+
+        //protected void UpdateNormals()
+        //{
+        //    Matrix rotMatrix = Matrix.CreateRotationY(rotation);
+        //    //set the normals to the rotation
+        //    for (int i = 0; i < 4; i++)
+        //    {
+        //        normals[i] = Vector3.TransformNormal(normals[i], rotMatrix);
+        //    }
+        //}
         #endregion 
 
     }
