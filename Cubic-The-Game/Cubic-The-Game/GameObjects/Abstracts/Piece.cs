@@ -16,9 +16,24 @@ namespace Cubic_The_Game
 {
     abstract class Piece : GameObject
     {
-        protected abstract float midLen{get;}
-        protected Piece()
+        protected float midLen;
+        protected VertexPositionColorTexture[] cubeFront;
+        protected Piece() { }
+
+        protected Piece(Vector3 offset, float midLen)
         {
+            this.midLen = midLen;
+            Vector2[] textCoord = { new Vector2(0, 0), 
+                                    new Vector2(1, 0), 
+                                    new Vector2(0, 1), 
+                                    new Vector2(1, 1) };
+            Vector2[] posCoord = { new Vector2(0, 0), 
+                                    new Vector2(1, 0), 
+                                    new Vector2(0, -1), 
+                                    new Vector2(1, -1) };
+            cubeFront = new VertexPositionColorTexture[4];
+            for (byte i = 0; i < 4; ++i)
+                cubeFront[i] = new VertexPositionColorTexture(offset + midLen * new Vector3(posCoord[i], 0f), color, textCoord[i]);
         }
 
         #region constants

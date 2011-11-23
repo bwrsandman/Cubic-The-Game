@@ -30,10 +30,7 @@ namespace Cubic_The_Game
         #endregion
 
         #region members
-        private VertexPositionColorTexture[] cubeFront;
         private float rotOffset;
-        protected override float midLen { get { return _midLen; } }
-        private float _midLen;
 
         public override Matrix GetWorldTranslation { get { return worldTranslation; } }
         private Matrix worldTranslation = Matrix.CreateTranslation(0, 0, 2);
@@ -51,27 +48,14 @@ namespace Cubic_The_Game
         ///     - Create a backsurface and front texture key
         /// </summary>
         public MatchPiece(float XOffset, float size, int facingDirection, float ZOffset)
+            : base(new Vector3(XOffset, 0.0f, ZOffset), size)
         {
-            cubeFront = new VertexPositionColorTexture[4];
-            this._midLen = size;
             position3 = new Vector3(XOffset, 0, 0);
             rotOffset = (float)(facingDirection * Math.PI / 2.0);
 
             //initialize the world transform, for drawing and collision detection
          //   worldTranslation = Matrix.CreateRotationY(rotOffset) * Matrix.CreateTranslation(position3);
             playersSelecting = new bool[MAXPLAYERS];
-            Vector3 offset = new Vector3(XOffset, 0.0f, ZOffset);
-
-            Vector2[] textCoord = { new Vector2(0, 0), 
-                                    new Vector2(1, 0), 
-                                    new Vector2(0, 1), 
-                                    new Vector2(1, 1) };
-            Vector2[] posCoord = { new Vector2(0, 0), 
-                                    new Vector2(1, 0), 
-                                    new Vector2(0, -1), 
-                                    new Vector2(1, -1) };
-            for (byte i = 0; i < 4; ++i)
-                cubeFront[i] = new VertexPositionColorTexture(offset + size * new Vector3(posCoord[i], 0f), color, textCoord[i]);
         }
 
         #endregion
@@ -133,6 +117,7 @@ namespace Cubic_The_Game
 
             return playersSelecting[player.index];
         }
+
         public new void Update()
         {
             //color = isIntersected ? interactedColor : inactiveColor;

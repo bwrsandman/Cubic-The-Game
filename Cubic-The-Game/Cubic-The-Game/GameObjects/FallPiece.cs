@@ -29,7 +29,6 @@ namespace Cubic_The_Game
 
         #region members
         private Vector3 movement = Vector3.Zero;
-        protected override float midLen { get { return MIDLEN; } }
         #endregion
 
         public static void loadBuffers()
@@ -39,23 +38,10 @@ namespace Cubic_The_Game
         }
 
         public FallPiece(Vector2 origin)
+            : base(MIDLEN / 2 * new Vector3(-1f, 1f, 0f), MIDLEN)
         {
             interactingPlayer = -1;
             center3 = new Vector3(origin,DEPTH);
-
-            Vector3 offset = midLen / 2 * new Vector3(-1f,1f,0f);
-            Vector2[] textCoord = { new Vector2(0, 0), 
-                                    new Vector2(1, 0), 
-                                    new Vector2(0, 1), 
-                                    new Vector2(1, 1) };
-            Vector2[] posCoord = { new Vector2(0, 0), 
-                                    new Vector2(1, 0), 
-                                    new Vector2(0, -1), 
-                                    new Vector2(1, -1) };
-            cubeFront = new VertexPositionColorTexture[4];
-            for (byte i = 0; i < 4; ++i)
-                cubeFront[i] = new VertexPositionColorTexture(offset + midLen * new Vector3(posCoord[i], 0f), color, textCoord[i]);
-
             texture = generateTexture();          
         }
 
@@ -65,7 +51,6 @@ namespace Cubic_The_Game
         private Matrix worldTranslation { get { return Matrix.CreateTranslation(center3); } }
         private Vector3 center3;
 
-        VertexPositionColorTexture[] cubeFront;
         private bool grabbed;
         #endregion
 
