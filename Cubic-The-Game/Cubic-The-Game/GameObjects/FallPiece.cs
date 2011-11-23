@@ -47,9 +47,9 @@ namespace Cubic_The_Game
         }
 
         #region members
-        public override Matrix GetWorldTranslation{get{return worldTranslation;}}
+        public override Matrix GetWorldTranslation { get { return Matrix.Identity; } }
         public override Vector3 GetCenter3 { get { return center3; } }
-        private Matrix worldTranslation = Matrix.CreateTranslation(0, 0, 2);
+        private Matrix worldTranslation { get { return Matrix.CreateTranslation(center3); } }
         private Vector3 center3;
 
         VertexPositionColorTexture[] cubeFront;
@@ -92,10 +92,10 @@ namespace Cubic_The_Game
                 center3 += new Vector3(0.0f, FALLSPEED, 0.0f);
             movement = Vector3.Zero;
             color = isIntersected? interactedColor : inactiveColor ;
-            cubeFront[0] = new VertexPositionColorTexture(new Vector3(-SIDERADIUS, SIDERADIUS, 0) + center3, color, new Vector2(0,0));
-            cubeFront[1] = new VertexPositionColorTexture(new Vector3(SIDERADIUS, SIDERADIUS, 0) + center3, color, new Vector2(1, 0));
-            cubeFront[2] = new VertexPositionColorTexture(new Vector3(-SIDERADIUS, -SIDERADIUS, 0) + center3, color, new Vector2(0, 1));
-            cubeFront[3] = new VertexPositionColorTexture(new Vector3(SIDERADIUS, -SIDERADIUS, 0) + center3, color, new Vector2(1,1));
+            cubeFront[0] = new VertexPositionColorTexture(new Vector3(-SIDERADIUS, SIDERADIUS, 0), color, new Vector2(0,0));
+            cubeFront[1] = new VertexPositionColorTexture(new Vector3(SIDERADIUS, SIDERADIUS, 0), color, new Vector2(1, 0));
+            cubeFront[2] = new VertexPositionColorTexture(new Vector3(-SIDERADIUS, -SIDERADIUS, 0), color, new Vector2(0, 1));
+            cubeFront[3] = new VertexPositionColorTexture(new Vector3(SIDERADIUS, -SIDERADIUS, 0), color, new Vector2(1,1));
         }
 
         public void Draw(Camera camera)
