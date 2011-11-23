@@ -17,7 +17,7 @@ namespace Cubic_The_Game
     class FallPiece : Piece
     {
         #region constants
-        private const float SIDERADIUS = 0.5f;
+        private const float midLen = 1f;
         private const float DEPTH = -5f;
         private const float FALLSPEED = -0.05f;
         private const float OFFSCREENOFFSET = 5f;
@@ -42,11 +42,19 @@ namespace Cubic_The_Game
             interactingPlayer = -1;
             center3 = new Vector3(origin,DEPTH);
 
+            Vector3 offset = midLen / 2 * new Vector3(-1f,1f,0f);
+            Vector2[] textCoord = { new Vector2(0, 0), 
+                                    new Vector2(1, 0), 
+                                    new Vector2(0, 1), 
+                                    new Vector2(1, 1) };
+            Vector2[] posCoord = { new Vector2(0, 0), 
+                                    new Vector2(1, 0), 
+                                    new Vector2(0, -1), 
+                                    new Vector2(1, -1) };
             cubeFront = new VertexPositionColorTexture[4];
-            cubeFront[0] = new VertexPositionColorTexture(new Vector3(-SIDERADIUS, SIDERADIUS, 0), color, new Vector2(0, 0));
-            cubeFront[1] = new VertexPositionColorTexture(new Vector3(SIDERADIUS, SIDERADIUS, 0), color, new Vector2(1, 0));
-            cubeFront[2] = new VertexPositionColorTexture(new Vector3(-SIDERADIUS, -SIDERADIUS, 0), color, new Vector2(0, 1));
-            cubeFront[3] = new VertexPositionColorTexture(new Vector3(SIDERADIUS, -SIDERADIUS, 0), color, new Vector2(1, 1));
+            for (byte i = 0; i < 4; ++i)
+                cubeFront[i] = new VertexPositionColorTexture(offset + midLen * new Vector3(posCoord[i], 0f), color, textCoord[i]);
+
             texture = generateTexture();          
         }
 

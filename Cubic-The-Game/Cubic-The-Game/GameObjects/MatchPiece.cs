@@ -32,9 +32,7 @@ namespace Cubic_The_Game
         #region members
         private VertexPositionColorTexture[] cubeFront;
         private float pieceSize;
-        private float posOffset;
         private float rotOffset;
-        private Vector3 faceOffset;
 
         public override Matrix GetWorldTranslation { get { return worldTranslation; } }
         private Matrix worldTranslation = Matrix.CreateTranslation(0, 0, 2);
@@ -51,23 +49,28 @@ namespace Cubic_The_Game
         ///     - Set it's offset from the middle
         ///     - Create a backsurface and front texture key
         /// </summary>
-        public MatchPiece(float posOffset, float size, int facingDirection, float midLen)
+        public MatchPiece(float XOffset, float size, int facingDirection, float ZOffset)
         {
             cubeFront = new VertexPositionColorTexture[4];
             this.pieceSize = size;
-            this.posOffset = posOffset;
-            position3 = new Vector3(posOffset, 0, 0);
-            faceOffset = new Vector3(0, -size, midLen);
+            position3 = new Vector3(XOffset, 0, 0);
             rotOffset = (float)(facingDirection * Math.PI / 2.0);
 
             //initialize the world transform, for drawing and collision detection
          //   worldTranslation = Matrix.CreateRotationY(rotOffset) * Matrix.CreateTranslation(position3);
             playersSelecting = new bool[MAXPLAYERS];
-            cubeFront[0] = new VertexPositionColorTexture(new Vector3(posOffset, pieceSize, 0) + faceOffset, color, new Vector2(0, 0));
-            cubeFront[1] = new VertexPositionColorTexture(new Vector3(posOffset + pieceSize, pieceSize, 0) + faceOffset, color, new Vector2(1, 0));
-            cubeFront[2] = new VertexPositionColorTexture(new Vector3(posOffset, 0, 0) + faceOffset, color, new Vector2(0, 1));
-            cubeFront[3] = new VertexPositionColorTexture(new Vector3(posOffset + pieceSize, 0, 0) + faceOffset, color, new Vector2(1, 1));
+            Vector3 offset = new Vector3(XOffset, 0.0f, ZOffset);
 
+            Vector2[] textCoord = { new Vector2(0, 0), 
+                                    new Vector2(1, 0), 
+                                    new Vector2(0, 1), 
+                                    new Vector2(1, 1) };
+            Vector2[] posCoord = { new Vector2(0, 0), 
+                                    new Vector2(1, 0), 
+                                    new Vector2(0, -1), 
+                                    new Vector2(1, -1) };
+            for (byte i = 0; i < 4; ++i)
+                cubeFront[i] = new VertexPositionColorTexture(offset + size * new Vector3(posCoord[i], 0f), color, textCoord[i]);
         }
 
         #endregion

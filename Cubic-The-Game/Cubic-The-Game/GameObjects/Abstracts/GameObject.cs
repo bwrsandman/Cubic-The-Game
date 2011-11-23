@@ -231,11 +231,12 @@ namespace Cubic_The_Game
                 device.Viewport.Y, device.Viewport.Width, device.Viewport.Height), Color.White);
             spriteBatch.End();
 
-            //cube.Draw(GameObject.camera);
+            theCube.Draw();
+
             foreach (FallPiece piece in fallPieceList)
                 piece.Draw(GameObject.camera);
 
-            theCube.Draw();
+            
 
             spriteBatch.Begin();
             for (byte i = 0; i < MAXPLAYERS; ++i)

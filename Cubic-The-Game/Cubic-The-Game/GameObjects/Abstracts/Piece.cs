@@ -17,6 +17,10 @@ namespace Cubic_The_Game
     abstract class Piece : GameObject
     {
 
+        protected Piece()
+        {
+        }
+
         #region constants
         private const float OFFSET = 50f;
         private const float OFFSET_SQUARED = 2500;
