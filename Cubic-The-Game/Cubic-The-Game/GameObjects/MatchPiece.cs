@@ -31,12 +31,13 @@ namespace Cubic_The_Game
 
         #region members
         private VertexPositionColorTexture[] cubeFront;
-        private float pieceSize;
         private float rotOffset;
+        protected override float midLen { get { return _midLen; } }
+        private float _midLen;
 
         public override Matrix GetWorldTranslation { get { return worldTranslation; } }
         private Matrix worldTranslation = Matrix.CreateTranslation(0, 0, 2);
-        public override Vector3 GetCenter3 { get { return new Vector3(position3.X + pieceSize / 2, position3.Y - pieceSize / 2, position3.Z); } }
+        public override Vector3 GetCenter3 { get { return new Vector3(position3.X + midLen / 2, position3.Y - midLen / 2, position3.Z); } }
         private Vector3 position3;
 
 
@@ -52,7 +53,7 @@ namespace Cubic_The_Game
         public MatchPiece(float XOffset, float size, int facingDirection, float ZOffset)
         {
             cubeFront = new VertexPositionColorTexture[4];
-            this.pieceSize = size;
+            this._midLen = size;
             position3 = new Vector3(XOffset, 0, 0);
             rotOffset = (float)(facingDirection * Math.PI / 2.0);
 

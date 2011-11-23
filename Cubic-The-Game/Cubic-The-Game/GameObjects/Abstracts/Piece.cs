@@ -16,7 +16,7 @@ namespace Cubic_The_Game
 {
     abstract class Piece : GameObject
     {
-
+        protected abstract float midLen{get;}
         protected Piece()
         {
         }

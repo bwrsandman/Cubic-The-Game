@@ -17,7 +17,7 @@ namespace Cubic_The_Game
     class FallPiece : Piece
     {
         #region constants
-        private const float midLen = 1f;
+        private const float MIDLEN = 1f;
         private const float DEPTH = -5f;
         private const float FALLSPEED = -0.05f;
         private const float OFFSCREENOFFSET = 5f;
@@ -29,6 +29,7 @@ namespace Cubic_The_Game
 
         #region members
         private Vector3 movement = Vector3.Zero;
+        protected override float midLen { get { return MIDLEN; } }
         #endregion
 
         public static void loadBuffers()
