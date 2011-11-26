@@ -90,6 +90,7 @@ namespace Cubic_The_Game
             TestCube.device = ScreenManager.GraphicsDevice;
 
             GameObject.device = ScreenManager.GraphicsDevice;
+            GameObject.LoadStaticContent(content);
             GameObject.spriteBatch = ScreenManager.SpriteBatch;
             GameObject.NewGame();
             // Adding player by number, at this point we assume player configurations 1 or 1,2 or 1,2,3,4
@@ -99,7 +100,7 @@ namespace Cubic_The_Game
             
 
             gameFont = content.Load<SpriteFont>("gamefont");
-            GameObject.LoadStaticContent(content);
+            
 
 
             // A real game would probably have more content than this sample, so

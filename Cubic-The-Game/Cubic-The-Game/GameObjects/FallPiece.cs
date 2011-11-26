@@ -41,8 +41,7 @@ namespace Cubic_The_Game
             : base(MIDLEN / 2 * new Vector3(-1f, 1f, 0f), MIDLEN)
         {
             interactingPlayer = -1;
-            center3 = new Vector3(origin,DEPTH);
-            texture = generateTexture();          
+            center3 = new Vector3(origin,DEPTH);   
         }
 
         #region members

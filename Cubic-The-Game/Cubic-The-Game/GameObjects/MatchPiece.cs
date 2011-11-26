@@ -22,8 +22,8 @@ namespace Cubic_The_Game
     {
 
         #region constants
-        readonly Color inactiveColor = Color.Black;
-        readonly Color backColor = Color.Gray;
+        readonly Color inactiveColor = new Color(1,14,33); //black
+        readonly Color backColor = Color.White; //gray
         #endregion
 
         #region statics
@@ -74,8 +74,8 @@ namespace Cubic_The_Game
             
             // Render background of Square
             cubeEffect.DiffuseColor = color.ToVector3();
-            cubeEffect.TextureEnabled = false;
-            //cubeEffect.Texture = texture;
+            cubeEffect.TextureEnabled = true;
+            cubeEffect.Texture = cubeTex;
 
             cubeEffect.DiffuseColor = backColor.ToVector3();
             foreach (EffectPass pass in cubeEffect.CurrentTechnique.Passes)
@@ -89,7 +89,7 @@ namespace Cubic_The_Game
             // Render foreground of Square with shape
             cubeEffect.DiffuseColor = color.ToVector3();
             cubeEffect.TextureEnabled = true;
-            //cubeEffect.Texture = texture;
+            cubeEffect.Texture = texture;
 
 
             foreach (EffectPass pass in cubeEffect.CurrentTechnique.Passes)
