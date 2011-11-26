@@ -128,22 +128,22 @@ namespace Cubic_The_Game
             float segWidth = numSquaresAcross* squareWidth/2;
             
             //top Cap
-            VertexPositionColor[] top = new VertexPositionColor[4];
-            top[0] = new VertexPositionColor(new Vector3(segWidth, 0, -segWidth), color);
-            top[1] = new VertexPositionColor(new Vector3(segWidth, 0, segWidth), color);
-            top[2] = new VertexPositionColor(new Vector3(-segWidth, 0, -segWidth), color);
-            top[3] = new VertexPositionColor(new Vector3(-segWidth, 0, segWidth), color);
-            topBuff = new VertexBuffer(device, typeof(VertexPositionColor), top.Length, BufferUsage.WriteOnly);
-            topBuff.SetData<VertexPositionColor>(top);
+            VertexPositionColorTexture[] top = new VertexPositionColorTexture[4];
+            top[0] = new VertexPositionColorTexture(new Vector3(segWidth, 0, -segWidth), color, new Vector2(0,0));
+            top[1] = new VertexPositionColorTexture(new Vector3(segWidth, 0, segWidth), color, new Vector2(1,0));
+            top[2] = new VertexPositionColorTexture(new Vector3(-segWidth, 0, -segWidth), color, new Vector2(0,1));
+            top[3] = new VertexPositionColorTexture(new Vector3(-segWidth, 0, segWidth), color, new Vector2(1,1));
+            topBuff = new VertexBuffer(device, typeof(VertexPositionColorTexture), top.Length, BufferUsage.WriteOnly);
+            topBuff.SetData<VertexPositionColorTexture>(top);
 
             //bottom Cap
-            VertexPositionColor[] bottom = new VertexPositionColor[4];
-            bottom[0] = new VertexPositionColor(new Vector3(segWidth, -squareWidth, segWidth), color);
-            bottom[1] = new VertexPositionColor(new Vector3(segWidth, -squareWidth, -segWidth), color);
-            bottom[2] = new VertexPositionColor(new Vector3(-segWidth, -squareWidth, segWidth), color);
-            bottom[3] = new VertexPositionColor(new Vector3(-segWidth, -squareWidth, -segWidth), color);
-            bottomBuff = new VertexBuffer(device, typeof(VertexPositionColor), bottom.Length, BufferUsage.WriteOnly);
-            bottomBuff.SetData<VertexPositionColor>(bottom);   
+            VertexPositionColorTexture[] bottom = new VertexPositionColorTexture[4];
+            bottom[0] = new VertexPositionColorTexture(new Vector3(segWidth, -squareWidth, segWidth), color, new Vector2(0, 0));
+            bottom[1] = new VertexPositionColorTexture(new Vector3(segWidth, -squareWidth, -segWidth), color, new Vector2(1, 0));
+            bottom[2] = new VertexPositionColorTexture(new Vector3(-segWidth, -squareWidth, segWidth), color, new Vector2(0, 1));
+            bottom[3] = new VertexPositionColorTexture(new Vector3(-segWidth, -squareWidth, -segWidth), color, new Vector2(1, 1));
+            bottomBuff = new VertexBuffer(device, typeof(VertexPositionColorTexture), bottom.Length, BufferUsage.WriteOnly);
+            bottomBuff.SetData<VertexPositionColorTexture>(bottom);   
             
         }
 
@@ -240,6 +240,8 @@ namespace Cubic_The_Game
             //Draw top square
             device.SetVertexBuffer((top) ? topBuff : bottomBuff);
             segmentEffect.DiffuseColor = Color.White.ToVector3();
+            segmentEffect.TextureEnabled = true;
+            segmentEffect.Texture = cubeTex;
 
             //    device.Indices = indexBuff;
             device.RasterizerState = solidRasterizer;
@@ -250,14 +252,14 @@ namespace Cubic_The_Game
                 device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);//+2
             }
 
-            segmentEffect.DiffuseColor = color.ToVector3();
-            device.RasterizerState = wireFrameRasterizer;
-            //   device.RasterizerState.FillMode = FillMode.WireFrame;
-            foreach (EffectPass pass in segmentEffect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-                device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);//+2
-            }
+            //segmentEffect.DiffuseColor = color.ToVector3();
+            //device.RasterizerState = wireFrameRasterizer;
+            ////   device.RasterizerState.FillMode = FillMode.WireFrame;
+            //foreach (EffectPass pass in segmentEffect.CurrentTechnique.Passes)
+            //{
+            //    pass.Apply();
+            //    device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);//+2
+            //}
             //end top
         }
 
