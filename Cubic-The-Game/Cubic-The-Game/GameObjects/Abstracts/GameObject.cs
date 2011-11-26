@@ -108,7 +108,7 @@ namespace Cubic_The_Game
         public static void LoadStaticContent(ContentManager content)
         {
             Player.texture = content.Load<Texture2D>("playerCursor");
-            backgroundTex = content.Load<Texture2D>("EgyptBG");
+            backgroundTex = content.Load<Texture2D>("game-bg");
             cubeTex = content.Load<Texture2D>("cubeTex");
 
             shapes = new Texture2D[NUMBEROFSHAPES];

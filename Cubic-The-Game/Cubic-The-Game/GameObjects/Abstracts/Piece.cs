@@ -34,6 +34,9 @@ namespace Cubic_The_Game
             cubeFront = new VertexPositionColorTexture[4];
             for (byte i = 0; i < 4; ++i)
                 cubeFront[i] = new VertexPositionColorTexture(offset + midLen * new Vector3(posCoord[i], 0f), color, textCoord[i]);
+
+            texture = generateTexture();
+
         }
 
         #region constants
