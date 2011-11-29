@@ -150,6 +150,7 @@ namespace Cubic_The_Game
         {
             if (CanFlip(player))
             {
+                // Player has fit a piece
                 segment.FlipTo(player, segmentIndex);
                 FlipVirgin(player);
 
@@ -165,7 +166,7 @@ namespace Cubic_The_Game
 
         public bool CanFlip(Player player)
         {
-            return segment.CanFlip(player, segmentIndex) || !isVirgin;
+            return segment.CanFlip(player, segmentIndex, isVirgin);
         }
 
         
