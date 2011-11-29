@@ -146,9 +146,15 @@ namespace Cubic_The_Game
             if (IsActive)
             {
                 GameObject.UpdateStaticContent(gameTime);
-                //float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                //if(elapsed > 0.08f)
-                //    elapsed = 0.08f;
+                if (GameObject.isGameover)
+                {
+                    int winner = -1;
+                    float highscore = -1f;
+                    for (int i =0; i<4; ++i)
+                        if (GameObject.score[i] > highscore)
+                            highscore = GameObject.score[winner=i];
+                    LoadingScreen.Load(ScreenManager, false, null, new GameOverMenuScreen(winner, highscore));
+                }
             }
         }
 

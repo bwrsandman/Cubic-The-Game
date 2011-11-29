@@ -58,6 +58,8 @@ namespace Cubic_The_Game
         public const int LOCKPOINTS = 0;
         public const int LOCKEDPPSPS = 5; //points per second per shape
         public const int COMPLETEPOINTS = 1000;
+
+        private const int GAMEDURATION = 90; // in seconds
         #endregion
 
         #region statics
@@ -78,7 +80,9 @@ namespace Cubic_The_Game
         public static Texture2D backgroundTex;
         public static Texture2D[] shapes;
         public static SpriteFont font;
-        private static float[] score;
+        public static float[] score{private set; get;}
+        private static double elapsedTime;
+        public static bool isGameover{private set; get;}
         //public static Texture2D[] maps;
 
         #endregion
@@ -121,6 +125,7 @@ namespace Cubic_The_Game
 
         public static void NewGame()
         {
+            elapsedTime = 0f;
             players = new Player[MAXPLAYERS];
             playerList = new List<byte>(MAXPLAYERS);
             score = new float[MAXPLAYERS];
@@ -188,6 +193,7 @@ namespace Cubic_The_Game
 
         public static void UpdateStaticContent(GameTime gameTime)
         {
+            isGameover = ((elapsedTime += gameTime.ElapsedGameTime.TotalSeconds) > GAMEDURATION);
             // Fall pieces
             if (--fallSpawnTimer <= 0)
             {
@@ -248,8 +254,9 @@ namespace Cubic_The_Game
                 if (players[i] != null) players[i].Draw();
 
             for (byte i = 0; i < MAXPLAYERS; ++i)
-                if (players[i] != null) spriteBatch.DrawString(font, "score: " + (int)score[i], new Vector2((i%2 == 0)?5: device.Viewport.Width-200, 5 + (int)(i / 2) * 50f), players[i].color);
-
+                if (players[i] != null) spriteBatch.DrawString(font, "score: " + (int)score[i], new Vector2((i % 2 == 0) ? 5 : device.Viewport.Width - 200, 5 + (int)(i / 2) * 50f), players[i].color);
+            double timeleft = GAMEDURATION - elapsedTime;
+            spriteBatch.DrawString(font, string.Format("{0:00}", timeleft), new Vector2(device.Viewport.Width/2 - 5, 5), ((int)timeleft < 15 && ((int)(timeleft)%2) == 1 ) ? Color.OrangeRed : Color.White);
 
             spriteBatch.End();   
         }
