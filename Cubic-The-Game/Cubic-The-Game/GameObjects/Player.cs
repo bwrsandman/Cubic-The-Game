@@ -45,6 +45,7 @@ namespace Cubic_The_Game
         {
             if (grabPiece != null && grabbing)
                 matchPiece = piece;
+            else matchPiece = null;
 
         }
 
@@ -85,14 +86,28 @@ namespace Cubic_The_Game
                 {         // Drop
                     if (PiecesMatch())
                     {
-                        grabPiece.Expire();
-                        matchPiece.FlipTo(this);
-                        grabbing = false;
+                        if (matchPiece.CanFlip(this))
+                            Flip();
+                        else ;
+                            // TODO: Make sound for user to know he can't place
                     }
-                    else grabbing = grabPiece.Drop(this);
-                    grabPiece = null;
+                    else
+                        Drop();
                 }
             }
+        }
+        private void Flip()
+        {
+            grabPiece.Expire();
+            matchPiece.FlipTo(this);
+            Drop();
+        }
+
+        public void Drop()
+        {
+            grabbing = false;
+            grabPiece.Drop(this);
+            grabPiece = null;
         }
         protected override void Update()
         {
@@ -123,7 +138,15 @@ namespace Cubic_The_Game
         }
         internal bool PiecesMatch()
         {
-            return grabPiece!=null && matchPiece!=null && matchPiece.Match(grabPiece);
+            return grabPiece != null && matchPiece != null && matchPiece.intersects(this) && matchPiece.Match(grabPiece);
+        }
+
+        public Color fadedColor
+        {
+            get 
+            {
+                return new Color(color.ToVector3() / 4 + Vector3.One / 4);
+            }
         }
     }
 }

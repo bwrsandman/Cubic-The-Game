@@ -72,7 +72,7 @@ namespace Cubic_The_Game
 
         #region update and draw
 
-        public bool intersects(Vector2 cntr)
+        public virtual bool intersects(Vector2 cntr)
         {
             return ((center2 - cntr).LengthSquared() <= OFFSET_SQUARED);
         }

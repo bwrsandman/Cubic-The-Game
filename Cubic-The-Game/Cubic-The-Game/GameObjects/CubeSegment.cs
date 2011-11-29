@@ -59,6 +59,9 @@ namespace Cubic_The_Game
         private Vector3[] normals;
         private Vector3 position3;   //TODO: replace with GameObject.Position, once that is a Vector3
         private Matrix matWorld;
+        public int owner { private set; get; }
+        public bool isUnlocked { private set; get; }
+        public Color colorOverlay { private set; get; }
         //      private IndexBuffer indexBuff;
         
         #endregion
@@ -94,17 +97,17 @@ namespace Cubic_The_Game
         }
         public CubeSegment(Vector3 position3, bool isForward)
         {
-            
+            this.isUnlocked = true;
             this.isForward = isForward;
             this.position3 = position3;
             matWorld = Matrix.CreateTranslation(position3);
 
-
+            colorOverlay = Color.White;
 
 
             squares = new MatchPiece[numSquaresTotal];
             for (int i = 0; i < numSquaresTotal; ++i)
-                squares[i] = new MatchPiece(i % numSquaresAcross - (numSquaresAcross / 2.0f), squareWidth, i / numSquaresAcross, (numSquaresAcross / 2.0f));
+                squares[i] = new MatchPiece(this, i % numSquaresAcross - (numSquaresAcross / 2.0f), squareWidth, i / numSquaresAcross, (numSquaresAcross / 2.0f));
       
             //setup normals for each side, from front to left-side
             normals = new Vector3[4];
@@ -199,7 +202,7 @@ namespace Cubic_The_Game
                         foreach (Player p in players)
                         {
                             if (p != null)
-                                squares[j].intersects(p, matWorld);
+                                squares[j].intersects(p);
                         }
                     }
                 }
@@ -239,7 +242,7 @@ namespace Cubic_The_Game
         {
             //Draw top square
             device.SetVertexBuffer((top) ? topBuff : bottomBuff);
-            segmentEffect.DiffuseColor = Color.White.ToVector3();
+            //segmentEffect.DiffuseColor = colorOverlay.ToVector3();
             segmentEffect.TextureEnabled = true;
             segmentEffect.Texture = cubeTex;
 
@@ -283,5 +286,17 @@ namespace Cubic_The_Game
         //}
         #endregion 
 
+    
+        internal void FlipTo(Player player)
+        {
+            owner = player.index;
+            isUnlocked = false;
+            colorOverlay = player.fadedColor;
+        }
+
+        public bool CanFlip(Player player)
+        {
+            return isUnlocked || owner == player.index;
+        }
     }
 }

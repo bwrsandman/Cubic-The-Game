@@ -23,7 +23,7 @@ namespace Cubic_The_Game
 
         #region constants
         readonly Color inactiveColor = new Color(1,14,33); //black
-        readonly Color backColor = Color.White; //gray
+        Color backColor { get { return segment.colorOverlay; } }
         #endregion
 
         #region statics
@@ -40,6 +40,8 @@ namespace Cubic_The_Game
         //private Color[] playerColors;
         private bool[] playersSelecting; //players that are hovering over this
         private Color noninteractedColor;
+        private bool isVirgin;
+        private CubeSegment segment;
         /// <summary>
         /// When a Match Piece is created:
         ///     - Randomly select an identity (texture)
@@ -47,16 +49,15 @@ namespace Cubic_The_Game
         ///     - Set it's offset from the middle
         ///     - Create a backsurface and front texture key
         /// </summary>
-        public MatchPiece(float XOffset, float size, int facingDirection, float ZOffset)
+        public MatchPiece(CubeSegment segment, float XOffset, float size, int facingDirection, float ZOffset)
             : base(new Vector3(XOffset, 0.0f, ZOffset), size)
         {
+            this.segment = segment;
             position3 = new Vector3(XOffset, 0, 0);
             rotOffset = (float)(facingDirection * Math.PI / 2.0);
-
-            //initialize the world transform, for drawing and collision detection
-         //   worldTranslation = Matrix.CreateRotationY(rotOffset) * Matrix.CreateTranslation(position3);
             playersSelecting = new bool[MAXPLAYERS];
             noninteractedColor = new Color(inactiveColor.ToVector3());
+            isVirgin = true;
         }
 
         #endregion
@@ -102,7 +103,7 @@ namespace Cubic_The_Game
 
         }
 
-        public bool intersects(Player player, Matrix matWorld)
+        public bool intersects(Player player)
         {
             Vector2[] polygon = new Vector2[cubeFront.Length];
             for (int i = 0; i < cubeFront.Length; i++)
@@ -112,7 +113,7 @@ namespace Cubic_The_Game
             {
                 if (playersSelecting[player.index] = player.Match(this.pieceID))
                 {
-                    interactedColor = new Color(player.color.ToVector3() / 4 + Vector3.One / 4);
+                    interactedColor = player.fadedColor;
                     player.Attach(this);
                 }
             }
@@ -145,7 +146,18 @@ namespace Cubic_The_Game
 
         internal void FlipTo(Player player)
         {
-            noninteractedColor = player.color;
+            if (CanFlip(player))
+            {
+                noninteractedColor = player.color;
+                segment.FlipTo(player);
+            }
         }
+
+        public bool CanFlip(Player player)
+        {
+            return segment.CanFlip(player) || !isVirgin;
+        }
+
+        
     }
 }

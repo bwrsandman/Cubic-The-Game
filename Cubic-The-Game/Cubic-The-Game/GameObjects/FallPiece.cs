@@ -149,7 +149,7 @@ namespace Cubic_The_Game
                             isIntersected = true;
                             interactingPlayer = i;
                             players[i].Attach(this);
-                            interactedColor = new Color(players[i].color.R / 4 + 128, players[i].color.G / 4 + 128, players[i].color.B / 4 + 128);
+                            interactedColor = players[i].fadedColor;
                             break;
                         }
             }
