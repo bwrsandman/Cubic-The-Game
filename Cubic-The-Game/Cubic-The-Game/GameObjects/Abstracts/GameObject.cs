@@ -72,6 +72,8 @@ namespace Cubic_The_Game
         public static Texture2D cubeTex;
         public static Texture2D backgroundTex;
         public static Texture2D[] shapes;
+        public static SpriteFont font;
+        private static int[] score;
         //public static Texture2D[] maps;
 
         #endregion
@@ -115,7 +117,8 @@ namespace Cubic_The_Game
         public static void NewGame()
         {
             players = new Player[MAXPLAYERS];
-            playerList = new List<byte>(4);
+            playerList = new List<byte>(MAXPLAYERS);
+            score = new int[MAXPLAYERS];
             fallPieceList = new List<FallPiece>();
             fallSpawnTimer = FALLSPAWNINTERVAL;
             theCube = new GreatCube(6, 6, 1.0f, new Vector3(0f, 2.0f, -5));
@@ -238,6 +241,9 @@ namespace Cubic_The_Game
             spriteBatch.Begin();
             for (byte i = 0; i < MAXPLAYERS; ++i)
                 if (players[i] != null) players[i].Draw();
+
+            for (byte i = 0; i < MAXPLAYERS; ++i)
+                if (players[i] != null) spriteBatch.DrawString(font, "score: " + score[i], new Vector2((i%2 == 0)?5: device.Viewport.Width-200, 5 + (int)(i / 2) * 50f), players[i].color);
 
 
             spriteBatch.End();   

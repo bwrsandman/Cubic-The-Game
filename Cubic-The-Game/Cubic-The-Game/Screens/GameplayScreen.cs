@@ -100,7 +100,7 @@ namespace Cubic_The_Game
             
 
             gameFont = content.Load<SpriteFont>("gamefont");
-            
+            GameObject.font = gameFont;
 
 
             // A real game would probably have more content than this sample, so
