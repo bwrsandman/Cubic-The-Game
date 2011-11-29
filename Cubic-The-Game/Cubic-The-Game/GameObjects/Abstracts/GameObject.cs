@@ -225,6 +225,8 @@ namespace Cubic_The_Game
                 device.Viewport.Y, device.Viewport.Width, device.Viewport.Height), Color.White);
             spriteBatch.End();
 
+            // Have the right thing render in front
+            device.DepthStencilState = DepthStencilState.Default;
             theCube.Draw();
 
             foreach (FallPiece piece in fallPieceList)

@@ -43,12 +43,8 @@ namespace Cubic_The_Game
         {
             for (int i = 0; i < cubeSegments.Length; i++)
             {
-                cubeSegments[i].Draw();
-            }
-            //must be called after
-            for (int i = 0; i < cubeSegments.Length; i++)
-            {
                 cubeSegments[i].DrawPieces();
+                cubeSegments[i].Draw();
             }
         }
         public void Update(float seconds)
