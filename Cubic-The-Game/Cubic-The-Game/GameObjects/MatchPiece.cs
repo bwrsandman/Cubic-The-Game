@@ -109,8 +109,8 @@ namespace Cubic_The_Game
 
             if (GlobalFuncs.PointInPolygonCollision2D(player.center, polygon))
             {
-                playersSelecting[player.index] = true;
-                interactedColor = new Color(player.color.R / 4 + 128, player.color.G / 4 + 128, player.color.B / 4 + 128);
+                if (playersSelecting[player.index] = player.Match(this.pieceID))
+                    interactedColor = new Color(player.color.ToVector3() / 4 + Vector3.One / 4);
             }
             else
                 playersSelecting[player.index] = false;

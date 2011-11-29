@@ -60,7 +60,7 @@ namespace Cubic_The_Game
         public int interactingPlayer { get; protected set; }
         protected Color interactedColor;
         protected Color color;
-        private int pieceID;
+        protected int pieceID;
 
         public abstract Matrix GetWorldTranslation { get; }
         public abstract Vector3 GetCenter3{get;}

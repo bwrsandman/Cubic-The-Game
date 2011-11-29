@@ -123,5 +123,10 @@ namespace Cubic_The_Game
         }
 
         #endregion
+
+        internal bool Match(int id)
+        {
+            return this.pieceID == id;
+        }
     }
 }

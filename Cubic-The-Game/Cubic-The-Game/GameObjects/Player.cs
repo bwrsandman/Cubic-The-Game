@@ -101,5 +101,10 @@ namespace Cubic_The_Game
             spriteBatch.Draw(texture, position, color);
         }
         #endregion
+
+        internal bool Match(int id)
+        {
+            return grabbing && grabPiece.Match(id);
+        }
     }
 }

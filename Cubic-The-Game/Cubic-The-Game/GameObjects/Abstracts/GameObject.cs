@@ -228,6 +228,7 @@ namespace Cubic_The_Game
             // Have the right thing render in front
             device.DepthStencilState = DepthStencilState.Default;
             theCube.Draw();
+            device.DepthStencilState = DepthStencilState.None;
 
             foreach (FallPiece piece in fallPieceList)
                 piece.Draw(GameObject.camera);
