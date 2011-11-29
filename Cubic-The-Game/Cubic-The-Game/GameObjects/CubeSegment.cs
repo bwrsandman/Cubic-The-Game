@@ -298,6 +298,8 @@ namespace Cubic_The_Game
             owner[i] = player.index;
             isUnlocked[i] = false;
             colorOverlay[i] = player.fadedColor;
+            for (int j = NUMSIDES * i; j < NUMSIDES * (i + 1); ++j)
+                if (!squares[j].isVirgin) squares[j].FlipVirgin(player);
         }
 
         public bool CanFlip(Player player, int i)

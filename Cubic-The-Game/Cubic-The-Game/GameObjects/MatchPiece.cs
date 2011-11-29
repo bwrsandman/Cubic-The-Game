@@ -40,7 +40,7 @@ namespace Cubic_The_Game
         //private Color[] playerColors;
         private bool[] playersSelecting; //players that are hovering over this
         private Color noninteractedColor;
-        private bool isVirgin;
+        public bool isVirgin { private set; get; }
         private CubeSegment segment;
         private int segmentIndex;
         /// <summary>
@@ -150,10 +150,17 @@ namespace Cubic_The_Game
         {
             if (CanFlip(player))
             {
-                noninteractedColor = player.color;
                 segment.FlipTo(player, segmentIndex);
-                isVirgin = false;
+                FlipVirgin(player);
+
             }
+        }
+
+        internal void FlipVirgin(Player player)
+        {
+                noninteractedColor = player.color;
+                isVirgin = false;
+         
         }
 
         public bool CanFlip(Player player)
