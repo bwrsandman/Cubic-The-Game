@@ -247,5 +247,9 @@ namespace Cubic_The_Game
             Vector3 projection = device.Viewport.Project(cntr, camera.projection, camera.view, world);
             return (new Vector2(projection.X, projection.Y));
         }
+        public static Vector3 GetWorldSpace(Vector2 cntr, float Z, Matrix world)
+        {
+            return device.Viewport.Unproject(new Vector3(cntr,0), camera.projection, camera.view, world) + Vector3.Backward*Z;
+        }
     }
 }

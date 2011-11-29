@@ -69,10 +69,19 @@ namespace Cubic_The_Game
         }
 
 
-        public void Move(Vector2 thismuch)
+        public void Move(Vector2 tohere)
         {
             // TODO: convert thismuch from screenspace back into worldSpace
-            movement += new Vector3(thismuch.X, -thismuch.Y, 0)/45.0f;
+            //movement += new Vector3(thismuch.X, -thismuch.Y, 0) / 45.0f;
+            Move(GetWorldSpace(tohere,position3.Z,GetWorldTranslation));
+        }
+        public void Move(Vector3 tohere)
+        {
+            // TODO: convert thismuch from screenspace back into worldSpace
+            tohere *= 15;
+            float Zdiff = position3.Z - tohere.Z;
+            Matrix Zfix = Matrix.CreateTranslation(Zdiff*Vector3.UnitZ);
+            position3 =  Vector3.Transform(tohere, Zfix);
         }
 
         public bool OutOfBounds()
@@ -82,8 +91,8 @@ namespace Cubic_The_Game
 
         protected override void Update()
         {
-            if (grabbed)
-                position3 += movement;
+            if (grabbed) ;
+            //position3 = movement;
             else
                 position3 += new Vector3(0.0f, FALLSPEED, 0.0f);
             movement = Vector3.Zero;
@@ -114,6 +123,5 @@ namespace Cubic_The_Game
         }
 
         #endregion
-
     }
 }
