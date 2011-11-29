@@ -39,6 +39,10 @@ namespace Cubic_The_Game
             texture = generateTexture();
 
         }
+        public Texture2D generateTexture()
+        {
+            return shapes[pieceID = rnd.Next(0, shapes.Length)];
+        }
 
         #region constants
         private const float OFFSET = 50f;
@@ -56,6 +60,7 @@ namespace Cubic_The_Game
         public int interactingPlayer { get; protected set; }
         protected Color interactedColor;
         protected Color color;
+        private int pieceID;
 
         public abstract Matrix GetWorldTranslation { get; }
         public abstract Vector3 GetCenter3{get;}

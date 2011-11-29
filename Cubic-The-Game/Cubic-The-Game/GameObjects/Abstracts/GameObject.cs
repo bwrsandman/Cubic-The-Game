@@ -62,7 +62,7 @@ namespace Cubic_The_Game
         public static SpriteBatch spriteBatch{protected get; set;}
         public static List<byte> playerList { private set; get; }
         private static int fallSpawnTimer;
-        private static Random rnd = new Random();
+        protected static Random rnd = new Random();
 
         private static List<FallPiece> fallPieceList;
         private static GreatCube theCube;
@@ -246,11 +246,6 @@ namespace Cubic_The_Game
         {
             Vector3 projection = device.Viewport.Project(cntr, camera.projection, camera.view, world);
             return (new Vector2(projection.X, projection.Y));
-        }
-
-        public Texture2D generateTexture()
-        {
-            return shapes[rnd.Next(0, shapes.Length)];
         }
     }
 }

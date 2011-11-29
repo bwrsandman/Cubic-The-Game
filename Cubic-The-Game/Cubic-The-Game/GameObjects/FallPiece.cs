@@ -46,7 +46,7 @@ namespace Cubic_The_Game
 
         #region members
         public override Matrix GetWorldTranslation { get { return Matrix.Identity; } }
-        public override Vector3 GetCenter3 { get { return position3; } }
+            public override Vector3 GetCenter3 { get { return position3; } }
         private Matrix worldTranslation { get { return Matrix.CreateTranslation(position3); } }
 
         private bool grabbed;
