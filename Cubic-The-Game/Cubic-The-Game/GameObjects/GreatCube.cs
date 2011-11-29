@@ -19,7 +19,7 @@ namespace Cubic_The_Game
     {
 
         #region constants
-        float ROT_SPEED = 5;
+        float ROT_SPEED = 2.5f;
         #endregion
 
         #region statics

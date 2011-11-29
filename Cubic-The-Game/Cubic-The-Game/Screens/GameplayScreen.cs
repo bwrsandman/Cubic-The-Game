@@ -152,7 +152,10 @@ namespace Cubic_The_Game
                     float highscore = -1f;
                     for (int i =0; i<4; ++i)
                         if (GameObject.score[i] > highscore)
-                            highscore = GameObject.score[winner=i];
+                        {
+                            highscore = GameObject.score[i];
+                            winner = (i + 1);
+                        }
                     LoadingScreen.Load(ScreenManager, false, null, new GameOverMenuScreen(winner, highscore));
                 }
             }
