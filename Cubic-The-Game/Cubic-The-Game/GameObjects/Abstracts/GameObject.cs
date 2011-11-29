@@ -49,7 +49,7 @@ namespace Cubic_The_Game
 
         #region constants
         public const byte MAXPLAYERS = 4;
-        public const float PLAYERSPEED = 4.0f;
+        public const float PLAYERSPEED = 6.0f;
         public const int FALLSPAWNINTERVAL = 100;
         public const int NUMBEROFSHAPES = 8;
 
