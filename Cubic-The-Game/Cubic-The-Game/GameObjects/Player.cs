@@ -24,6 +24,7 @@ namespace Cubic_The_Game
         #endregion
 
         #region members
+        private Vector2 position;
         public Color color{get; private set;}
         private Vector2 movement = Vector2.Zero;
         protected override TwoInt size{ get { return new TwoInt(texture.Width, texture.Height); } }
@@ -41,10 +42,16 @@ namespace Cubic_The_Game
 
         #endregion
 
+        public Vector2 center //  object center = object position - 1/2 object size, if scaled you have to adjust size or to keep track of the scale (getScale)
+        {
+            get { return new Vector2(position.X + size.X /* * getScale*/ / 2, position.Y + size.Y /* * getScale*/ / 2); }
+            protected set { position = new Vector2(value.X - size.X /* * getScale*/ / 2, value.Y - size.Y /* * getScale*/ / 2); }
+        }
+
         #region constructors
         public Player(int index, Vector2 position, Color color)
-            : base(position)
         {
+            this.position = position;
             this.index = index;
             this.color = color;
         }

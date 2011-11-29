@@ -27,7 +27,6 @@ namespace Cubic_The_Game
         
         #region constructors
         public MovingObject()
-            : base(new Vector2())
         {
         }
         #endregion

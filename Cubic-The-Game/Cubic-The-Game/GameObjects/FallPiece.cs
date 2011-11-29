@@ -41,14 +41,13 @@ namespace Cubic_The_Game
             : base(MIDLEN / 2 * new Vector3(-1f, 1f, 0f), MIDLEN)
         {
             interactingPlayer = -1;
-            center3 = new Vector3(origin,DEPTH);   
+            position3 = new Vector3(origin,DEPTH);   
         }
 
         #region members
         public override Matrix GetWorldTranslation { get { return Matrix.Identity; } }
-        public override Vector3 GetCenter3 { get { return center3; } }
-        private Matrix worldTranslation { get { return Matrix.CreateTranslation(center3); } }
-        private Vector3 center3;
+        public override Vector3 GetCenter3 { get { return position3; } }
+        private Matrix worldTranslation { get { return Matrix.CreateTranslation(position3); } }
 
         private bool grabbed;
         #endregion
@@ -84,9 +83,9 @@ namespace Cubic_The_Game
         protected override void Update()
         {
             if (grabbed)
-                center3 += movement;
+                position3 += movement;
             else
-                center3 += new Vector3(0.0f, FALLSPEED, 0.0f);
+                position3 += new Vector3(0.0f, FALLSPEED, 0.0f);
             movement = Vector3.Zero;
             color = isIntersected? interactedColor : inactiveColor ;
         }

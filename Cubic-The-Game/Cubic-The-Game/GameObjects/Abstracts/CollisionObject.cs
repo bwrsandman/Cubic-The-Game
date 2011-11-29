@@ -26,10 +26,10 @@ namespace Cubic_The_Game
         #endregion
 
         #region constructors
-        public CollisionObject(Vector2 position)
-            : base(position)
-        {
-        }
+        //public CollisionObject(Vector2 position)
+        //    : base(position)
+        //{
+        //}
         #endregion
 
 

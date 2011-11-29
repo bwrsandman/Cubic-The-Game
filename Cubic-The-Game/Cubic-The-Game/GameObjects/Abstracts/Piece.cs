@@ -17,6 +17,7 @@ namespace Cubic_The_Game
     abstract class Piece : GameObject
     {
         protected float midLen;
+        protected Vector3 position3;
         protected VertexPositionColorTexture[] cubeFront;
         protected Piece() { }
 
