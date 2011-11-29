@@ -150,6 +150,7 @@ namespace Cubic_The_Game
             {
                 noninteractedColor = player.color;
                 segment.FlipTo(player);
+                isVirgin = false;
             }
         }
 
