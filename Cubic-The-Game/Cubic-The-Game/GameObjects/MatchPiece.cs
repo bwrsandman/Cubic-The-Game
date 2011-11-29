@@ -23,7 +23,7 @@ namespace Cubic_The_Game
 
         #region constants
         readonly Color inactiveColor = new Color(1,14,33); //black
-        Color backColor { get { return segment.colorOverlay; } }
+        Color backColor { get { return segment.colorOverlay[segmentIndex]; } }
         #endregion
 
         #region statics
@@ -42,6 +42,7 @@ namespace Cubic_The_Game
         private Color noninteractedColor;
         private bool isVirgin;
         private CubeSegment segment;
+        private int segmentIndex;
         /// <summary>
         /// When a Match Piece is created:
         ///     - Randomly select an identity (texture)
@@ -53,6 +54,7 @@ namespace Cubic_The_Game
             : base(new Vector3(XOffset, 0.0f, ZOffset), size)
         {
             this.segment = segment;
+            this.segmentIndex = facingDirection;
             position3 = new Vector3(XOffset, 0, 0);
             rotOffset = (float)(facingDirection * Math.PI / 2.0);
             playersSelecting = new bool[MAXPLAYERS];
@@ -149,14 +151,14 @@ namespace Cubic_The_Game
             if (CanFlip(player))
             {
                 noninteractedColor = player.color;
-                segment.FlipTo(player);
+                segment.FlipTo(player, segmentIndex);
                 isVirgin = false;
             }
         }
 
         public bool CanFlip(Player player)
         {
-            return segment.CanFlip(player) || !isVirgin;
+            return segment.CanFlip(player, segmentIndex) || !isVirgin;
         }
 
         

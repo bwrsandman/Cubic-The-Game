@@ -59,9 +59,9 @@ namespace Cubic_The_Game
         private Vector3[] normals;
         private Vector3 position3;   //TODO: replace with GameObject.Position, once that is a Vector3
         private Matrix matWorld;
-        public int owner { private set; get; }
-        public bool isUnlocked { private set; get; }
-        public Color colorOverlay { private set; get; }
+        public int[] owner { private set; get; }
+        public bool[] isUnlocked { private set; get; }
+        public Color[] colorOverlay { private set; get; }
         //      private IndexBuffer indexBuff;
         
         #endregion
@@ -97,17 +97,23 @@ namespace Cubic_The_Game
         }
         public CubeSegment(Vector3 position3, bool isForward)
         {
-            this.isUnlocked = true;
+            this.owner = new int[4];
+            this.isUnlocked = new bool[4];
+            this.colorOverlay = new Color[4];
+            for (int i = 0; i < 4; ++i)
+            {
+                this.owner[i] = -1;
+                this.isUnlocked[i] = true;
+                this.colorOverlay[i] = Color.White;
+            }
             this.isForward = isForward;
             this.position3 = position3;
             matWorld = Matrix.CreateTranslation(position3);
 
-            colorOverlay = Color.White;
-
 
             squares = new MatchPiece[numSquaresTotal];
             for (int i = 0; i < numSquaresTotal; ++i)
-                squares[i] = new MatchPiece(this, i % numSquaresAcross - (numSquaresAcross / 2.0f), squareWidth, i / numSquaresAcross, (numSquaresAcross / 2.0f));
+              squares[i] = new MatchPiece(this, i % numSquaresAcross - (numSquaresAcross / 2.0f), squareWidth, i / numSquaresAcross, (numSquaresAcross / 2.0f));
       
             //setup normals for each side, from front to left-side
             normals = new Vector3[4];
@@ -287,16 +293,16 @@ namespace Cubic_The_Game
         #endregion 
 
     
-        internal void FlipTo(Player player)
+        internal void FlipTo(Player player, int i)
         {
-            owner = player.index;
-            isUnlocked = false;
-            colorOverlay = player.fadedColor;
+            owner[i] = player.index;
+            isUnlocked[i] = false;
+            colorOverlay[i] = player.fadedColor;
         }
 
-        public bool CanFlip(Player player)
+        public bool CanFlip(Player player, int i)
         {
-            return isUnlocked || owner == player.index;
+            return isUnlocked[i] || owner[i] == player.index;
         }
     }
 }
