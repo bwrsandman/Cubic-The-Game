@@ -128,7 +128,10 @@ namespace Cubic_The_Game
         #region draw
         protected override void Draw() 
         {
-            spriteBatch.Draw(texture, position, color);
+            if (grabbing)
+                spriteBatch.Draw(texture, position, new Color(color.ToVector4() - 0.9f * Vector4.UnitW));
+            else
+                spriteBatch.Draw(texture, position, color);
         }
         #endregion
 

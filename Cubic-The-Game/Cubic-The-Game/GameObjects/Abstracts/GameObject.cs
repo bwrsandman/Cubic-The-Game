@@ -49,10 +49,15 @@ namespace Cubic_The_Game
 
         #region constants
         public const byte MAXPLAYERS = 4;
-        public const float PLAYERSPEED = 2.0f;
+        public const float PLAYERSPEED = 4.0f;
         public const int FALLSPAWNINTERVAL = 100;
-
         public const int NUMBEROFSHAPES = 8;
+
+        public const int MATCHPOINTS = 50;
+        public const int STEALPOINTS = 0;
+        public const int LOCKPOINTS = 0;
+        public const int LOCKEDPPSPS = 5; //points per second per shape
+        public const int COMPLETEPOINTS = 1000;
         #endregion
 
         #region statics
@@ -73,7 +78,7 @@ namespace Cubic_The_Game
         public static Texture2D backgroundTex;
         public static Texture2D[] shapes;
         public static SpriteFont font;
-        private static int[] score;
+        private static float[] score;
         //public static Texture2D[] maps;
 
         #endregion
@@ -118,7 +123,7 @@ namespace Cubic_The_Game
         {
             players = new Player[MAXPLAYERS];
             playerList = new List<byte>(MAXPLAYERS);
-            score = new int[MAXPLAYERS];
+            score = new float[MAXPLAYERS];
             fallPieceList = new List<FallPiece>();
             fallSpawnTimer = FALLSPAWNINTERVAL;
             theCube = new GreatCube(6, 6, 1.0f, new Vector3(0f, 2.0f, -5));
@@ -243,7 +248,7 @@ namespace Cubic_The_Game
                 if (players[i] != null) players[i].Draw();
 
             for (byte i = 0; i < MAXPLAYERS; ++i)
-                if (players[i] != null) spriteBatch.DrawString(font, "score: " + score[i], new Vector2((i%2 == 0)?5: device.Viewport.Width-200, 5 + (int)(i / 2) * 50f), players[i].color);
+                if (players[i] != null) spriteBatch.DrawString(font, "score: " + (int)score[i], new Vector2((i%2 == 0)?5: device.Viewport.Width-200, 5 + (int)(i / 2) * 50f), players[i].color);
 
 
             spriteBatch.End();   
@@ -259,6 +264,12 @@ namespace Cubic_The_Game
         public static Vector3 GetWorldSpace(Vector2 cntr, float Z, Matrix world)
         {
             return device.Viewport.Unproject(new Vector3(cntr,0), camera.projection, camera.view, world) + Vector3.Backward*Z;
+        }
+
+        protected static void Score(int i, float points)
+        {
+            Debug.WriteLine(points + " allocated to player#" + i);
+            score[i] += points;
         }
     }
 }

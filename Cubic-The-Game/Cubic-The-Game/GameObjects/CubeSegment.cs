@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 #endregion
 
 namespace Cubic_The_Game
@@ -183,6 +184,10 @@ namespace Cubic_The_Game
             foreach (MatchPiece piece in squares)
                 if (piece != null)
                     piece.Update();
+            for (int i = 0; i < 4; ++i)
+                if (owner[i] != -1) ;
+                    //GameObject.Score(owner[i], GameObject.LOCKEDPPSPS * numSquaresAcross*seconds);
+
         }
 
 
@@ -295,16 +300,49 @@ namespace Cubic_The_Game
     
         internal void FlipTo(Player player, int i)
         {
-            owner[i] = player.index;
-            isUnlocked[i] = false;
-            colorOverlay[i] = player.fadedColor;
+            GameObject.Score(player.index, GameObject.MATCHPOINTS);
+            if (owner[i] != player.index)
+            {
+                // Row has been stolen
+                // Allocate points
+                GameObject.Score(player.index, GameObject.STEALPOINTS);
+                owner[i] = player.index;
+                isUnlocked[i] = false;
+                colorOverlay[i] = player.fadedColor;
+            }
+            else GameObject.Score(player.index, GameObject.LOCKPOINTS);
+            
+            int numMatched = 1;
             for (int j = i*numSquaresAcross; j < (i+1)*numSquaresAcross; ++j)
-                if (!squares[j].isVirgin) squares[j].FlipVirgin(player);
+            {
+                if (!squares[j].isVirgin)
+                {
+                    squares[j].FlipVirgin(player);
+                    ++numMatched;
+                }
+            }
+            Debug.WriteLine(numMatched + "/" + numSquaresAcross);
+            if (numMatched == numSquaresAcross)
+            {
+                // Player has filled in an entire row, reset side
+                // Allocate points
+                GameObject.Score(player.index, GameObject.COMPLETEPOINTS);
+                ResetSide(i);
+            }
         }
 
-        public bool CanFlip(Player player, int i)
+        public bool CanFlip(Player player, int i, bool affectedPieceIsVirgin)
         {
-            return isUnlocked[i] || owner[i] == player.index;
+            return isUnlocked[i] || (owner[i] == player.index ^ !affectedPieceIsVirgin);
+        }
+
+        private void ResetSide(int j)
+        {
+            for (int i = j*numSquaresAcross; i < (j+1)*numSquaresAcross; ++i)
+                squares[i] = new MatchPiece(this, i % numSquaresAcross - (numSquaresAcross / 2.0f), squareWidth, i / numSquaresAcross, (numSquaresAcross / 2.0f));
+            owner[j] = -1;
+            isUnlocked[j] = true;
+            colorOverlay[j] = Color.White;
         }
     }
 }
