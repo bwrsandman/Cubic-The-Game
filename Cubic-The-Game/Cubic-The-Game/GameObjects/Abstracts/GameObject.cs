@@ -193,7 +193,7 @@ namespace Cubic_The_Game
                 piece.Update();
                 for (byte i = 0; i < MAXPLAYERS; ++i)
                     piece.intersects(players);
-                if (piece.OutOfBounds()) expiredPieces.Add(piece);
+                if (piece.IsExpired()) expiredPieces.Add(piece);
 
             }
             foreach (FallPiece piece in expiredPieces)

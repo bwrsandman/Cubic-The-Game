@@ -35,11 +35,11 @@ namespace Cubic_The_Game
         public override Matrix GetWorldTranslation { get { return worldTranslation; } }
         private Matrix worldTranslation = Matrix.CreateTranslation(0, 0, 2);
         public override Vector3 GetCenter3 { get { return new Vector3(position3.X + midLen / 2, position3.Y - midLen / 2, position3.Z); } }
-        private Vector3 position3;
 
 
         //private Color[] playerColors;
         private bool[] playersSelecting; //players that are hovering over this
+        private Color noninteractedColor;
         /// <summary>
         /// When a Match Piece is created:
         ///     - Randomly select an identity (texture)
@@ -56,6 +56,7 @@ namespace Cubic_The_Game
             //initialize the world transform, for drawing and collision detection
          //   worldTranslation = Matrix.CreateRotationY(rotOffset) * Matrix.CreateTranslation(position3);
             playersSelecting = new bool[MAXPLAYERS];
+            noninteractedColor = new Color(inactiveColor.ToVector3());
         }
 
         #endregion
@@ -110,7 +111,10 @@ namespace Cubic_The_Game
             if (GlobalFuncs.PointInPolygonCollision2D(player.center, polygon))
             {
                 if (playersSelecting[player.index] = player.Match(this.pieceID))
+                {
                     interactedColor = new Color(player.color.ToVector3() / 4 + Vector3.One / 4);
+                    player.Attach(this);
+                }
             }
             else
                 playersSelecting[player.index] = false;
@@ -127,11 +131,21 @@ namespace Cubic_The_Game
                 if (playersSelecting[i])
                     someoneSelecting = true;
             }
-            color = someoneSelecting ? interactedColor : inactiveColor;
+            color = someoneSelecting ? interactedColor : noninteractedColor;
 
             for(int i=0; i < cubeFront.Length; i++)
                 cubeFront[i].Color = color;
         }
         #endregion
+
+        internal bool Match(FallPiece grabPiece)
+        {
+            return this.pieceID == grabPiece.pieceID;
+        }
+
+        internal void FlipTo(Player player)
+        {
+            noninteractedColor = player.color;
+        }
     }
 }

@@ -50,6 +50,7 @@ namespace Cubic_The_Game
         private Matrix worldTranslation { get { return Matrix.CreateTranslation(position3); } }
 
         private bool grabbed;
+        private bool expired;
         #endregion
 
         #region update and draw
@@ -84,9 +85,9 @@ namespace Cubic_The_Game
             position3 =  Vector3.Transform(tohere, Zfix);
         }
 
-        public bool OutOfBounds()
+        public bool IsExpired()
         {
-            return (center2.Y > screenSize.Y + OFFSCREENOFFSET);
+            return (center2.Y > screenSize.Y + OFFSCREENOFFSET)||expired;
         }
 
         protected override void Update()
@@ -127,6 +128,32 @@ namespace Cubic_The_Game
         internal bool Match(int id)
         {
             return this.pieceID == id;
+        }
+
+        internal void Expire()
+        {
+            expired=true;
+        }
+
+        public bool intersects(Player[] players)
+        {
+            if (isIntersected && interactingPlayer >= 0 && intersects(players[interactingPlayer].center)) ; // yeah this is blank... for now
+            else
+            {
+                isIntersected = false;
+                interactingPlayer = -1;
+                for (byte i = 0; i < players.Length; ++i)
+                    if (players[i] != null)
+                        if (intersects(players[i].center))
+                        {
+                            isIntersected = true;
+                            interactingPlayer = i;
+                            players[i].Attach(this);
+                            interactedColor = new Color(players[i].color.R / 4 + 128, players[i].color.G / 4 + 128, players[i].color.B / 4 + 128);
+                            break;
+                        }
+            }
+            return isIntersected;
         }
     }
 }

@@ -29,16 +29,25 @@ namespace Cubic_The_Game
         private Vector2 movement = Vector2.Zero;
         protected override TwoInt size{ get { return new TwoInt(texture.Width, texture.Height); } }
         private FallPiece grabPiece;
+        private MatchPiece matchPiece;
         private bool grabbing;
         public int index { get; private set; }
         #endregion
 
         #region accessors
-        public void Attach(Piece piece)
+        public void Attach(FallPiece piece)
         {
             if (grabPiece == null || !grabbing)
-                if (piece is FallPiece) grabPiece = (FallPiece)piece;
+                grabPiece = piece;
+
         }
+        public void Attach(MatchPiece piece)
+        {
+            if (grabPiece != null && grabbing)
+                matchPiece = piece;
+
+        }
+
 
         #endregion
 
@@ -74,7 +83,13 @@ namespace Cubic_The_Game
                 }
                 else
                 {         // Drop
-                    grabbing = grabPiece.Drop(this);
+                    if (PiecesMatch())
+                    {
+                        grabPiece.Expire();
+                        matchPiece.FlipTo(this);
+                        grabbing = false;
+                    }
+                    else grabbing = grabPiece.Drop(this);
                     grabPiece = null;
                 }
             }
@@ -104,7 +119,11 @@ namespace Cubic_The_Game
 
         internal bool Match(int id)
         {
-            return grabbing && grabPiece.Match(id);
+            return grabbing && grabPiece != null && grabPiece.Match(id);
+        }
+        internal bool PiecesMatch()
+        {
+            return grabPiece!=null && matchPiece!=null && matchPiece.Match(grabPiece);
         }
     }
 }
