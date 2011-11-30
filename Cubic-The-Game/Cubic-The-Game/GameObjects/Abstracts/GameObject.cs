@@ -256,7 +256,7 @@ namespace Cubic_The_Game
                 if (players[i] != null) players[i].Draw();
 
             for (byte i = 0; i < MAXPLAYERS; ++i)
-                if (players[i] != null) spriteBatch.DrawString(font, "score: " + (int)score[i], new Vector2((i % 2 == 0) ? 50 : device.Viewport.Width - 200, 50 + (int)(i / 2) * 50f), players[i].color);
+                if (players[i] != null) spriteBatch.DrawString(font, "score: " + (int)score[i], new Vector2((i % 2 == 0) ? 50 : device.Viewport.Width - 250, 50 + (int)(i / 2) * 50f), players[i].color);
             double timeleft = gameDuration - elapsedTime;
             spriteBatch.DrawString(font, string.Format("{0:00}", timeleft), new Vector2(device.Viewport.Width/2 - 5, 50), ((int)timeleft < 15 && ((int)(timeleft)%2) == 1 ) ? Color.OrangeRed : Color.White);
 
