@@ -38,7 +38,7 @@ namespace Cubic_The_Game
 
         ContentManager content;
         SpriteFont gameFont;
-        int playerNum, gameTime;
+        int playerNum, gameTime, spawnIntervals;
         Random random = new Random();
 
         float pauseAlpha;
@@ -57,6 +57,7 @@ namespace Cubic_The_Game
         {
             playerNum = gameOptions[0] + 1;
             gameTime = gameOptions[1];
+            spawnIntervals = gameOptions[2];
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
         }
@@ -78,7 +79,7 @@ namespace Cubic_The_Game
             GameObject.device = ScreenManager.GraphicsDevice;
             GameObject.LoadStaticContent(content);
             GameObject.spriteBatch = ScreenManager.SpriteBatch;
-            GameObject.NewGame(gameTime);
+            GameObject.NewGame(gameTime, spawnIntervals);
             // Adding player by number, at this point we assume player configurations 1 or 1,2 or 1,2,3,4
             // TODO: configurations of players 2 or 3 or 4 or 2,3 or 3,4 or 2,3,4
             for (byte i = 0; i < playerNum; ++i)
