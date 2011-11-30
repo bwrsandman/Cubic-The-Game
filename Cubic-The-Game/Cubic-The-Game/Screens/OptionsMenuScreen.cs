@@ -106,7 +106,7 @@ namespace Cubic_The_Game
             SetMenuEntryText();
         }
         
-        void spawnIntervalsEntrySelected(object sender, PlayerIndexEventArgs e)
+        void spawnIntervalsMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
             currentSpawnInterval = (currentSpawnInterval + 1) % spawnIntervals.Length;
 
