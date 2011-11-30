@@ -47,8 +47,9 @@ namespace Cubic_The_Game
             graphics = new GraphicsDeviceManager(this);
             //graphics.PreferredBackBufferWidth = 853;
             //graphics.PreferredBackBufferHeight = 480;
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            graphics.IsFullScreen = true;
 
             // Create the screen manager component.
             screenManager = new ScreenManager(this);
