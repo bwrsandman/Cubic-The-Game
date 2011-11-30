@@ -45,10 +45,10 @@ namespace Cubic_The_Game
             Content.RootDirectory = "Content";
 
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 853;
-            graphics.PreferredBackBufferHeight = 480;
-         // graphics.PreferredBackBufferWidth = 1280;
-         // graphics.PreferredBackBufferHeight = 800;
+            //graphics.PreferredBackBufferWidth = 853;
+            //graphics.PreferredBackBufferHeight = 480;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 800;
 
             // Create the screen manager component.
             screenManager = new ScreenManager(this);
