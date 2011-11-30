@@ -26,9 +26,9 @@ namespace Cubic_The_Game
 
         static int[] spawnIntervals = { 100, 50, 25, 10 };
         static string[] playerNumber = { "single", "double", "triple", "quadruple" };
-        static int[] gameTimes = { 60, 90, 150, 300 };
+        static int[] gameTimes = { 60, 90, 150, 300, 600, 900 };
         static int currentPlayerNumber = 1;
-        static int currentGameTime = 1;
+        static int currentGameTime = 3;
         static int currentSpawnInterval = 1;
 
         public static int[] getOptions { 
