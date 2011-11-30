@@ -50,7 +50,7 @@ namespace Cubic_The_Game
         #region constants
         public const byte MAXPLAYERS = 4;
         public const float PLAYERSPEED = 6.0f;
-        public const int FALLSPAWNINTERVAL = 100;
+        public static int fallSpawnInterval = 100;
         public const int NUMBEROFSHAPES = 8;
 
         public const int MATCHPOINTS = 50;
@@ -123,7 +123,7 @@ namespace Cubic_The_Game
             }
         }
 
-        public static void NewGame(int gameTime)
+        public static void NewGame(int gameTime, int fallInterval)
         {
             gameDuration = gameTime;
             elapsedTime = 0f;
@@ -131,7 +131,8 @@ namespace Cubic_The_Game
             playerList = new List<byte>(MAXPLAYERS);
             score = new float[MAXPLAYERS];
             fallPieceList = new List<FallPiece>();
-            fallSpawnTimer = FALLSPAWNINTERVAL;
+            fallSpawnInterval = fallInterval;
+            fallSpawnTimer = fallSpawnInterval;
             theCube = new GreatCube(6, 6, 1.0f, new Vector3(0f, 2.0f, -5));
             FallPiece.loadBuffers();
             
@@ -198,7 +199,7 @@ namespace Cubic_The_Game
             // Fall pieces
             if (--fallSpawnTimer <= 0)
             {
-                fallSpawnTimer = FALLSPAWNINTERVAL;
+                fallSpawnTimer = fallSpawnInterval;
                 fallPieceList.Add(new FallPiece(new Vector2((float)(rnd.NextDouble()*18f -9), 5.0f)));
             }
             
