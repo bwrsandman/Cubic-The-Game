@@ -22,17 +22,19 @@ namespace Cubic_The_Game
     {
         #region Fields
 
-        MenuEntry playerNumberMenuEntry, gameTimeMenuEntry;
+        MenuEntry playerNumberMenuEntry, gameTimeMenuEntry, spawnIntervalsMenuEntry;
 
+        static int[] spawnIntervals = { 1000, 500, 250, 100 };
         static string[] playerNumber = { "single", "double", "triple", "quadruple" };
         static int[] gameTimes = { 60, 90, 150, 300 };
         static int currentPlayerNumber = 1;
         static int currentGameTime = 1;
+        static int currentSpawnInterval = 1;
 
         public static int[] getOptions { 
             get 
             { 
-                return new int[] {currentPlayerNumber, gameTimes[currentGameTime]};  
+                return new int[] {currentPlayerNumber, gameTimes[currentGameTime] , spawnIntervals[currentSpawnInterval]};  
             } 
         }
 
@@ -51,6 +53,7 @@ namespace Cubic_The_Game
             // Create our menu entries.
             playerNumberMenuEntry = new MenuEntry(string.Empty);
             gameTimeMenuEntry = new MenuEntry(string.Empty);
+            spawnIntervalsMenuEntry = new MenuEntry(string.Empty);
 
             SetMenuEntryText();
 
@@ -59,10 +62,13 @@ namespace Cubic_The_Game
             // Hook up menu event handlers.
             playerNumberMenuEntry.Selected += playerNumberMenuEntrySelected;
             gameTimeMenuEntry.Selected += gameTimeMenuEntrySelected;
+            spawnIntervalsMenuEntry.Selected += spawnIntervalsMenuEntrySelected;
             back.Selected += OnCancel;
             
             // Add entries to the menu.
             MenuEntries.Add(playerNumberMenuEntry);
+            MenuEntries.Add(gameTimeMenuEntry);
+            MenuEntries.Add(spawnIntervalsMenuEntry);
             MenuEntries.Add(back);
         }
 
@@ -73,6 +79,8 @@ namespace Cubic_The_Game
         void SetMenuEntryText()
         {
             playerNumberMenuEntry.Text = "Game Type: " + playerNumber[currentPlayerNumber];
+            gameTimeMenuEntry.Text = "Game Time: " + gameTimes[currentGameTime];
+            spawnIntervalsMenuEntry.Text = "Piece Spawn Intervals: " + spawnIntervals[currentSpawnInterval];
         }
 
 
@@ -94,6 +102,13 @@ namespace Cubic_The_Game
         void gameTimeMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
             currentGameTime = (currentGameTime + 1) % gameTimes.Length;
+
+            SetMenuEntryText();
+        }
+        
+        void spawnIntervalsEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            currentSpawnInterval = (currentSpawnInterval + 1) % spawnIntervals.Length;
 
             SetMenuEntryText();
         }
