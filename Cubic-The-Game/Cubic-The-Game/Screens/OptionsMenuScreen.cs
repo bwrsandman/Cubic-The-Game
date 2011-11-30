@@ -22,7 +22,7 @@ namespace Cubic_The_Game
     {
         #region Fields
 
-        MenuEntry playerNumberMenuEntry;
+        MenuEntry playerNumberMenuEntry, gameTimeMenuEntry;
 
         static string[] playerNumber = { "single", "double", "triple", "quadruple" };
         static int[] gameTimes = { 60, 90, 120, 150, 180 };
