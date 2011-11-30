@@ -38,7 +38,7 @@ namespace Cubic_The_Game
 
         ContentManager content;
         SpriteFont gameFont;
-        int playerNum, gameTime, spawnIntervals;
+        private int playerNum, gameTime, spawnIntervals, playerSpeed;
         Random random = new Random();
 
         float pauseAlpha;
@@ -58,6 +58,7 @@ namespace Cubic_The_Game
             playerNum = gameOptions[0] + 1;
             gameTime = gameOptions[1];
             spawnIntervals = gameOptions[2];
+            playerSpeed = gameOptions[3];
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
         }
@@ -79,7 +80,7 @@ namespace Cubic_The_Game
             GameObject.device = ScreenManager.GraphicsDevice;
             GameObject.LoadStaticContent(content);
             GameObject.spriteBatch = ScreenManager.SpriteBatch;
-            GameObject.NewGame(gameTime, spawnIntervals);
+            GameObject.NewGame(gameTime, spawnIntervals, playerSpeed);
             // Adding player by number, at this point we assume player configurations 1 or 1,2 or 1,2,3,4
             // TODO: configurations of players 2 or 3 or 4 or 2,3 or 3,4 or 2,3,4
             for (byte i = 0; i < playerNum; ++i)
@@ -207,7 +208,7 @@ namespace Cubic_The_Game
                     if (movement.Length() > 1)
                         movement.Normalize();
 
-                    GameObject.MovePlayer(i, movement * GameObject.PLAYERSPEED);
+                    GameObject.MovePlayer(i, movement * GameObject.playerSpeed);
 
 
                     if ((keyboardState.IsKeyDown(controlsActivate[i]) && !prevKeyboardState.IsKeyDown(controlsActivate[i]))

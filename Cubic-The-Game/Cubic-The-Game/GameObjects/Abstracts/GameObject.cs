@@ -49,8 +49,6 @@ namespace Cubic_The_Game
 
         #region constants
         public const byte MAXPLAYERS = 4;
-        public const float PLAYERSPEED = 6.0f;
-        public static int fallSpawnInterval = 100;
         public const int NUMBEROFSHAPES = 8;
 
         public const int MATCHPOINTS = 50;
@@ -63,6 +61,10 @@ namespace Cubic_The_Game
         #endregion
 
         #region statics
+
+        public static float playerSpeed = 6.0f;
+        public static int fallSpawnInterval = 100;
+
         private static Player[] players;
         protected static TwoInt screenSize{get{return new TwoInt(device.Viewport.Width, device.Viewport.Height);}}
         public static GraphicsDevice device;
@@ -123,8 +125,9 @@ namespace Cubic_The_Game
             }
         }
 
-        public static void NewGame(int gameTime, int fallInterval)
+        public static void NewGame(int gameTime, int fallInterval, int pSpeed)
         {
+            playerSpeed = pSpeed;
             gameDuration = gameTime;
             elapsedTime = 0f;
             players = new Player[MAXPLAYERS];
