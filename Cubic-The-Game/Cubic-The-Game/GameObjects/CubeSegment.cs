@@ -185,8 +185,8 @@ namespace Cubic_The_Game
                 if (piece != null)
                     piece.Update();
             for (int i = 0; i < 4; ++i)
-                if (owner[i] != -1) ;
-                    //GameObject.Score(owner[i], GameObject.LOCKEDPPSPS * numSquaresAcross*seconds);
+                if (owner[i] != -1)
+                    GameObject.Score(owner[i], GameObject.LOCKEDPPSPS * numSquaresAcross*seconds);
 
         }
 
