@@ -25,7 +25,7 @@ namespace Cubic_The_Game
         MenuEntry playerNumberMenuEntry, gameTimeMenuEntry;
 
         static string[] playerNumber = { "single", "double", "triple", "quadruple" };
-        static int[] gameTimes = { 60, 90, 120, 150, 180 };
+        static int[] gameTimes = { 60, 90, 150, 300 };
         static int currentPlayerNumber = 1;
         static int currentGameTime = 1;
 
