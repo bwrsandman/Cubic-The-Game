@@ -29,7 +29,7 @@ namespace Cubic_The_Game
         static int[] gameTimes = { 60, 90, 150, 300, 600, 900 };
         static int currentPlayerNumber = 1;
         static int currentGameTime = 3;
-        static int currentSpawnInterval = 1;
+        static int currentSpawnInterval = 2;
 
         public static int[] getOptions { 
             get 
