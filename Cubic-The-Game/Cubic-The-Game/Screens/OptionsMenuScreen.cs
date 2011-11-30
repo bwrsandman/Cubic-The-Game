@@ -32,7 +32,7 @@ namespace Cubic_The_Game
         public static int[] getOptions { 
             get 
             { 
-                return new int[] {currentPlayerNumber, currentGameTime};  
+                return new int[] {currentPlayerNumber, gameTimes[currentGameTime]};  
             } 
         }
 
