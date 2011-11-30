@@ -24,7 +24,7 @@ namespace Cubic_The_Game
 
         MenuEntry playerNumberMenuEntry, gameTimeMenuEntry, spawnIntervalsMenuEntry;
 
-        static int[] spawnIntervals = { 1000, 500, 250, 100 };
+        static int[] spawnIntervals = { 100, 50, 25, 10 };
         static string[] playerNumber = { "single", "double", "triple", "quadruple" };
         static int[] gameTimes = { 60, 90, 150, 300 };
         static int currentPlayerNumber = 1;
