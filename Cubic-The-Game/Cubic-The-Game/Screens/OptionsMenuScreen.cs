@@ -24,13 +24,15 @@ namespace Cubic_The_Game
 
         MenuEntry playerNumberMenuEntry;
 
-        static string[] playerNumber = { "single", "1v1", "2v2" };
+        static string[] playerNumber = { "single", "double", "triple", "quadruple" };
+        static int[] gameTimes = { 60, 90, 120, 150, 180 };
         static int currentPlayerNumber = 1;
+        static int currentGameTime = 1;
 
         public static int[] getOptions { 
             get 
             { 
-                return new int[] {currentPlayerNumber};  
+                return new int[] {currentPlayerNumber, currentGameTime};  
             } 
         }
 
@@ -48,6 +50,7 @@ namespace Cubic_The_Game
         {
             // Create our menu entries.
             playerNumberMenuEntry = new MenuEntry(string.Empty);
+            gameTimeMenuEntry = new MenuEntry(string.Empty);
 
             SetMenuEntryText();
 
@@ -55,6 +58,7 @@ namespace Cubic_The_Game
 
             // Hook up menu event handlers.
             playerNumberMenuEntry.Selected += playerNumberMenuEntrySelected;
+            gameTimeMenuEntry.Selected += gameTimeMenuEntrySelected;
             back.Selected += OnCancel;
             
             // Add entries to the menu.
@@ -83,6 +87,13 @@ namespace Cubic_The_Game
         void playerNumberMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
             currentPlayerNumber = (currentPlayerNumber + 1) % playerNumber.Length;
+
+            SetMenuEntryText();
+        }
+        
+        void gameTimeMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            currentGameTime = (currentGameTime + 1) % gameTimes.Length;
 
             SetMenuEntryText();
         }
