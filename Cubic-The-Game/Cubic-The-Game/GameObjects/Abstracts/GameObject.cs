@@ -56,7 +56,7 @@ namespace Cubic_The_Game
         public const int MATCHPOINTS = 50;
         public const int STEALPOINTS = 0;
         public const int LOCKPOINTS = 0;
-        public const int LOCKEDPPSPS = 5; //points per second per shape
+        public const int LOCKEDPPSPS = 1; //points per second per shape
         public const int COMPLETEPOINTS = 1000;
 
         private const int GAMEDURATION = 90; // in seconds
