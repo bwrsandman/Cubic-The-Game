@@ -149,11 +149,11 @@ namespace Cubic_The_Game
 
             //  Assume the default names for the wave and sound bank.  
             //   To change these names, change properties in XACT
-            waveBank = new WaveBank(audioEngine, @"Content\selection.xwb");
-            soundBank = new SoundBank(audioEngine, @"Content\placementError.xsb");
+            waveBank = new WaveBank(audioEngine, @"Content\WaveBank.xwb");
+            soundBank = new SoundBank(audioEngine, @"Content\SoundBank.xsb");
 
-            //myLoopingSound = soundBank.GetCue("notify");
-            //myLoopingSound.Play();
+            myLoopingSound = soundBank.GetCue("titleMusic");
+            myLoopingSound.Play();
         }
 
         public static void NewGame(int gameTime, int fallInterval, int pSpeed)

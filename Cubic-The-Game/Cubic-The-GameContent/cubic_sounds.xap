@@ -16,8 +16,8 @@ Global Settings
     Header File = ..\cubic_sounds.h;
     Exclude Category Names = 0;
     Exclude Variable Names = 0;
-    Last Modified Low = 1939473075;
-    Last Modified High = 30191603;
+    Last Modified Low = 30191603;
+    Last Modified High = 1939473075;
 
     Category
     {
@@ -218,15 +218,15 @@ Global Settings
 
 Wave Bank
 {
-    Name = selection;
-    Xbox File = Xbox\selection.xwb;
-    Windows File = Win\selection.xwb;
+    Name = WaveBank;
+    Xbox File = Xbox\WaveBank.xwb;
+    Windows File = Win\WaveBank.xwb;
     Xbox Bank Path Edited = 0;
     Windows Bank Path Edited = 0;
     Seek Tables = 1;
     Compression Preset Name = <none>;
-    Bank Last Revised Low = 2583053506;
-    Bank Last Revised High = 30191613;
+    Bank Last Revised Low = 982324278;
+    Bank Last Revised High = 30191636;
 
     Wave
     {
@@ -365,26 +365,36 @@ Wave Bank
             Last Modified High = 30191613;
         }
     }
+
+    Wave
+    {
+        Name = naombi wind_2;
+        File = naombi wind_2.wav;
+        Build Settings Last Modified Low = 947192268;
+        Build Settings Last Modified High = 30191636;
+
+        Cache
+        {
+            Format Tag = 0;
+            Channels = 2;
+            Sampling Rate = 44100;
+            Bits Per Sample = 1;
+            Play Region Offset = 44;
+            Play Region Length = 45214496;
+            Loop Region Offset = 0;
+            Loop Region Length = 0;
+            File Type = 1;
+            Last Modified Low = 821015051;
+            Last Modified High = 30191636;
+        }
+    }
 }
 
 Sound Bank
 {
-    Name = selection;
-    Xbox File = Xbox\selection.xsb;
-    Windows File = Win\selection.xsb;
-    Xbox Bank Path Edited = 0;
-    Windows Bank Path Edited = 0;
-    Bank Last Modified Low = 1939483075;
-    Bank Last Modified High = 30191603;
-    Header Last Modified High = 0;
-    Header Last Modified Low = 0;
-}
-
-Sound Bank
-{
-    Name = placementError;
-    Xbox File = Xbox\placementError.xsb;
-    Windows File = Win\placementError.xsb;
+    Name = SoundBank;
+    Xbox File = Xbox\SoundBank.xsb;
+    Windows File = Win\SoundBank.xsb;
     Xbox Bank Path Edited = 0;
     Windows Bank Path Edited = 0;
 
@@ -424,7 +434,7 @@ Sound Bank
 
                 Wave Entry
                 {
-                    Bank Name = selection;
+                    Bank Name = WaveBank;
                     Bank Index = 0;
                     Entry Name = place_error;
                     Entry Index = 0;
@@ -471,7 +481,7 @@ Sound Bank
 
                 Wave Entry
                 {
-                    Bank Name = selection;
+                    Bank Name = WaveBank;
                     Bank Index = 0;
                     Entry Name = selector;
                     Entry Index = 1;
@@ -518,7 +528,7 @@ Sound Bank
 
                 Wave Entry
                 {
-                    Bank Name = selection;
+                    Bank Name = WaveBank;
                     Bank Index = 0;
                     Entry Name = rowFlipping;
                     Entry Index = 2;
@@ -565,7 +575,7 @@ Sound Bank
 
                 Wave Entry
                 {
-                    Bank Name = selection;
+                    Bank Name = WaveBank;
                     Bank Index = 0;
                     Entry Name = rowCompletion;
                     Entry Index = 3;
@@ -612,7 +622,7 @@ Sound Bank
 
                 Wave Entry
                 {
-                    Bank Name = selection;
+                    Bank Name = WaveBank;
                     Bank Index = 0;
                     Entry Name = rowStealing;
                     Entry Index = 4;
@@ -659,10 +669,57 @@ Sound Bank
 
                 Wave Entry
                 {
-                    Bank Name = selection;
+                    Bank Name = WaveBank;
                     Bank Index = 0;
                     Entry Name = pickUp;
                     Entry Index = 5;
+                    Weight = 255;
+                    Weight Min = 0;
+                }
+            }
+        }
+    }
+
+    Sound
+    {
+        Name = titleMusic;
+        Volume = -2680;
+        Pitch = 0;
+        Priority = 0;
+
+        Category Entry
+        {
+            Name = Default;
+        }
+
+        Track
+        {
+            Volume = 0;
+            Use Filter = 0;
+
+            Play Wave Event
+            {
+                Break Loop = 0;
+                Use Speaker Position = 0;
+                Use Center Speaker = 1;
+                New Speaker Position On Loop = 1;
+                Speaker Position Angle = 0.000000;
+                Speaker Position Arc = 0.000000;
+
+                Event Header
+                {
+                    Timestamp = 0;
+                    Relative = 0;
+                    Random Recurrence = 0;
+                    Random Offset = 0;
+                }
+
+                Wave Entry
+                {
+                    Bank Name = WaveBank;
+                    Bank Index = 0;
+                    Entry Name = naombi wind_2;
+                    Entry Index = 6;
                     Weight = 255;
                     Weight Min = 0;
                 }
@@ -785,6 +842,26 @@ Sound Bank
         {
             Name = pickUp;
             Index = 5;
+            Weight Min = 0;
+            Weight Max = 255;
+        }
+    }
+
+    Cue
+    {
+        Name = titleMusic;
+
+        Variation
+        {
+            Variation Type = 3;
+            Variation Table Type = 1;
+            New Variation on Loop = 0;
+        }
+
+        Sound Entry
+        {
+            Name = titleMusic;
+            Index = 6;
             Weight Min = 0;
             Weight Max = 255;
         }
