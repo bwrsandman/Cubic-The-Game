@@ -155,6 +155,10 @@ namespace Cubic_The_Game
             myLoopingSound = soundBank.GetCue("titleMusic");
             myLoopingSound.Play();
         }
+        public static void StopSound()
+        {
+            myLoopingSound.Stop(AudioStopOptions.Immediate);
+        }
 
         public static void NewGame(int gameTime, int fallInterval, int pSpeed)
         {

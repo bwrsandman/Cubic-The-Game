@@ -23,6 +23,7 @@ namespace Cubic_The_Game
     /// </summary>
     class MenuEntry
     {
+        private static readonly Color DEFAULTCOLOR = new Color(161, 60, 42);
         #region Fields
 
         /// <summary>
@@ -78,6 +79,7 @@ namespace Cubic_The_Game
         /// Event raised when the menu entry is selected.
         /// </summary>
         public event EventHandler<PlayerIndexEventArgs> Selected;
+        protected Color color;
 
 
         /// <summary>
@@ -98,8 +100,12 @@ namespace Cubic_The_Game
         /// <summary>
         /// Constructs a new menu entry with the specified text.
         /// </summary>
-        public MenuEntry(string text)
+        public MenuEntry(string text) : this (text, DEFAULTCOLOR)
         {
+        }
+        public MenuEntry(string text, Color color)
+        {
+            this.color = color;
             this.text = text;
         }
 
@@ -145,7 +151,7 @@ namespace Cubic_The_Game
 
             // Draw the selected entry in yellow, otherwise white.
             //Color color = isSelected ? Color.Yellow : Color.White;
-            Color color = isSelected ? new Color(0, 34, 85) : new Color(161, 60, 42);
+            Color drawColor = isSelected ? new Color(0, 34, 85) : color;
 
             // Pulsate the size of the selected menu entry.
             double time = gameTime.TotalGameTime.TotalSeconds;
@@ -155,7 +161,7 @@ namespace Cubic_The_Game
             float scale = 1 + pulsate * 0.05f * selectionFade;
 
             // Modify the alpha to fade text out during transitions.
-            color *= screen.TransitionAlpha;
+            drawColor *= screen.TransitionAlpha;
 
             // Draw text, centered on the middle of each line.
             ScreenManager screenManager = screen.ScreenManager;
@@ -164,7 +170,7 @@ namespace Cubic_The_Game
 
             Vector2 origin = new Vector2(0, font.LineSpacing / 2);
 
-            spriteBatch.DrawString(font, text, position, color, 0,
+            spriteBatch.DrawString(font, text, position, drawColor, 0,
                                    origin, scale, SpriteEffects.None, 0);
         }
 

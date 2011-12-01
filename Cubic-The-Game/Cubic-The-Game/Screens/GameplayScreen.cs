@@ -109,6 +109,7 @@ namespace Cubic_The_Game
         /// </summary>
         public override void UnloadContent()
         {
+            GameObject.StopSound();
             content.Unload();
         }
 
