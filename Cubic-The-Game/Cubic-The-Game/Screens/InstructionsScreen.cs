@@ -27,6 +27,11 @@ namespace Cubic_The_Game
             bckgrnd = ScreenManager.Game.Content.Load<Texture2D>("background_instructions");
         }
 
+        protected override void OnSelectEntry(int entryIndex, PlayerIndex playerIndex)
+        {
+            ExitScreen();
+        }
+
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
