@@ -301,24 +301,9 @@ namespace Cubic_The_Game
         internal void FlipTo(Player player, int i)
         {
             GameObject.Score(player.index, GameObject.MATCHPOINTS);
-            if (owner[i] != player.index)
-            {
-                if (owner[i] == -1) GameObject.PlaySound(ROW_FLIP_SOUND);
-                else GameObject.PlaySound(ROW_STEAL_SOUND);
-                // Row has been stolen
-                // Allocate points
-                GameObject.Score(player.index, GameObject.STEALPOINTS);
-                owner[i] = player.index;
-                isUnlocked[i] = false;
-                colorOverlay[i] = player.fadedColor;
-            }
-            else
-            {
-                GameObject.Score(player.index, GameObject.LOCKPOINTS);
-            }
-            
-            int numMatched = 1;
-            for (int j = i*numSquaresAcross; j < (i+1)*numSquaresAcross; ++j)
+
+            int numMatched = 1;                                                 // Starts at one?
+            for (int j = i * numSquaresAcross; j < (i + 1) * numSquaresAcross; ++j)
             {
                 if (!squares[j].isVirgin)
                 {
@@ -327,13 +312,31 @@ namespace Cubic_The_Game
                 }
             }
             Debug.WriteLine(numMatched + "/" + numSquaresAcross);
-            if (numMatched == numSquaresAcross)
+
+            if (owner[i] != player.index)
             {
-                // Player has filled in an entire row, reset side
+                if (owner[i] == -1) GameObject.PlaySound(ROW_FLIP_SOUND);
+                else GameObject.PlaySound(ROW_STEAL_SOUND);
+                // Row has been stolen
                 // Allocate points
-                GameObject.Score(player.index, GameObject.COMPLETEPOINTS);
-                ResetSide(i);
+                GameObject.Score(player.index, GameObject.STEALPOINTS);         // What the...
+                owner[i] = player.index;
+                isUnlocked[i] = false;
+                colorOverlay[i] = player.fadedColor;
             }
+            else
+            {
+                if (numMatched == numSquaresAcross)
+                {
+                    // Player has filled in an entire row, reset side
+                    // Allocate points
+                    GameObject.Score(player.index, GameObject.COMPLETEPOINTS);
+                    ResetSide(i);
+                }
+                GameObject.Score(player.index, GameObject.LOCKPOINTS);
+            }
+            
+ 
         }
 
         public bool CanFlip(Player player, int i, bool affectedPieceIsVirgin)
