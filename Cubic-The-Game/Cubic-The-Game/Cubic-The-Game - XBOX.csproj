@@ -113,6 +113,7 @@
     <Compile Include="Screens\CreditsMenuScreen.cs" />
     <Compile Include="Screens\GameOverMenuScreen.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
+    <Compile Include="Screens\InstructionsScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\MenuEntry.cs" />

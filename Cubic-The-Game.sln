@@ -53,11 +53,13 @@ Global
 		{44CAADA6-2FD7-44F7-B92C-DBABF2E1EE4F}.Debug|x86.ActiveCfg = Debug|x86
 		{44CAADA6-2FD7-44F7-B92C-DBABF2E1EE4F}.Debug|x86.Build.0 = Debug|x86
 		{44CAADA6-2FD7-44F7-B92C-DBABF2E1EE4F}.Debug|Xbox 360.ActiveCfg = Debug|x86
+		{44CAADA6-2FD7-44F7-B92C-DBABF2E1EE4F}.Debug|Xbox 360.Build.0 = Debug|x86
 		{44CAADA6-2FD7-44F7-B92C-DBABF2E1EE4F}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{44CAADA6-2FD7-44F7-B92C-DBABF2E1EE4F}.Release|Mixed Platforms.Build.0 = Release|x86
 		{44CAADA6-2FD7-44F7-B92C-DBABF2E1EE4F}.Release|x86.ActiveCfg = Release|x86
 		{44CAADA6-2FD7-44F7-B92C-DBABF2E1EE4F}.Release|x86.Build.0 = Release|x86
 		{44CAADA6-2FD7-44F7-B92C-DBABF2E1EE4F}.Release|Xbox 360.ActiveCfg = Release|x86
+		{44CAADA6-2FD7-44F7-B92C-DBABF2E1EE4F}.Release|Xbox 360.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

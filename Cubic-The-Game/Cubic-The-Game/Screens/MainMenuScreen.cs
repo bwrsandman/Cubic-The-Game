@@ -33,14 +33,17 @@ namespace Cubic_The_Game
             MenuEntry playGameMenuEntry = new MenuEntry("Play Game");
             MenuEntry optionsMenuEntry = new MenuEntry("Options");
             //MenuEntry displayOptionsMenuEntry = new MenuEntry("Print Options");
+            MenuEntry instructionsEntry = new MenuEntry("How to Play");
             MenuEntry creditsMenuEntry = new MenuEntry("Credits");
             MenuEntry exitMenuEntry = new MenuEntry("Exit");
+
 
             // Hook up menu event handlers.
             playGameMenuEntry.Selected += PlayGameMenuEntrySelected;
             optionsMenuEntry.Selected += OptionsMenuEntrySelected;
             creditsMenuEntry.Selected += CreditsMenuEntrySelected;
             //displayOptionsMenuEntry.Selected += DislayOptionsMenuEntrySelected;
+            instructionsEntry.Selected += InstructionsMenuEntrySelected;
             exitMenuEntry.Selected += OnCancel;
 
             // Add entries to the menu.
@@ -48,6 +51,7 @@ namespace Cubic_The_Game
             MenuEntries.Add(optionsMenuEntry);
             MenuEntries.Add(creditsMenuEntry);
             //MenuEntries.Add(displayOptionsMenuEntry);
+            MenuEntries.Add(instructionsEntry);
             MenuEntries.Add(exitMenuEntry);
         }
 
@@ -75,6 +79,12 @@ namespace Cubic_The_Game
             ScreenManager.AddScreen(new OptionsMenuScreen(), e.PlayerIndex);
         }
 
+        void InstructionsMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            ScreenManager.AddScreen(new InstructionsScreen(), e.PlayerIndex);
+        }
+
+
         //void DislayOptionsMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         //{
         //    Console.WriteLine(OptionsMenuScreen.getOptions[0]);
@@ -90,7 +100,7 @@ namespace Cubic_The_Game
         /// </summary>
         protected override void OnCancel(PlayerIndex playerIndex)
         {
-            const string message = "Are you sure you want to exit this sample?";
+            const string message = "Are you sure you want to exit Cubic?";
 
             MessageBoxScreen confirmExitMessageBox = new MessageBoxScreen(message);
 
