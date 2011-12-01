@@ -80,7 +80,10 @@ namespace Cubic_The_Game
                 {
                     grabbing = grabPiece.Grab(this);
                     if (grabPiece != null && grabbing)
+                    {
+                        GameObject.PlaySound(PIECE_GRAB_SOUND);
                         grabPiece.Move(center);
+                    }
                 }
                 else
                 {         // Drop
@@ -88,8 +91,7 @@ namespace Cubic_The_Game
                     {
                         if (matchPiece.CanFlip(this))
                             Flip();
-                        else ;
-                            // TODO: Make sound for user to know he can't place
+                        else GameObject.PlaySound(PIECE_ERROR_SOUND);
                     }
                     else
                         Drop();

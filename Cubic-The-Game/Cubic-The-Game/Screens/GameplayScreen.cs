@@ -61,6 +61,7 @@ namespace Cubic_The_Game
             playerSpeed = gameOptions[3];
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
+            GameObject.InitializeSound();
         }
 
 

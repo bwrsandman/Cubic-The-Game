@@ -303,6 +303,8 @@ namespace Cubic_The_Game
             GameObject.Score(player.index, GameObject.MATCHPOINTS);
             if (owner[i] != player.index)
             {
+                if (owner[i] == -1) GameObject.PlaySound(ROW_FLIP_SOUND);
+                else GameObject.PlaySound(ROW_STEAL_SOUND);
                 // Row has been stolen
                 // Allocate points
                 GameObject.Score(player.index, GameObject.STEALPOINTS);
@@ -310,7 +312,10 @@ namespace Cubic_The_Game
                 isUnlocked[i] = false;
                 colorOverlay[i] = player.fadedColor;
             }
-            else GameObject.Score(player.index, GameObject.LOCKPOINTS);
+            else
+            {
+                GameObject.Score(player.index, GameObject.LOCKPOINTS);
+            }
             
             int numMatched = 1;
             for (int j = i*numSquaresAcross; j < (i+1)*numSquaresAcross; ++j)
@@ -343,6 +348,7 @@ namespace Cubic_The_Game
             owner[j] = -1;
             isUnlocked[j] = true;
             colorOverlay[j] = Color.White;
+            GameObject.PlaySound(ROW_COMPLETION_SOUND);
         }
     }
 }

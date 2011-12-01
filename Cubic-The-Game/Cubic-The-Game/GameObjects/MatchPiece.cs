@@ -159,6 +159,7 @@ namespace Cubic_The_Game
 
         internal void FlipVirgin(Player player)
         {
+                GameObject.PlaySound(PIECE_DROP_SOUND);
                 noninteractedColor = player.color;
                 isVirgin = false;
          

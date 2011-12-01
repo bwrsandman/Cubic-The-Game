@@ -8,11 +8,12 @@
 
 
 #region using
+using Microsoft.Xna.Framework;            // for Vectors
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;   // for Texture2D
-using Microsoft.Xna.Framework;            // for Vectors
-using System.Collections.Generic;         // For List
 using System;                             // For Random
+using System.Collections.Generic;         // For List
 using System.Diagnostics;                 // For debug
 #endregion
 
@@ -48,6 +49,12 @@ namespace Cubic_The_Game
     {
 
         #region constants
+        public const String PIECE_ERROR_SOUND = "place_error";
+        public const String PIECE_GRAB_SOUND = "pickUp";
+        public const String PIECE_DROP_SOUND = "selector";
+        public const String ROW_FLIP_SOUND = "rowFlipping";
+        public const String ROW_COMPLETION_SOUND = "rowCompletion";
+        public const String ROW_STEAL_SOUND = "rowStealing";
         public const byte MAXPLAYERS = 4;
         public const int NUMBEROFSHAPES = 8;
 
@@ -61,6 +68,12 @@ namespace Cubic_The_Game
         #endregion
 
         #region statics
+
+        // Audio objects
+        private static AudioEngine audioEngine;
+        private static WaveBank waveBank;
+        private static SoundBank soundBank;
+        private static Cue myLoopingSound = null;
 
         public static float playerSpeed = 6.0f;
         public static int fallSpawnInterval = 100;
@@ -123,6 +136,24 @@ namespace Cubic_The_Game
             {
                 shapes[i] = content.Load<Texture2D>("shapes/" + (i+1));
             }
+        }
+
+        public static void PlaySound(String name)
+        {
+            soundBank.PlayCue(name);
+        }
+
+        public static void InitializeSound()
+        {
+            audioEngine = new AudioEngine(@"Content\cubic_sounds.xgs");
+
+            //  Assume the default names for the wave and sound bank.  
+            //   To change these names, change properties in XACT
+            waveBank = new WaveBank(audioEngine, @"Content\selection.xwb");
+            soundBank = new SoundBank(audioEngine, @"Content\placementError.xsb");
+
+            //myLoopingSound = soundBank.GetCue("notify");
+            //myLoopingSound.Play();
         }
 
         public static void NewGame(int gameTime, int fallInterval, int pSpeed)
