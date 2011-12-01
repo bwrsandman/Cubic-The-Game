@@ -83,7 +83,7 @@ namespace Cubic_The_Game
         public static Texture2D[] shapes;
         public static SpriteFont font;
         public static float[] score{private set; get;}
-        private static double elapsedTime;
+        public static double elapsedTime;
         public static bool isGameover{private set; get;}
         //public static Texture2D[] maps;
 
