@@ -24,7 +24,7 @@ namespace Cubic_The_Game
         #endregion
 
         #region statics
-        private readonly static Color inactiveColor = Color.White;
+        private readonly static Color inactiveColor = new Color(224, 210, 161); //Color.White;
         #endregion
 
         #region members
