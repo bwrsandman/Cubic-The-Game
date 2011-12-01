@@ -52,6 +52,7 @@ namespace Cubic_The_Game
             //for now, rotate all segments at once
             for (int i = 0; i < cubeSegments.Length; i++)
             {
+                if((int)elapsedTime %7 != 0)
                 cubeSegments[i].Rotate((float)(ROT_SPEED * (Math.PI / 180) * seconds));
                 cubeSegments[i].Update(seconds);
                 //speed += 1;
