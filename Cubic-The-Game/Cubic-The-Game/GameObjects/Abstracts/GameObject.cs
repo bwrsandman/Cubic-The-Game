@@ -64,6 +64,8 @@ namespace Cubic_The_Game
         public const int LOCKEDPPSPS = 1; //points per second per shape
         public const int COMPLETEPOINTS = 1000;
 
+        private static readonly Color[] hudColors = {new Color(171, 182, 153), new Color(224, 210, 161), Color.Maroon};
+
         private static int gameDuration; // in seconds
         #endregion
 
@@ -92,7 +94,10 @@ namespace Cubic_The_Game
 
         public static int gameTheme = 0;
         public static Texture2D cubeTex;
-        public static Texture2D backgroundTex;
+        private static Texture2D backgroundTex;
+        private static Texture2D hudTex;
+        private static Color hudColor;
+
         public static Texture2D[] shapes;
         public static SpriteFont font;
         public static float[] score{private set; get;}
@@ -131,6 +136,8 @@ namespace Cubic_The_Game
             Player.texture = content.Load<Texture2D>("playerCursor");
 
             gameTheme = gTheme;
+            hudTex = content.Load<Texture2D>("hud");
+            hudColor = hudColors[gameTheme];
             backgroundTex = content.Load<Texture2D>(GameScreen.themes[gameTheme] + "/background");
             cubeTex = content.Load<Texture2D>(GameScreen.themes[gameTheme] + "/cubeTex");
 
@@ -279,6 +286,7 @@ namespace Cubic_The_Game
         public static void DrawStaticContent()
         {
             spriteBatch.Begin();
+            //Background
             spriteBatch.Draw(backgroundTex, new Rectangle(device.Viewport.X,
                 device.Viewport.Y, device.Viewport.Width, device.Viewport.Height), Color.White);
             spriteBatch.End();
@@ -294,13 +302,16 @@ namespace Cubic_The_Game
             
 
             spriteBatch.Begin();
+            // Heads up display
+            spriteBatch.Draw(hudTex, Vector2.Zero, hudColor);
             for (byte i = 0; i < MAXPLAYERS; ++i)
                 if (players[i] != null) players[i].Draw();
 
             for (byte i = 0; i < MAXPLAYERS; ++i)
                 if (players[i] != null) spriteBatch.DrawString(font, "score: " + (int)score[i], new Vector2((i % 2 == 0) ? 50 : device.Viewport.Width - 250, 50 + (int)(i / 2) * 50f), players[i].color);
             double timeleft = gameDuration - elapsedTime;
-            spriteBatch.DrawString(font, string.Format("{0:00}", timeleft), new Vector2(device.Viewport.Width/2 - 5, 50), ((int)timeleft < 15 && ((int)(timeleft)%2) == 1 ) ? Color.OrangeRed : Color.White);
+            //Timer
+            spriteBatch.DrawString(font, string.Format("{0:00}", timeleft), new Vector2(device.Viewport.Width/2 - 5, 25), ((int)timeleft < 15 && ((int)(timeleft)%2) == 1 ) ? Color.OrangeRed : Color.Black);
 
             spriteBatch.End();   
         }
