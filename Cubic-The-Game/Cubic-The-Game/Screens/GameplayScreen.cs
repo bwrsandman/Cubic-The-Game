@@ -38,7 +38,7 @@ namespace Cubic_The_Game
 
         ContentManager content;
         SpriteFont gameFont;
-        private int playerNum, gameTime, spawnIntervals, playerSpeed;
+        private int playerNum, gameTime, spawnIntervals, playerSpeed, chosenTheme;
         Random random = new Random();
 
         float pauseAlpha;
@@ -59,6 +59,7 @@ namespace Cubic_The_Game
             gameTime = gameOptions[1];
             spawnIntervals = gameOptions[2];
             playerSpeed = gameOptions[3];
+            chosenTheme = gameOptions[4];
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
             GameObject.InitializeSound();
@@ -79,7 +80,7 @@ namespace Cubic_The_Game
             TestCube.device = ScreenManager.GraphicsDevice;
 
             GameObject.device = ScreenManager.GraphicsDevice;
-            GameObject.LoadStaticContent(content);
+            GameObject.LoadStaticContent(content, chosenTheme);
             GameObject.spriteBatch = ScreenManager.SpriteBatch;
             GameObject.NewGame(gameTime, spawnIntervals, playerSpeed);
             // Adding player by number, at this point we assume player configurations 1 or 1,2 or 1,2,3,4

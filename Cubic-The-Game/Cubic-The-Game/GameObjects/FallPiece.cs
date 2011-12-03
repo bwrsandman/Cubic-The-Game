@@ -24,7 +24,7 @@ namespace Cubic_The_Game
         #endregion
 
         #region statics
-        private readonly static Color inactiveColor = new Color(224, 210, 161); //Color.White;
+        private readonly static Color[] inactiveColor = {new Color(227, 242, 205), new Color(224, 210, 161), Color.White}; 
         #endregion
 
         #region members
@@ -97,7 +97,7 @@ namespace Cubic_The_Game
             else
                 position3 += new Vector3(0.0f, FALLSPEED, 0.0f);
             movement = Vector3.Zero;
-            color = isIntersected? interactedColor : inactiveColor ;
+            color = isIntersected? interactedColor : inactiveColor[gameTheme] ;
         }
 
         public void Draw(Camera camera)

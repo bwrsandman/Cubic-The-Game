@@ -90,7 +90,7 @@ namespace Cubic_The_Game
         private static GreatCube theCube;
         public static Camera camera;
 
-        
+        public static int gameTheme = 0;
         public static Texture2D cubeTex;
         public static Texture2D backgroundTex;
         public static Texture2D[] shapes;
@@ -98,7 +98,7 @@ namespace Cubic_The_Game
         public static float[] score{private set; get;}
         public static double elapsedTime;
         public static bool isGameover{private set; get;}
-        //public static Texture2D[] maps;
+
 
         #endregion
 
@@ -125,16 +125,19 @@ namespace Cubic_The_Game
         /// <summary>
         /// Anything that is used only once for an entire class, such as a texture can be loaded here
         /// </summary>
-        public static void LoadStaticContent(ContentManager content)
+        public static void LoadStaticContent(ContentManager content, int gTheme)
         {
+
             Player.texture = content.Load<Texture2D>("playerCursor");
-            backgroundTex = content.Load<Texture2D>("game-bg");
-            cubeTex = content.Load<Texture2D>("cubeTex");
+
+            gameTheme = gTheme;
+            backgroundTex = content.Load<Texture2D>(GameScreen.themes[gameTheme] + "/background");
+            cubeTex = content.Load<Texture2D>(GameScreen.themes[gameTheme] + "/cubeTex");
 
             shapes = new Texture2D[NUMBEROFSHAPES];
             for (int i = 0; i < shapes.Length; ++i)
             {
-                shapes[i] = content.Load<Texture2D>("shapes/" + (i+1));
+                shapes[i] = content.Load<Texture2D>(GameScreen.themes[gameTheme] + "/shapes/" + (i + 1));
             }
         }
 
@@ -172,6 +175,7 @@ namespace Cubic_The_Game
             fallSpawnInterval = fallInterval;
             fallSpawnTimer = fallSpawnInterval;
             theCube = new GreatCube(6, 6, 1.0f, new Vector3(0f, 2.0f, -5));
+
             FallPiece.loadBuffers();
             
         }
