@@ -26,7 +26,7 @@ namespace Cubic_The_Game
         #region Fields
 
         ContentManager content;
-        Texture2D backgroundTexture;
+        Texture2D[] backgroundTexture;
 
         #endregion
 
@@ -56,7 +56,14 @@ namespace Cubic_The_Game
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
             // backgroundTexture = content.Load<Texture2D>("background");
-            backgroundTexture = content.Load<Texture2D>("EgyptBG");
+
+            //load all theme wallpaper because this function will be called only once when running the game
+            backgroundTexture = new Texture2D[NUMBEROFTHEMES];
+            for (int i = 0; i < NUMBEROFTHEMES; ++i)
+            {
+                backgroundTexture[i] = content.Load<Texture2D>(themes[i] + "/wallpaper");
+            }
+
         }
 
 
@@ -99,7 +106,7 @@ namespace Cubic_The_Game
 
             spriteBatch.Begin();
 
-            spriteBatch.Draw(backgroundTexture, fullscreen,
+            spriteBatch.Draw(backgroundTexture[gameTheme], fullscreen,
                              new Color(TransitionAlpha, TransitionAlpha, TransitionAlpha));
 
             spriteBatch.End();
