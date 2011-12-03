@@ -38,6 +38,7 @@ namespace Cubic_The_Game
         int selectedEntry = 0;
         string menuTitle;
 
+
         #endregion
 
         #region Properties
@@ -236,12 +237,12 @@ namespace Cubic_The_Game
             Vector2 titlePosition = new Vector2(graphics.Viewport.Width / 2, TITLE_Y);
             Vector2 titleOrigin = font.MeasureString(menuTitle) / 2;
             // Color titleColor = new Color(192, 192, 192) * TransitionAlpha;
-            Color titleColor = new Color(99, 90, 67);
+           
             float titleScale = 1.25f;
 
             titlePosition.Y -= transitionOffset * 100;
 
-            spriteBatch.DrawString(font, menuTitle, titlePosition, titleColor, 0,
+            spriteBatch.DrawString(font, menuTitle, titlePosition, titleColor[gameTheme], 0,
                                    titleOrigin, titleScale, SpriteEffects.None, 0);
 
             spriteBatch.End();

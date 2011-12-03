@@ -22,7 +22,7 @@ namespace Cubic_The_Game
     {
 
         #region constants
-        readonly Color inactiveColor = new Color(1,14,33); //black
+        readonly Color[] inactiveColor = {new Color(68, 42, 39), new Color(1,14,33), Color.White};
         Color backColor { get { return segment.colorOverlay[segmentIndex]; } }
         #endregion
 
@@ -58,7 +58,7 @@ namespace Cubic_The_Game
             position3 = new Vector3(XOffset, 0, 0);
             rotOffset = (float)(facingDirection * Math.PI / 2.0);
             playersSelecting = new bool[MAXPLAYERS];
-            noninteractedColor = new Color(inactiveColor.ToVector3());
+            noninteractedColor = inactiveColor[gameTheme];
             isVirgin = true;
         }
 

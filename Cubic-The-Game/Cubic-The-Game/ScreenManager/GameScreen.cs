@@ -39,6 +39,11 @@ namespace Cubic_The_Game
     {
         #region Properties
 
+        //storing the index of the current theme to reset the wallpaper accordingly
+        public static int gameTheme = 0;
+        protected const int NUMBEROFTHEMES = 3;
+        public static string[] themes = { "abstract", "egypt", "casino" };
+        public Color[] titleColor = { new Color(68, 42, 39), new Color(99, 90, 67), Color.White };
 
         /// <summary>
         /// Normally when one screen is brought up over the top of another,

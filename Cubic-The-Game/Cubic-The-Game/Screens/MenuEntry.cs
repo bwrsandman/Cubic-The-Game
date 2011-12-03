@@ -23,7 +23,8 @@ namespace Cubic_The_Game
     /// </summary>
     class MenuEntry
     {
-        private static readonly Color DEFAULTCOLOR = new Color(161, 60, 42);
+        //private static readonly Color DEFAULTCOLOR = new Color(161, 60, 42);
+        private static readonly Color DEFAULTCOLOR = Color.Gray;
         #region Fields
 
         /// <summary>
@@ -103,6 +104,7 @@ namespace Cubic_The_Game
         public MenuEntry(string text) : this (text, DEFAULTCOLOR)
         {
         }
+
         public MenuEntry(string text, Color color)
         {
             this.color = color;
@@ -150,8 +152,8 @@ namespace Cubic_The_Game
 #endif
 
             // Draw the selected entry in yellow, otherwise white.
-            //Color color = isSelected ? Color.Yellow : Color.White;
-            Color drawColor = isSelected ? new Color(0, 34, 85) : color;
+            // Color drawColor = isSelected ? new Color(0, 34, 85) : color;
+            Color drawColor = isSelected ? new Color(90, 90, 90) : color;
 
             // Pulsate the size of the selected menu entry.
             double time = gameTime.TotalGameTime.TotalSeconds;
