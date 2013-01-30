@@ -1,10 +1,7 @@
-
-Cubic-The-Game/Cubic-The-Game/bin/*
-Cubic-The-Game/Cubic-The-Game/obj/*
-Cubic-The-Game/Cubic-The-GameContent/obj/*
-Cubic-The-Game.suo
-Cubic-The-Game/Cubic-The-Game/Cubic-The-Game - Windows.csproj.Debug.cachefile
-Cubic-The-Game/Cubic-The-Game/Cubic-The-Game - XBOX.csproj.Debug.cachefile
-Cubic-The-Game/Cubic-The-Game/Cubic-The-Game - Windows.csproj.Release.cachefile
-Cubic-The-Game/Cubic-The-Game/Cubic-The-Game - XBOX.csproj.Release.cachefile
+*~
+*/bin/*
+*/obj/*
+*.suo
+*.cachefile
+*.userprefs
 ssh.exe.stackdump
