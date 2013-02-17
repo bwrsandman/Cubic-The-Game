@@ -33,11 +33,11 @@ namespace Cubic_The_Game
         /// </summary>
         public CubicGame()
         {
-            Content.RootDirectory = "Content";
+			Content.RootDirectory = Program.CONTENT_DIR;
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            graphics.IsFullScreen = true;
+            //graphics.IsFullScreen = true;
 
             // Create the screen manager component.
             screenManager = new ScreenManager(this);

@@ -72,7 +72,7 @@ namespace Cubic_The_Game
         public override void LoadContent()
         {
             if (content == null)
-                content = new ContentManager(ScreenManager.Game.Services, "Content");
+                content = new ContentManager(ScreenManager.Game.Services, Program.CONTENT_DIR);
 
             GameObject.camera = new Camera(ScreenManager.Game, new Vector3(0, 0, 10), Vector3.Zero, Vector3.Up); 
             ScreenManager.Game.Components.Add(GameObject.camera);
@@ -89,7 +89,7 @@ namespace Cubic_The_Game
                 GameObject.AddPlayer(i);
             
 
-            gameFont = content.Load<SpriteFont>("gamefont");
+            gameFont = content.Load<SpriteFont>("gameFont");
             GameObject.font = gameFont;
 
 

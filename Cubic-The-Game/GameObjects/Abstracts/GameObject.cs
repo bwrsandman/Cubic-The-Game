@@ -155,12 +155,12 @@ namespace Cubic_The_Game
 
         public static void InitializeSound()
         {
-            audioEngine = new AudioEngine(@"Content\cubic_sounds.xgs");
+			audioEngine = new AudioEngine(Program.CONTENT_DIR + @"/cubic_sounds.xgs");
 
             //  Assume the default names for the wave and sound bank.  
             //   To change these names, change properties in XACT
-            waveBank = new WaveBank(audioEngine, @"Content\WaveBank.xwb");
-            soundBank = new SoundBank(audioEngine, @"Content\SoundBank.xsb");
+            waveBank = new WaveBank(audioEngine, Program.CONTENT_DIR + @"/WaveBank.xwb");
+			soundBank = new SoundBank(audioEngine, Program.CONTENT_DIR + @"/SoundBank.xsb");
 
             myLoopingSound = soundBank.GetCue("titleMusic");
             myLoopingSound.Play();

@@ -53,7 +53,7 @@ namespace Cubic_The_Game
         public override void LoadContent()
         {
             if (content == null)
-                content = new ContentManager(ScreenManager.Game.Services, "Content");
+                content = new ContentManager(ScreenManager.Game.Services, Program.CONTENT_DIR);
 
             // backgroundTexture = content.Load<Texture2D>("background");
 

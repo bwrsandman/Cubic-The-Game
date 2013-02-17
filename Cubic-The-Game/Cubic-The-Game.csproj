@@ -78,11 +78,10 @@
     <None Include="Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\" />
     <Folder Include="ScreenManager\" />
-    <Folder Include="Content\Fonts\" />
     <Folder Include="Screens\" />
     <Folder Include="GameObjects\" />
+    <Folder Include="Content\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.desktop">
@@ -90,4 +89,58 @@
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <EmbeddedResource Include="Content\abstract\shapes\1.xnb" />
+    <EmbeddedResource Include="Content\abstract\shapes\2.xnb" />
+    <EmbeddedResource Include="Content\abstract\shapes\3.xnb" />
+    <EmbeddedResource Include="Content\abstract\shapes\4.xnb" />
+    <EmbeddedResource Include="Content\abstract\shapes\5.xnb" />
+    <EmbeddedResource Include="Content\abstract\shapes\6.xnb" />
+    <EmbeddedResource Include="Content\abstract\shapes\7.xnb" />
+    <EmbeddedResource Include="Content\abstract\shapes\8.xnb" />
+    <EmbeddedResource Include="Content\abstract\background.xnb" />
+    <EmbeddedResource Include="Content\abstract\cubeTex.xnb" />
+    <EmbeddedResource Include="Content\abstract\wallpaper.xnb" />
+    <EmbeddedResource Include="Content\SoundBank.xsb" />
+    <EmbeddedResource Include="Content\WaveBank.xwb" />
+    <EmbeddedResource Include="Content\background.xnb" />
+    <EmbeddedResource Include="Content\background_instructions.xnb" />
+    <EmbeddedResource Include="Content\blank.xnb" />
+    <EmbeddedResource Include="Content\cubic_sounds.xgs" />
+    <EmbeddedResource Include="Content\error sound 3.xnb" />
+    <EmbeddedResource Include="Content\gameFont.xnb" />
+    <EmbeddedResource Include="Content\gradient.xnb" />
+    <EmbeddedResource Include="Content\hud.xnb" />
+    <EmbeddedResource Include="Content\menuFont.xnb" />
+    <EmbeddedResource Include="Content\naombi wind_2.xnb" />
+    <EmbeddedResource Include="Content\pickUp.xnb" />
+    <EmbeddedResource Include="Content\playerCursor.xnb" />
+    <EmbeddedResource Include="Content\rowCompletion.xnb" />
+    <EmbeddedResource Include="Content\rowFlipping.xnb" />
+    <EmbeddedResource Include="Content\rowStealing.xnb" />
+    <EmbeddedResource Include="Content\selector 4 %28softened%29.xnb" />
+    <EmbeddedResource Include="Content\titleFont.xnb" />
+    <EmbeddedResource Include="Content\casino\background.xnb" />
+    <EmbeddedResource Include="Content\casino\cubeTex.xnb" />
+    <EmbeddedResource Include="Content\casino\wallpaper.xnb" />
+    <EmbeddedResource Include="Content\casino\shapes\1.xnb" />
+    <EmbeddedResource Include="Content\casino\shapes\2.xnb" />
+    <EmbeddedResource Include="Content\casino\shapes\3.xnb" />
+    <EmbeddedResource Include="Content\casino\shapes\4.xnb" />
+    <EmbeddedResource Include="Content\casino\shapes\5.xnb" />
+    <EmbeddedResource Include="Content\casino\shapes\6.xnb" />
+    <EmbeddedResource Include="Content\casino\shapes\7.xnb" />
+    <EmbeddedResource Include="Content\casino\shapes\8.xnb" />
+    <EmbeddedResource Include="Content\egypt\background.xnb" />
+    <EmbeddedResource Include="Content\egypt\cubeTex.xnb" />
+    <EmbeddedResource Include="Content\egypt\wallpaper.xnb" />
+    <EmbeddedResource Include="Content\egypt\shapes\1.xnb" />
+    <EmbeddedResource Include="Content\egypt\shapes\2.xnb" />
+    <EmbeddedResource Include="Content\egypt\shapes\3.xnb" />
+    <EmbeddedResource Include="Content\egypt\shapes\4.xnb" />
+    <EmbeddedResource Include="Content\egypt\shapes\5.xnb" />
+    <EmbeddedResource Include="Content\egypt\shapes\6.xnb" />
+    <EmbeddedResource Include="Content\egypt\shapes\7.xnb" />
+    <EmbeddedResource Include="Content\egypt\shapes\8.xnb" />
+  </ItemGroup>
 </Project>

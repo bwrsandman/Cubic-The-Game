@@ -8,6 +8,7 @@ namespace Cubic_The_Game
 {
     static class Program
     {
+		public const string CONTENT_DIR = "../../Content";
         private static CubicGame game;
 
         /// <summary>
